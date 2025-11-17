@@ -4,6 +4,96 @@ import FrienderPageMobile from './FrienderPage-mobile';
 import Frender3DModel from './Frender3DModel';
 import Chatbot from './Chatbot';
 
+const DRONE_VIDEO_PLAYLIST = [
+  {
+    title: '드론 이론의 개념',
+    category: '드론 이론',
+    description: '비행 원리를 이해하기 위한 가장 기초적인 개념을 정리했습니다.',
+    url: 'https://youtu.be/hmxy1YirO4o',
+  },
+  {
+    title: '드론 이론의 구조',
+    category: '드론 이론',
+    description: '기체를 구성하는 핵심 구조와 역할을 확인해보세요.',
+    url: 'https://youtu.be/d_sz10Lu7cs',
+  },
+  {
+    title: '드론 이론의 원리',
+    category: '드론 이론',
+    description: '비행 제어와 안정화 메커니즘을 자세히 다룹니다.',
+    url: 'https://youtu.be/VHH91q3uO0I',
+  },
+  {
+    title: '드론 이론의 안전수칙',
+    category: '드론 이론',
+    description: '안전한 비행을 위한 필수 규칙을 체크하세요.',
+    url: 'https://youtu.be/9E1OXKQhXQg',
+  },
+  {
+    title: '드론 실습의 조난자 찾기',
+    category: '드론 실습',
+    description: '실전 상황을 가정한 조난자 수색 미션 영상을 제공합니다.',
+    url: 'https://youtu.be/Z1B4cOrv84c',
+  },
+  {
+    title: '드론 실습의 불끄기',
+    category: '드론 실습',
+    description: '화재 대응 훈련을 위한 드론 활용 장면을 확인하세요.',
+    url: 'https://youtu.be/bEeKg5p4fJw',
+  },
+  {
+    title: '드론 트랙',
+    category: '드론 트랙',
+    description: '도시 배경을 활용한 실습 장면을 담았습니다.',
+    url: 'https://youtu.be/_ruoKMR3ZEU',
+  },
+];
+
+const getYouTubeVideoId = (url) => {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return match && match[2].length === 11 ? match[2] : null;
+};
+
+const getYouTubeEmbedUrl = (url) => {
+  const videoId = getYouTubeVideoId(url);
+  return videoId ? `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1` : '';
+};
+
+const PAGE6_MEDIA_OVERRIDES = {
+  5: {
+    src: '/FrienderFile/VideoFile/WorldGIF.gif',
+    alt: 'World GIF 애니메이션',
+  },
+  6: {
+    src: '/FrienderFile/VideoFile/FrinederGIF1.gif',
+    alt: 'Friender GIF 애니메이션',
+  },
+};
+
+const PAGE7_MEDIA_OVERRIDES = {
+  5: {
+    src: '/FrienderFile/VideoFile/AIStory.gif',
+    alt: 'AI Story GIF 애니메이션',
+  },
+  6: {
+    src: '/FrienderFile/VideoFile/DreampathAI.gif',
+    alt: 'DreamPath AI GIF 애니메이션',
+  },
+  7: {
+    src: '/FrienderFile/VideoFile/InnoWorks.gif',
+    alt: 'InnoWorks GIF 애니메이션',
+  },
+};
+
+const NAVER_MAP_ADDRESS = '경기도 부천시 원미구 길주로 17, 웹툰융합센터 6층 608호';
+const NAVER_MAP_COORDINATES = {
+  lat: 37.5047267,
+  lng: 126.7870631,
+};
+const NAVER_MAP_QUERY = encodeURIComponent(NAVER_MAP_ADDRESS);
+const NAVER_MAP_EMBED_URL = `https://map.naver.com/v5/search/${NAVER_MAP_QUERY}?c=${NAVER_MAP_COORDINATES.lng},${NAVER_MAP_COORDINATES.lat},21,0,0,0,dh`;
+const NAVER_MAP_SHARE_URL = `https://map.naver.com/v5/search/${NAVER_MAP_QUERY}?c=${NAVER_MAP_COORDINATES.lng},${NAVER_MAP_COORDINATES.lat},21,0,0,0,dh`;
 function FrienderPage({ onBack = null }) {
   // 화면 크기 상태 관리
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1025);
@@ -94,6 +184,7 @@ function FrienderPage({ onBack = null }) {
   const [isPage6ModalOpen, setIsPage6ModalOpen] = React.useState(false);
   const [selectedPage6Area, setSelectedPage6Area] = React.useState(null);
   const [hoveredArea6, setHoveredArea6] = React.useState(null);
+  const [isPage63DModalOpen, setIsPage63DModalOpen] = React.useState(false);
   
   // 2페이지 팝업 모달 상태 관리
   const [isPage2ModalOpen, setIsPage2ModalOpen] = React.useState(false);
@@ -148,6 +239,7 @@ function FrienderPage({ onBack = null }) {
   const [isNewAreaModalDragging, setIsNewAreaModalDragging] = React.useState(false);
   const newAreaModalDragStartRef = React.useRef({ x: 0, y: 0 });
   
+
   // 7페이지 영상 상태 관리
   const [playingVideo, setPlayingVideo] = React.useState(null);
   const [showVideo, setShowVideo] = React.useState(false);
@@ -264,7 +356,7 @@ function FrienderPage({ onBack = null }) {
     }, 500);
   }, []);
 
-  // front.gif 4초 후 자동 비활성화, 3.5초에 SVG 배경 활성화
+  // front.gif 3.2초 후 자동 비활성화, 3초에 SVG 배경 활성화
   React.useEffect(() => {
     if (showFrontGif) {
       // 3초에 SVG 배경 활성화
@@ -272,10 +364,10 @@ function FrienderPage({ onBack = null }) {
         setShowSvgBackground(true);
       }, 3000);
 
-      // 4.5초에 gif 비활성화
+      // 3.2초에 gif 비활성화
       const gifTimer = setTimeout(() => {
         setShowFrontGif(false);
-      }, 3000);
+      }, 3200);
 
       return () => {
         clearTimeout(svgTimer);
@@ -1157,8 +1249,13 @@ function FrienderPage({ onBack = null }) {
     
     // areaNumber에 따라 파일명 결정
     // 1: 6-1, 2: 6-2, 3: 6-3, 4: 6-4, 5: 6-1-img, 6: 6-2-img, 7: 6-3-img
-    setSelectedPage6Area(areaNumber);
-    setIsPage6ModalOpen(true);
+    if (areaNumber === 7) {
+      // 6-3-img 영역은 3D 모델 모달 열기
+      setIsPage63DModalOpen(true);
+    } else {
+      setSelectedPage6Area(areaNumber);
+      setIsPage6ModalOpen(true);
+    }
   };
 
   /**
@@ -1174,6 +1271,13 @@ function FrienderPage({ onBack = null }) {
     setModalDragOffset({ x: 0, y: 0 });
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
+  };
+
+  /**
+   * 6페이지 3D 모델 모달 닫기 핸들러
+   */
+  const closePage63DModal = () => {
+    setIsPage63DModalOpen(false);
   };
 
   /**
@@ -1209,6 +1313,8 @@ function FrienderPage({ onBack = null }) {
   // 7페이지 모달 상태 관리
   const [isPage7ModalOpen, setIsPage7ModalOpen] = React.useState(false);
   const [selectedPage7Area, setSelectedPage7Area] = React.useState(null);
+  const page6MediaOverride = selectedPage6Area ? PAGE6_MEDIA_OVERRIDES[selectedPage6Area] : null;
+  const page7MediaOverride = selectedPage7Area ? PAGE7_MEDIA_OVERRIDES[selectedPage7Area] : null;
 
   /**
    * 7페이지 영역 클릭 핸들러
@@ -1373,6 +1479,10 @@ function FrienderPage({ onBack = null }) {
     modalDragStartRef.current = { x: 0, y: 0 };
   };
 
+  const handleOpenNaverMap = React.useCallback(() => {
+    window.open(NAVER_MAP_SHARE_URL, '_blank', 'noopener,noreferrer');
+  }, []);
+
 
   /**
    * 영상 닫기 핸들러
@@ -1449,7 +1559,7 @@ function FrienderPage({ onBack = null }) {
         
         {/* 미니맵 */}
         {showMinimap && (
-          <div className="mt-4 w-full">
+          <div className="mt-4 w-full relative z-[9999]">
             <div className="bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-lg border border-gray-200">
               <div className="text-xs text-gray-600 mb-1 text-center">현재 보기</div>
               <div className="relative w-full h-24 bg-gray-100 rounded overflow-hidden">
@@ -1646,7 +1756,7 @@ function FrienderPage({ onBack = null }) {
                 {showFrontGif && (
                   <div className="absolute inset-0 w-full h-full">
                     <img
-                      src="/IsoverFile/IsoverPage/front.gif"
+                      src="/FrienderFile/Interactive/Front.gif"
                       alt="Front Animation"
                       className="w-full h-full object-cover"
                     />
@@ -1950,9 +2060,9 @@ function FrienderPage({ onBack = null }) {
                   style={{
                     position: 'absolute',
                     top: '10%',
-                    left: '5%',
-                    width: '80%',
-                    height: '20%'
+                    left: '17%',
+                    width: '74%',
+                    height: '23%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage4AreaClick(1)}
@@ -1966,9 +2076,9 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea4 === 2 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '10%',
-                    right: '5%',
-                    width: '80%',
+                    bottom: '24%',
+                    left: '17%',
+                    width: '74%',
                     height: '20%'
                   }}
                   data-clickable="true"
@@ -1983,10 +2093,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea4 === 3 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '35%',
-                    left: '5%',
-                    width: '42%',
-                    height: '20%'
+                    top: '33%',
+                    left: '18%',
+                    width: '37%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage4AreaClick(3)}
@@ -2000,10 +2110,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea4 === 4 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '35%',
+                    top: '33%',
                     right: '5%',
-                    width: '42%',
-                    height: '20%'
+                    width: '37%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage4AreaClick(4)}
@@ -2017,9 +2127,9 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea4 === 5 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '20%',
-                    left: '5%',
-                    width: '42%',
+                    bottom: '4%',
+                    left: '18%',
+                    width: '37%',
                     height: '20%'
                   }}
                   data-clickable="true"
@@ -2034,9 +2144,9 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea4 === 6 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '20%',
+                    bottom: '4%',
                     right: '5%',
-                    width: '42%',
+                    width: '37%',
                     height: '20%'
                   }}
                   data-clickable="true"
@@ -2083,8 +2193,8 @@ function FrienderPage({ onBack = null }) {
                     position: 'absolute',
                     top: '10%',
                     left: '5%',
-                    width: '42%',
-                    height: '20%'
+                    width: '74%',
+                    height: '22%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage5AreaClick(1)}
@@ -2100,10 +2210,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea5 === 2 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '10%',
-                    right: '5%',
-                    width: '42%',
-                    height: '20%'
+                    bottom: '23%',
+                    left: '5%',
+                    width: '74%',
+                    height: '21%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage5AreaClick(2)}
@@ -2119,10 +2229,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea5 === 3 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '35%',
+                    top: '33%',
                     left: '5%',
-                    width: '42%',
-                    height: '20%'
+                    width: '37%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage5AreaClick(3)}
@@ -2138,10 +2248,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea5 === 4 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '35%',
-                    right: '5%',
-                    width: '42%',
-                    height: '20%'
+                    top: '33%',
+                    right: '18%',
+                    width: '37%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage5AreaClick(4)}
@@ -2157,10 +2267,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea5 === 5 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '20%',
+                    bottom: '5%',
                     left: '5%',
-                    width: '42%',
-                    height: '20%'
+                    width: '37%',
+                    height: '18%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage5AreaClick(5)}
@@ -2176,10 +2286,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea5 === 6 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '20%',
-                    right: '5%',
-                    width: '42%',
-                    height: '20%'
+                    bottom: '5%',
+                    right: '18%',
+                    width: '37%',
+                    height: '18%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage5AreaClick(6)}
@@ -2222,13 +2332,13 @@ function FrienderPage({ onBack = null }) {
                 {/* 6페이지 7개 영역 배치 (6-1, 6-2, 6-3, 6-4, 6-1-img, 6-2-img, 6-3-img) */}
                 {/* GIF 관련 코드는 주석 처리 */}
                 <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 1 ? 'border-2 border-yellow-500' : ''}`}
+                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 1 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '10%',
-                    left: '5%',
-                    width: '42%',
-                    height: '20%'
+                    top: '20%',
+                    left: '6%',
+                    width: '82%',
+                    height: '9%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage6AreaClick(1)}
@@ -2247,13 +2357,13 @@ function FrienderPage({ onBack = null }) {
                 </div>
                 
                 <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 2 ? 'border-2 border-yellow-500' : ''}`}
+                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 2 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '10%',
-                    right: '5%',
-                    width: '42%',
-                    height: '20%'
+                    top: '31%',
+                    right: '6%',
+                    width: '43%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage6AreaClick(2)}
@@ -2272,13 +2382,13 @@ function FrienderPage({ onBack = null }) {
                 </div>
                 
                 <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 3 ? 'border-2 border-yellow-500' : ''}`}
+                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 3 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '35%',
-                    left: '5%',
-                    width: '42%',
-                    height: '20%'
+                    top: '52%',
+                    right: '6%',
+                    width: '43%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage6AreaClick(3)}
@@ -2297,13 +2407,13 @@ function FrienderPage({ onBack = null }) {
                 </div>
                 
                 <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 4 ? 'border-2 border-yellow-500' : ''}`}
+                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 4 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '35%',
-                    right: '5%',
-                    width: '42%',
-                    height: '20%'
+                    bottom: '8%',
+                    right: '6%',
+                    width: '43%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage6AreaClick(4)}
@@ -2322,13 +2432,13 @@ function FrienderPage({ onBack = null }) {
                 </div>
                 
                 <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 5 ? 'border-2 border-yellow-500' : ''}`}
+                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 5 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '20%',
-                    left: '5%',
-                    width: '42%',
-                    height: '20%'
+                    top: '31%',
+                    left: '6%',
+                    width: '43%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage6AreaClick(5)}
@@ -2347,13 +2457,13 @@ function FrienderPage({ onBack = null }) {
                 </div>
                 
                 <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 6 ? 'border-2 border-yellow-500' : ''}`}
+                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 6 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '20%',
-                    right: '5%',
-                    width: '42%',
-                    height: '20%'
+                    top: '52%',
+                    left: '6%',
+                    width: '43%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage6AreaClick(6)}
@@ -2372,13 +2482,13 @@ function FrienderPage({ onBack = null }) {
                 </div>
                 
                 <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 7 ? 'border-2 border-yellow-500' : ''}`}
+                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 7 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '5%',
-                    left: '32%',
-                    width: '36%',
-                    height: '15%'
+                    bottom: '8%',
+                    left: '6%',
+                    width: '43%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage6AreaClick(7)}
@@ -2424,10 +2534,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage7ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea7 === 1 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '10%',
-                    left: '5%',
-                    width: '42%',
-                    height: '20%'
+                    top: '20%',
+                    left: '6%',
+                    width: '82%',
+                    height: '9%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage7AreaClick(1)}
@@ -2464,10 +2574,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage7ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea7 === 2 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '10%',
-                    right: '5%',
-                    width: '42%',
-                    height: '20%'
+                    top: '31%',
+                    right: '6%',
+                    width: '43%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage7AreaClick(2)}
@@ -2481,10 +2591,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage7ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea7 === 3 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '35%',
-                    left: '5%',
-                    width: '42%',
-                    height: '20%'
+                    top: '52%',
+                    right: '6%',
+                    width: '43%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage7AreaClick(3)}
@@ -2498,10 +2608,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage7ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea7 === 4 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '35%',
-                    right: '5%',
-                    width: '42%',
-                    height: '20%'
+                    bottom: '8%',
+                    right: '6%',
+                    width: '43%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage7AreaClick(4)}
@@ -2515,10 +2625,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage7ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea7 === 5 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '20%',
-                    left: '5%',
-                    width: '42%',
-                    height: '20%'
+                    top: '31%',
+                    left: '6%',
+                    width: '43%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage7AreaClick(5)}
@@ -2532,10 +2642,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage7ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea7 === 6 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '20%',
-                    right: '5%',
-                    width: '42%',
-                    height: '20%'
+                    top: '52%',
+                    left: '6%',
+                    width: '43%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage7AreaClick(6)}
@@ -2549,10 +2659,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage7ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea7 === 7 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '5%',
-                    left: '32%',
-                    width: '36%',
-                    height: '15%'
+                    bottom: '8%',
+                    left: '6%',
+                    width: '43%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage7AreaClick(7)}
@@ -2595,10 +2705,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage8ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea8 === 1 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '10%',
-                    left: '5%',
-                    width: '42%',
-                    height: '30%'
+                    top: '26%',
+                    left: '6%',
+                    width: '43%',
+                    height: '21%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage8AreaClick(1)}
@@ -2612,10 +2722,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage8ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea8 === 2 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '10%',
-                    right: '5%',
-                    width: '42%',
-                    height: '30%'
+                    bottom: '5%',
+                    left: '6%',
+                    width: '43%',
+                    height: '21%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage8AreaClick(2)}
@@ -2629,10 +2739,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage8ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea8 === 3 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '20%',
-                    left: '5%',
-                    width: '42%',
-                    height: '30%'
+                    bottom: '5%',
+                    right: '6%',
+                    width: '43%',
+                    height: '21%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage8AreaClick(3)}
@@ -2646,10 +2756,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage8ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea8 === 4 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '20%',
-                    right: '5%',
-                    width: '42%',
-                    height: '30%'
+                    top: '14%',
+                    right: '6%',
+                    width: '40%',
+                    height: '35%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage8AreaClick(4)}
@@ -2692,10 +2802,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage9ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea9 === 1 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '10%',
-                    left: '5%',
-                    width: '42%',
-                    height: '30%'
+                    top: '13%',
+                    left: '6%',
+                    width: '80%',
+                    height: '10%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage9AreaClick(1)}
@@ -2709,10 +2819,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage9ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea9 === 2 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '10%',
-                    right: '5%',
-                    width: '42%',
-                    height: '30%'
+                    top: '24%',
+                    left: '6%',
+                    width: '87%',
+                    height: '26%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage9AreaClick(2)}
@@ -2726,10 +2836,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage9ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea9 === 3 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '20%',
-                    left: '5%',
-                    width: '42%',
-                    height: '30%'
+                    top: '53%',
+                    left: '6%',
+                    width: '80%',
+                    height: '18%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage9AreaClick(3)}
@@ -2743,10 +2853,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage9ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea9 === 4 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '20%',
-                    right: '5%',
-                    width: '42%',
-                    height: '30%'
+                    top: '74%',
+                    left: '6%',
+                    width: '80%',
+                    height: '21%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage9AreaClick(4)}
@@ -2789,10 +2899,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage10ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea10 === 1 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '10%',
-                    left: '5%',
-                    width: '42%',
-                    height: '20%'
+                    top: '13%',
+                    left: '6%',
+                    width: '80%',
+                    height: '10%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage10AreaClick(1)}
@@ -2806,10 +2916,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage10ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea10 === 2 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '10%',
-                    right: '5%',
-                    width: '42%',
-                    height: '20%'
+                    top: '28%',
+                    left: '6%',
+                    width: '80%',
+                    height: '17%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage10AreaClick(2)}
@@ -2823,10 +2933,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage10ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea10 === 3 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '35%',
+                    top: '50%',
                     left: '5%',
-                    width: '42%',
-                    height: '20%'
+                    width: '45%',
+                    height: '22%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage10AreaClick(3)}
@@ -2840,10 +2950,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage10ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea10 === 4 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '35%',
+                    top: '50%',
                     right: '5%',
-                    width: '42%',
-                    height: '20%'
+                    width: '45%',
+                    height: '22%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage10AreaClick(4)}
@@ -2857,10 +2967,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage10ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea10 === 5 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '20%',
+                    bottom: '6%',
                     left: '5%',
-                    width: '42%',
-                    height: '20%'
+                    width: '45%',
+                    height: '22%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage10AreaClick(5)}
@@ -2874,10 +2984,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage10ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea10 === 6 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '20%',
+                    bottom: '6%',
                     right: '5%',
-                    width: '42%',
-                    height: '20%'
+                    width: '45%',
+                    height: '22%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage10AreaClick(6)}
@@ -2920,10 +3030,10 @@ function FrienderPage({ onBack = null }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea11 === 1 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '20%',
-                    left: '20%',
-                    width: '60%',
-                    height: '60%'
+                    bottom: '30%',
+                    right: '25%',
+                    width: '35%',
+                    height: '30%'
                   }}
                   data-clickable="true"
                   onClick={handlePage11AreaClick}
@@ -3707,34 +3817,81 @@ function FrienderPage({ onBack = null }) {
             onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
           >
 
-            {/* 팝업 이미지 표시 */}
-            <div className="relative flex items-center justify-center">
-              <img
-                src={`/FrienderFile/Popup/${
-                  selectedPage4Area === 1 ? '4-1.jpg' :
-                  selectedPage4Area === 2 ? '4-2.jpg' :
-                  selectedPage4Area === 3 ? '4-1-img.jpg' :
-                  selectedPage4Area === 4 ? '4-2-img.jpg' :
-                  selectedPage4Area === 5 ? '4-3-img.jpg' :
-                  selectedPage4Area === 6 ? '4-4-img.jpg' :
-                  '4-1.jpg'
-                }`}
-                alt={`4-${selectedPage4Area} 팝업`}
-                className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-lg"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 메시지 표시
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
-              />
-              
-              <div
-                className="hidden text-gray-500 text-center"
-                style={{ display: 'none' }}
-              >
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: /FrienderFile/Popup/4-{selectedPage4Area}.jpg</p>
-              </div>
+            {/* 팝업 콘텐츠 */}
+            <div className="relative flex items-center justify-center w-full">
+              {selectedPage4Area === 3 ? (
+                <div className="w-full space-y-6">
+                  <div className="text-center space-y-2">
+                    <p className="text-2xl font-semibold text-gray-900">드론 학습 콘텐츠</p>
+                    <p className="text-sm text-gray-600">이론부터 실습, 트랙 주행까지 이어지는 7편의 플레이리스트입니다.</p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {DRONE_VIDEO_PLAYLIST.map((video, index) => {
+                      const embedUrl = getYouTubeEmbedUrl(video.url);
+                      return (
+                        <div
+                          key={video.url}
+                          className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 flex flex-col"
+                        >
+                          {embedUrl ? (
+                            <div className="relative w-full pt-[56.25%] bg-black">
+                              <iframe
+                                src={embedUrl}
+                                title={`${index + 1}. ${video.title}`}
+                                className="absolute inset-0 w-full h-full"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerPolicy="strict-origin-when-cross-origin"
+                                allowFullScreen
+                              />
+                            </div>
+                          ) : (
+                            <div className="p-6 text-center text-sm text-red-500">
+                              영상을 불러올 수 없습니다.
+                            </div>
+                          )}
+
+                          <div className="p-4 space-y-1 bg-gray-50">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">
+                              {`${index + 1}. ${video.category}`}
+                            </p>
+                            <p className="text-base font-semibold text-gray-900">{video.title}</p>
+                            <p className="text-sm text-gray-600">{video.description}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <img
+                    src={`/FrienderFile/Popup/${
+                      selectedPage4Area === 1 ? '4-1.jpg' :
+                      selectedPage4Area === 2 ? '4-2.jpg' :
+                      selectedPage4Area === 4 ? '4-2-img.jpg' :
+                      selectedPage4Area === 5 ? '4-3-img.jpg' :
+                      selectedPage4Area === 6 ? '4-4-img.jpg' :
+                      '4-1.jpg'
+                    }`}
+                    alt={`4-${selectedPage4Area} 팝업`}
+                    className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-lg"
+                    onError={(e) => {
+                      // 이미지 로드 실패 시 메시지 표시
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'block';
+                    }}
+                  />
+                  
+                  <div
+                    className="hidden text-gray-500 text-center"
+                    style={{ display: 'none' }}
+                  >
+                    <p>이미지를 불러올 수 없습니다.</p>
+                    <p className="text-sm">경로: /FrienderFile/Popup/4-{selectedPage4Area}.jpg</p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -4008,38 +4165,108 @@ function FrienderPage({ onBack = null }) {
             onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
           >
 
-            {/* 팝업 이미지 표시 */}
-            <div className="flex items-center justify-center">
-              <img
-                src={`/FrienderFile/Popup/${
-                  selectedPage6Area === 1 ? '6-1.jpg' :
-                  selectedPage6Area === 2 ? '6-2.jpg' :
-                  selectedPage6Area === 3 ? '6-3.jpg' :
-                  selectedPage6Area === 4 ? '6-4.jpg' :
-                  selectedPage6Area === 5 ? '6-1-img.jpg' :
-                  selectedPage6Area === 6 ? '6-2-img.jpg' :
-                  selectedPage6Area === 7 ? '6-3-img.jpg' :
-                  '6-1.jpg'
-                }`}
-                alt={`영역 ${selectedPage6Area} 팝업`}
-                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 메시지 표시
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
-              />
+            {/* 팝업 이미지 또는 GIF 표시 */}
+            <div className="flex items-center justify-center w-full">
+              {page6MediaOverride ? (
+                <img
+                  src={page6MediaOverride.src}
+                  alt={page6MediaOverride.alt}
+                  className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+                  style={{
+                    width: 'auto',
+                    height: 'auto',
+                  }}
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'block';
+                  }}
+                />
+              ) : (
+                <img
+                  src={`/FrienderFile/Popup/${
+                    selectedPage6Area === 1 ? '6-1.jpg' :
+                    selectedPage6Area === 2 ? '6-2.jpg' :
+                    selectedPage6Area === 3 ? '6-3.jpg' :
+                    selectedPage6Area === 4 ? '6-4.jpg' :
+                    selectedPage6Area === 5 ? '6-1-img.jpg' :
+                    selectedPage6Area === 6 ? '6-2-img.jpg' :
+                    selectedPage6Area === 7 ? '6-3-img.jpg' :
+                    '6-1.jpg'
+                  }`}
+                  alt={`영역 ${selectedPage6Area} 팝업`}
+                  className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                  onError={(e) => {
+                    // 이미지 로드 실패 시 메시지 표시
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'block';
+                  }}
+                />
+              )}
               <div
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
                 <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">영역 {selectedPage6Area}의 팝업 파일을 찾을 수 없습니다.</p>
+                <p className="text-sm">
+                  {page6MediaOverride
+                    ? `경로: ${page6MediaOverride.src}`
+                    : `영역 ${selectedPage6Area}의 팝업 파일을 찾을 수 없습니다.`}
+                </p>
               </div>
             </div>
           </div>
         </div>
       )}
+
+      {/* 6페이지 3D 모델 모달창 */}
+      {isPage63DModalOpen && (
+        <div 
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+          onClick={closePage63DModal}
+        >
+          <div 
+            className="relative w-[90vw] h-[90vh] bg-white rounded-lg shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* 3D 모델 컨테이너 */}
+            <div className="w-full h-full relative">
+              {/* 3D 모델 */}
+              <div className="w-full h-full">
+                <Frender3DModel 
+                  isVisible={true} 
+                  opacity={0.9}
+                  scale={0.7}
+                  position={{ x: 0, y: 0 }}
+                  animationDelay={0}
+                  modelPath="/FrienderFile/3DModel/Drone.glb"
+                  isModal={true}
+                  cameraPosition={[3, 3, 8]}
+                  cameraFov={15}
+                  customScale={0.5}
+                  rotateSpeed={1.0}
+                  showWireframe={false}
+                />
+              </div>
+            </div>
+            
+            {/* 모달 하단 컨트롤 */}
+            <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
+              <div className="text-center">
+                <p className="text-sm text-gray-600 mb-2">마우스로 회전, 휠로 확대/축소 가능</p>
+                <div className="flex justify-center">
+                  <button
+                    onClick={closePage63DModal}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    닫기
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 2페이지 모달 */}
       {isPage2ModalOpen && selectedPage2Area && (
         <div
@@ -4383,33 +4610,49 @@ function FrienderPage({ onBack = null }) {
             onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
             onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
           >
-            {/* 팝업 이미지 표시 */}
-            <div className="flex items-center justify-center">
-              <img
-                src={`/FrienderFile/Popup/${
-                  selectedPage7Area === 1 ? '7-1.jpg' :
-                  selectedPage7Area === 2 ? '7-2.jpg' :
-                  selectedPage7Area === 3 ? '7-3.jpg' :
-                  selectedPage7Area === 4 ? '7-4.jpg' :
-                  selectedPage7Area === 5 ? '7-1-img.jpg' :
-                  selectedPage7Area === 6 ? '7-2-img.jpg' :
-                  selectedPage7Area === 7 ? '7-3-img.jpg' :
-                  '7-1.jpg'
-                }`}
-                alt={`7-${selectedPage7Area} 팝업`}
-                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 메시지 표시
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
-              />
+            {/* 팝업 이미지 또는 GIF 표시 */}
+            <div className="flex items-center justify-center w-full">
+              {page7MediaOverride ? (
+                <img
+                  src={page7MediaOverride.src}
+                  alt={page7MediaOverride.alt}
+                  className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'block';
+                  }}
+                />
+              ) : (
+                <img
+                  src={`/FrienderFile/Popup/${
+                    selectedPage7Area === 1 ? '7-1.jpg' :
+                    selectedPage7Area === 2 ? '7-2.jpg' :
+                    selectedPage7Area === 3 ? '7-3.jpg' :
+                    selectedPage7Area === 4 ? '7-4.jpg' :
+                    selectedPage7Area === 5 ? '7-1-img.jpg' :
+                    selectedPage7Area === 6 ? '7-2-img.jpg' :
+                    selectedPage7Area === 7 ? '7-3-img.jpg' :
+                    '7-1.jpg'
+                  }`}
+                  alt={`7-${selectedPage7Area} 팝업`}
+                  className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                  onError={(e) => {
+                    // 이미지 로드 실패 시 메시지 표시
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'block';
+                  }}
+                />
+              )}
               <div
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
                 <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: /FrienderFile/Popup/7-{selectedPage7Area}.jpg</p>
+                <p className="text-sm">
+                  {page7MediaOverride
+                    ? `경로: ${page7MediaOverride.src}`
+                    : `경로: /FrienderFile/Popup/7-${selectedPage7Area}.jpg`}
+                </p>
               </div>
             </div>
           </div>
@@ -4883,24 +5126,68 @@ function FrienderPage({ onBack = null }) {
             onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
             onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
           >
-            {/* 팝업 이미지 표시 */}
-            <div className="flex items-center justify-center">
-              <img
-                src="/FrienderFile/Popup/11-1.jpg"
-                alt="11-1 팝업"
-                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 메시지 표시
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
-              />
-              <div
-                className="hidden text-gray-500 text-center"
-                style={{ display: 'none' }}
-              >
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: /FrienderFile/Popup/11-1.jpg</p>
+            {/* 팝업 이미지 + 네이버 지도 */}
+            <div className="flex flex-col gap-8 lg:flex-row lg:items-stretch">
+              <div className="flex-1 flex items-center justify-center">
+                <div className="flex flex-col items-center gap-3">
+                  <img
+                    src="/FrienderFile/Popup/11-1.jpg"
+                    alt="11-1 팝업"
+                    className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                    onError={(e) => {
+                      // 이미지 로드 실패 시 메시지 표시
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'block';
+                    }}
+                  />
+                  <div
+                    className="hidden text-gray-500 text-center"
+                    style={{ display: 'none' }}
+                  >
+                    <p>이미지를 불러올 수 없습니다.</p>
+                    <p className="text-sm">경로: /FrienderFile/Popup/11-1.jpg</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex-1 flex flex-col gap-4">
+                <div className="relative w-full min-h-[260px] h-[320px] lg:h-full rounded-2xl overflow-hidden border border-gray-200 shadow-inner bg-gray-50">
+                  <iframe
+                    title="Friender 위치 안내 (네이버 지도)"
+                    src={NAVER_MAP_EMBED_URL}
+                    className="w-full h-full"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    allowFullScreen
+                  />
+                  <div className="pointer-events-none absolute bottom-3 right-3 bg-white/90 text-xs text-gray-700 px-3 py-1 rounded-full shadow">
+                    네이버 지도
+                  </div>
+                </div>
+
+                <div className="space-y-1 text-sm leading-relaxed text-gray-700">
+                  <p className="text-base font-semibold text-gray-900">주소</p>
+                  <p>{NAVER_MAP_ADDRESS}</p>
+                  <p className="text-xs text-gray-500">
+                    위도 {NAVER_MAP_COORDINATES.lat.toFixed(6)} · 경도 {NAVER_MAP_COORDINATES.lng.toFixed(6)}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    지도가 보이지 않으면 아래 버튼을 눌러 새 창에서 확인해주세요.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleOpenNaverMap();
+                    }}
+                    className="px-5 py-2.5 rounded-full bg-green-500 text-white font-semibold text-sm shadow hover:bg-green-600 transition-colors duration-200 cursor-pointer"
+                    title="네이버 지도 새 창에서 열기"
+                  >
+                    네이버 지도 열기
+                  </button>
+                </div>
               </div>
             </div>
           </div>

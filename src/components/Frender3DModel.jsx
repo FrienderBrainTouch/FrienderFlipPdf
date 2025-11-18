@@ -388,7 +388,7 @@ function Frender3DModel({
   scale = 1, 
   position = { x: 0, y: 0 },
   animationDelay = 0,
-  modelPath = "/IsoverFile/3dmodel/Untitled.glb",
+  modelPath: propModelPath = "/FrienderFile/3DModel/Drone.glb",
   isModal = false,
   cameraPosition = [0, 0, 8],
   cameraFov = 35,
@@ -399,6 +399,8 @@ function Frender3DModel({
   onModelLoad = null,
   boxOpacity = 0.2
 }) {
+  // 빈 문자열이나 falsy 값일 때 기본값 사용
+  const modelPath = propModelPath || "/FrienderFile/3DModel/Drone.glb";
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [animationOpacity, setAnimationOpacity] = useState(0);

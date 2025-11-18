@@ -92,8 +92,8 @@ const NAVER_MAP_COORDINATES = {
   lng: 126.7870631,
 };
 const NAVER_MAP_QUERY = encodeURIComponent(NAVER_MAP_ADDRESS);
-const NAVER_MAP_EMBED_URL = `https://map.naver.com/v5/search/${NAVER_MAP_QUERY}?c=${NAVER_MAP_COORDINATES.lng},${NAVER_MAP_COORDINATES.lat},21,0,0,0,dh`;
-const NAVER_MAP_SHARE_URL = `https://map.naver.com/v5/search/${NAVER_MAP_QUERY}?c=${NAVER_MAP_COORDINATES.lng},${NAVER_MAP_COORDINATES.lat},21,0,0,0,dh`;
+const NAVER_MAP_EMBED_URL = `https://map.naver.com/p/search/${NAVER_MAP_QUERY}?c=${NAVER_MAP_COORDINATES.lng},${NAVER_MAP_COORDINATES.lat},21,0,0,0,dh`;
+const NAVER_MAP_SHARE_URL = `https://map.naver.com/p/search/${NAVER_MAP_QUERY}?c=${NAVER_MAP_COORDINATES.lng},${NAVER_MAP_COORDINATES.lat},21,0,0,0,dh`;
 function FrienderPage({ onBack = null }) {
   // 화면 크기 상태 관리
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1025);

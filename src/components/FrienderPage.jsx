@@ -1074,95 +1074,6 @@ function FrienderPage({ onBack = null }) {
     setIsPage4Area2ModalOpen(false);
   };
 
-  /**
-   * 파트별 모델 경로 반환 함수
-   */
-  const getModelPathByPart = (partNumber) => {
-    switch (partNumber) {
-      case 1:
-        return "/IsoverFile/3dmodel/1_System_Fiber_SET_test.glb"; // 파이버시멘트보드
-      case 2:
-        return "/IsoverFile/3dmodel/2_System_Alu-Complex_SET_test.glb"; // AL 복합판넬
-      case 3:
-        return "/IsoverFile/3dmodel/3_System_Alu-Sheet_SET_test.glb"; // AL 시트판넬
-      case 4:
-        return "/IsoverFile/3dmodel/4_System_Three_SET_test.glb"; // 벽돌판넬
-      default:
-        return "/IsoverFile/3dmodel/system_with_panel_test.glb";
-    }
-  };
-
-  /**
-   * 파트별 이름 반환 함수
-   */
-  const getPartName = (partNumber) => {
-    switch (partNumber) {
-      case 1:
-        return "파이버시멘트보드";
-      case 2:
-        return "AL 복합판넬";
-      case 3:
-        return "AL 시트판넬";
-      case 4:
-        return "벽돌판넬";
-      default:
-        return "전체 시스템";
-    }
-  };
-
-  /**
-   * 파트별 모델 스케일 반환 함수
-   */
-  const getModelScaleByPart = (partNumber) => {
-    switch (partNumber) {
-      case 1:
-        return 0.5; // 1_System_Fiber_SET
-      case 2:
-        return 0.5; // 2_System_Alu-Complex_SET
-      case 3:
-        return 0.5; // 3_System_Alu-Sheet_SET
-      case 4:
-        return 0.5; // 4_System_Three_SET
-      default:
-        return 0.3; // 기본 모델
-    }
-  };
-
-  /**
-   * 외장재 타입별 이름 반환 함수
-   */
-  const getExteriorTypeName = (typeNumber) => {
-    switch (typeNumber) {
-      case 3:
-        return "파이버시멘트보드";
-      case 4:
-        return "AL 복합판넬";
-      case 5:
-        return "AL 시트판넬";
-      case 6:
-        return "벽돌판넬";
-      default:
-        return "외장재";
-    }
-  };
-
-  /**
-   * 외장재 타입별 모델 경로 반환 함수
-   */
-  const getExteriorModelPath = (typeNumber) => {
-    switch (typeNumber) {
-      case 3:
-        return "/IsoverFile/3dmodel/1_System_Fiber_SET_test.glb"; // 파이버시멘트보드
-      case 4:
-        return "/IsoverFile/3dmodel/2_System_Alu-Complex_SET_test.glb"; // AL 복합판넬
-      case 5:
-        return "/IsoverFile/3dmodel/3_System_Alu-Sheet_SET_test.glb"; // AL 시트판넬
-      case 6:
-        return "/IsoverFile/3dmodel/4_System_Three_SET_test.glb"; // 조적판넬
-      default:
-        return "/IsoverFile/3dmodel/system_with_panel_test.glb";
-    }
-  };
 
   /**
    * 5페이지 영역 클릭 핸들러
@@ -1227,10 +1138,6 @@ function FrienderPage({ onBack = null }) {
     console.log(`Part ${partNumber} clicked`);
     setSelectedPart(partNumber);
     setIsPage53DModelLoading(true); // 파트 변경 시 로딩 상태 시작
-    
-    // 파트별 모델 경로 설정
-    const partModelPath = getModelPathByPart(partNumber);
-    setCurrentPartModel(partModelPath);
     
     // 모달 새로고침을 위한 키 증가
     setModalKey(prev => prev + 1);
@@ -1672,7 +1579,7 @@ function FrienderPage({ onBack = null }) {
                disabled={isFirstPage}
              >
                <img
-                 src="/IsoverFile/Interacive/arrow_left.svg"
+                 src="/FrienderFile/Interactive/arrow_left.svg"
                  alt="이전 페이지"
                  style={{ width: '32px', height: '32px' }}
                />
@@ -1686,7 +1593,7 @@ function FrienderPage({ onBack = null }) {
                disabled={isFirstPage}
              >
                <img
-                 src="/IsoverFile/Interacive/arrow_first.svg"
+                 src="/FrienderFile/Interactive/arrow_first.svg"
                  alt="첫 페이지"
                  style={{ width: '32px', height: '32px' }}
                />
@@ -2346,14 +2253,6 @@ function FrienderPage({ onBack = null }) {
                   onMouseLeave={() => setHoveredArea6(null)}
                   title="6-1 팝업"
                 >
-                  {/* GIF 관련 코드 주석 처리 */}
-                  {/* {hoveredArea6 === 1 && (
-                    <img
-                      src="/IsoverFile/Interacive/gif-file/L-Bracket-고정-1114.gif"
-                      alt="L-Bracket 고정"
-                      className="absolute inset-0 w-full h-full object-cover rounded-lg"
-                    />
-                  )} */}
                 </div>
                 
                 <div 
@@ -2371,14 +2270,6 @@ function FrienderPage({ onBack = null }) {
                   onMouseLeave={() => setHoveredArea6(null)}
                   title="6-2 팝업"
                 >
-                  {/* GIF 관련 코드 주석 처리 */}
-                  {/* {hoveredArea6 === 2 && (
-                    <img
-                      src="/IsoverFile/Interacive/gif-file/단열재-끼우기_1114.gif"
-                      alt="단열재 끼우기"
-                      className="absolute inset-0 w-full h-full object-cover rounded-lg"
-                    />
-                  )} */}
                 </div>
                 
                 <div 
@@ -2396,14 +2287,6 @@ function FrienderPage({ onBack = null }) {
                   onMouseLeave={() => setHoveredArea6(null)}
                   title="6-3 팝업"
                 >
-                  {/* GIF 관련 코드 주석 처리 */}
-                  {/* {hoveredArea6 === 3 && (
-                    <img
-                      src="/IsoverFile/Interacive/gif-file/화스너-고정-Trim_1114.gif"
-                      alt="화스너 고정"
-                      className="absolute inset-0 w-full h-full object-cover rounded-lg"
-                    />
-                  )} */}
                 </div>
                 
                 <div 
@@ -2421,14 +2304,6 @@ function FrienderPage({ onBack = null }) {
                   onMouseLeave={() => setHoveredArea6(null)}
                   title="6-4 팝업"
                 >
-                  {/* GIF 관련 코드 주석 처리 */}
-                  {/* {hoveredArea6 === 4 && (
-                    <img
-                      src="/IsoverFile/Interacive/gif-file/수직-L-Bar-고정_1114.gif"
-                      alt="수직 L-Bar 고정"
-                      className="absolute inset-0 w-full h-full object-cover rounded-lg"
-                    />
-                  )} */}
                 </div>
                 
                 <div 
@@ -2446,14 +2321,6 @@ function FrienderPage({ onBack = null }) {
                   onMouseLeave={() => setHoveredArea6(null)}
                   title="6-1-img 팝업"
                 >
-                  {/* GIF 관련 코드 주석 처리 */}
-                  {/* {hoveredArea6 === 5 && (
-                    <img
-                      src="/IsoverFile/Interacive/gif-file/수평-Bar-고정-Trim_1114.gif"
-                      alt="수평 Bar 고정"
-                      className="absolute inset-0 w-full h-full object-cover rounded-lg"
-                    />
-                  )} */}
                 </div>
                 
                 <div 
@@ -2471,14 +2338,6 @@ function FrienderPage({ onBack = null }) {
                   onMouseLeave={() => setHoveredArea6(null)}
                   title="6-2-img 팝업"
                 >
-                  {/* GIF 관련 코드 주석 처리 */}
-                  {/* {hoveredArea6 === 6 && (
-                    <img
-                      src="/IsoverFile/Interacive/gif-file/마감재-부착-Trim_1114.gif"
-                      alt="마감재 부착"
-                      className="absolute inset-0 w-full h-full object-cover rounded-lg"
-                    />
-                  )} */}
                 </div>
                 
                 <div 
@@ -2545,29 +2404,6 @@ function FrienderPage({ onBack = null }) {
                   onMouseLeave={() => setHoveredArea7(null)}
                   title="7-1 팝업"
                 >
-                  {/* 영상 관련 코드 주석 처리 */}
-                  {/* {!showVideo && (
-                    <div className="absolute inset-0 rounded-lg">
-                      <img
-                        src="/IsoverFile/Interacive/video/액션캡 영상 이미지.png"
-                        alt="액션캠 영상 이미지"
-                        className="w-full h-full object-cover rounded-lg"
-                      />
-                    </div>
-                  )}
-                  {showVideo && (
-                    <div className="absolute inset-0 rounded-lg">
-                      <video
-                        className="w-full h-full object-cover rounded-lg"
-                        controls
-                        autoPlay
-                        onEnded={closeVideo}
-                      >
-                        <source src="/IsoverFile/Interacive/video/Isover_목업시공 액션캠.mp4" type="video/mp4" />
-                        영상을 재생할 수 없습니다.
-                      </video>
-                    </div>
-                  )} */}
                 </div>
                 
                 <div 
@@ -3069,7 +2905,7 @@ function FrienderPage({ onBack = null }) {
                disabled={isLastPage}
              >
                <img
-                 src="/IsoverFile/Interacive/arrow_right.svg"
+                 src="/FrienderFile/Interactive/arrow_right.svg"
                  alt="다음 페이지"
                  style={{ width: '32px', height: '32px' }}
                />
@@ -3084,7 +2920,7 @@ function FrienderPage({ onBack = null }) {
                disabled={isLastPage}
              >
                <img
-                 src="/IsoverFile/Interacive/arrow_last.svg"
+                 src="/FrienderFile/Interactive/arrow_last.svg"
                  alt="마지막 페이지"
                  style={{ width: '32px', height: '32px' }}
                />
@@ -3342,21 +3178,6 @@ function FrienderPage({ onBack = null }) {
 
             {/* 이미지 표시 */}
             <div className="flex items-center justify-center relative">
-              <img
-                src={`/IsoverFile/Popup/${selectedArea}.png`}
-                alt={`영역 ${selectedArea}`}
-                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                onError={(e) => {
-                  // PNG가 없으면 JPG 시도
-                  if (e.target.src.includes('.png')) {
-                    e.target.src = `/IsoverFile/Popup/${selectedArea}.jpg`;
-                  } else {
-                    // 이미지 로드 실패 시 메시지 표시
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
-                  }
-                }}
-              />
               
               {/* 4번째 영역에 추가 영역 배치 */}
               {selectedArea === 4 && (
@@ -3408,32 +3229,11 @@ function FrienderPage({ onBack = null }) {
                         height: '16%'
                       }}
                     >
-                      <Frender3DModel 
-                        isVisible={true} 
-                        opacity={1}
-                        scale={1}
-                        position={{ x: 0, y: 0 }}
-                        animationDelay={500}
-                        modelPath="/IsoverFile/3dmodel/BlackFacing_test.glb"
-                        isModal={true}
-                        cameraPosition={[4, 4, 8]}
-                        cameraFov={5}
-                        customScale={0.7}
-                        rotateSpeed={1.0}
-                        showWireframe={false}
-                      />
                     </div>
                   </div>
                 </div>
               )}
               
-              <div
-                className="hidden text-gray-500 text-center"
-                style={{ display: 'none' }}
-              >
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: /IsoverFile/Popup/{selectedArea}.jpg 또는 .png</p>
-              </div>
             </div>
           </div>
         </div>
@@ -3537,16 +3337,6 @@ function FrienderPage({ onBack = null }) {
 
             {/* 이미지와 3D 모델 표시 */}
             <div className="relative flex items-center justify-center">
-              <img
-                src={`/IsoverFile/Popup/pae_3-${selectedAdditionalArea - 6}.png`}
-                alt={`영역 ${selectedAdditionalArea}`}
-                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 메시지 표시
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
-              />
               
               {/* 3D 모델 영역 - 각 영역마다 다른 모델 */}
               <div className="absolute inset-0 flex items-center justify-center">
@@ -3554,19 +3344,6 @@ function FrienderPage({ onBack = null }) {
                   {selectedAdditionalArea === 7 && (
                     <>
                       <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]">
-                        <Frender3DModel 
-                          isVisible={true} 
-                          opacity={1}
-                          scale={1}
-                          position={{ x: 0, y: 0 }}
-                          animationDelay={500}
-                          modelPath="/IsoverFile/3dmodel/L-Bar.glb"
-                          // modelPath="/IsoverFile/3dmodel/face-rig-anims-opt.glb"
-                          isModal={true}
-                          cameraPosition={[8, 14, 14]}
-                          cameraFov={20}
-                          customScale={1}
-                        />
                       </div>
                       {/* 오른쪽 추가 영역 */}
                       <div 
@@ -3590,18 +3367,6 @@ function FrienderPage({ onBack = null }) {
                   {selectedAdditionalArea === 8 && (
                     <>
                       <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]">
-                        <Frender3DModel 
-                          isVisible={true} 
-                          opacity={1}
-                          scale={0.7}
-                          position={{ x: 0, y: 0 }}
-                          animationDelay={500}
-                          modelPath="/IsoverFile/3dmodel/L-AnkerBracket.glb"
-                          isModal={true}
-                          cameraPosition={[4, 4, 8]}
-                          cameraFov={30}
-                          customScale={0.3}
-                        />
                       </div>
                       {/* 오른쪽 추가 영역 */}
                       <div 
@@ -3625,18 +3390,6 @@ function FrienderPage({ onBack = null }) {
                   {selectedAdditionalArea === 9 && (
                     <>
                       <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]">
-                        <Frender3DModel 
-                          isVisible={true} 
-                          opacity={1}
-                          scale={0.7}
-                          position={{ x: 0, y: 0 }}
-                          animationDelay={500}
-                          modelPath="/IsoverFile/3dmodel/L-HBar.glb"
-                          isModal={true}
-                          cameraPosition={[-10, 10, 20]}
-                          cameraFov={40}
-                          customScale={0.3}
-                        />
                       </div>
                       {/* 오른쪽 추가 영역 */}
                       <div 
@@ -3660,18 +3413,6 @@ function FrienderPage({ onBack = null }) {
                   {selectedAdditionalArea === 10 && (
                     <>
                       <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]">
-                        <Frender3DModel 
-                          isVisible={true} 
-                          opacity={1}
-                          scale={1}
-                          position={{ x: 0, y: 0 }}
-                          animationDelay={500}
-                          modelPath="/IsoverFile/3dmodel/L-Holder.glb"
-                          isModal={true}
-                          cameraPosition={[1, 2, 2]}
-                          cameraFov={30}
-                          customScale={0.3}
-                        />
                       </div>
                       {/* 오른쪽 추가 영역 */}
                       <div 
@@ -3692,29 +3433,9 @@ function FrienderPage({ onBack = null }) {
                     </>
                   )}
                   
-                  {/* {selectedAdditionalArea === 11 && (
-                    <div className="absolute top-[20%] left-[5%] w-[58%] h-[21%]">
-                    <Frender3DModel 
-                      isVisible={true} 
-                      opacity={0.9}
-                      scale={0.8}
-                      position={{ x: 0, y: 0 }}
-                      animationDelay={500}
-                      modelPath="/IsoverFile/3dmodel/Untitled.glb"
-                      isModal={true}
-                    />
-                  </div>
-                  )} */}
                 </div>
               </div>
               
-              <div
-                className="hidden text-gray-500 text-center"
-                style={{ display: 'none' }}
-              >
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: /IsoverFile/Popup/pae_3-{selectedAdditionalArea - 6}.png</p>
-              </div>
             </div>
           </div>
         </div>
@@ -3917,25 +3638,6 @@ function FrienderPage({ onBack = null }) {
 
             {/* 이미지와 3D 모델 표시 */}
             <div className="relative flex items-center justify-center">
-              <img
-                src="/IsoverFile/Popup/4-2.png"
-                alt="영역 2 (테스트용)"
-                className="max-w-full  min-h-[40vh] max-h-[75vh] object-contain rounded-lg shadow-lg"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 메시지 표시
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
-              />
-              
-              
-              <div
-                className="hidden text-gray-500 text-center"
-                style={{ display: 'none' }}
-              >
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: /IsoverFile/Popup/4-2.png</p>
-              </div>
             </div>
           </div>
         </div>
@@ -5159,6 +4861,7 @@ function FrienderPage({ onBack = null }) {
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                     allowFullScreen
+                    allow="accelerometer; gyroscope; magnetometer"
                   />
                   <div className="pointer-events-none absolute bottom-3 right-3 bg-white/90 text-xs text-gray-700 px-3 py-1 rounded-full shadow">
                     네이버 지도
@@ -5224,20 +4927,6 @@ function FrienderPage({ onBack = null }) {
             {/* 3D 모델 컨테이너 - 제목과 하단 컨트롤 영역 제외 */}
             <div className={`w-full relative ${!currentPartModel ? 'h-full pt-16 pb-20' : 'h-full pb-16'}`}>
               
-              {/* 배경 이미지 - 파트 선택 시에만 표시 */}
-              {currentPartModel && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <img
-                    src={`/IsoverFile/Popup/pae_5-${selectedPart}.png`}
-                    alt={`5페이지 배경 이미지 ${selectedPart}`}
-                    className="max-w-full max-h-full object-contain"
-                    onError={(e) => {
-                      // PNG가 없으면 기본 이미지 사용
-                      e.target.src = "/IsoverFile/Popup/5-2.png";
-                    }}
-                  />
-                </div>
-              )}
               
               {/* 파트 선택 안내 텍스트 */}
               {!currentPartModel && (
@@ -5257,11 +4946,11 @@ function FrienderPage({ onBack = null }) {
                   scale={0.7}
                   position={{ x: 0, y: 0 }}
                   animationDelay={0}
-                  modelPath={currentPartModel || "/IsoverFile/3dmodel/system_with_panel_test.glb"}
+                  modelPath={currentPartModel || ""}
                   isModal={true}
                   cameraPosition={[3, -2, 8]} // 파트 모델링과 system_with_panel 분리
                   cameraFov={30}
-                  customScale={currentPartModel ? getModelScaleByPart(selectedPart) : 0.3}
+                  customScale={0.3}
                   rotateSpeed={1.0}
                   showWireframe={!currentPartModel} // 파트 모델이 선택되면 박스 숨김
                   onPartClick={handlePage5PartClick}
@@ -5274,9 +4963,6 @@ function FrienderPage({ onBack = null }) {
             <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
               <div className="text-center">
                 <p className="text-sm text-gray-600 mb-2">마우스로 회전, 휠로 확대/축소 가능</p>
-                {currentPartModel && (
-                  <p className="text-sm text-blue-600 mb-2">선택된 파트: {getPartName(selectedPart)}</p>
-                )}
                 <div className="flex justify-center space-x-4">
                   {currentPartModel && (
                     <button
@@ -5321,20 +5007,7 @@ function FrienderPage({ onBack = null }) {
             {/* 3D 모델 컨테이너 - 제목과 하단 컨트롤 영역 제외 */}
             <div className="w-full h-full pb-16 relative">
               
-              {/* 배경 이미지 - 외장재 타입에 따라 표시 */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <img
-                  src={`/IsoverFile/Popup/pae_5-${selectedExteriorType - 2}.png`}
-                  alt={`외장재 타입 ${selectedExteriorType} 배경 이미지`}
-                  className="max-w-full max-h-full object-contain"
-                  onError={(e) => {
-                    // PNG가 없으면 기본 이미지 사용
-                    e.target.src = "/IsoverFile/Popup/5-2.png";
-                  }}
-                />
-              </div>
-              
-              {/* 3D 모델 - 배경 이미지 위에 표시 */}
+              {/* 3D 모델 */}
               <div className="absolute inset-0 z-10 w-full h-full">
                 <Frender3DModel 
                   isVisible={true} 
@@ -5342,7 +5015,7 @@ function FrienderPage({ onBack = null }) {
                   scale={0.7}
                   position={{ x: 0, y: 0 }}
                   animationDelay={0}
-                  modelPath={getExteriorModelPath(selectedExteriorType)}
+                  modelPath=""
                   isModal={true}
                   cameraPosition={[3, -2, 8]}
                   cameraFov={20}
@@ -5357,7 +5030,6 @@ function FrienderPage({ onBack = null }) {
             <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
               <div className="text-center">
                 <p className="text-sm text-gray-600 mb-2">마우스로 회전, 휠로 확대/축소 가능</p>
-                <p className="text-sm text-blue-600 mb-2">외장재 타입: {getExteriorTypeName(selectedExteriorType)}</p>
                 <div className="flex justify-center space-x-4">
                   <button
                     onClick={closePage5ExteriorModal}
@@ -5473,46 +5145,6 @@ function FrienderPage({ onBack = null }) {
 
             {/* 이미지 표시 */}
             <div className="flex items-center justify-center">
-              {selectedImageType === '3-4-1' ? (
-                // 3-4-1 타입일 때 두 이미지를 나란히 표시
-                <div className="flex max-w-full max-h-[85vh]">
-                  <img
-                    src="/IsoverFile/Popup/3-4-2-Korean.jpg"
-                    alt="3-4-2 Korean 이미지"
-                    className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
-                    onError={(e) => {
-
-                        // 이미지 로드 실패 시 메시지 표시
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'block';
-                    }}
-                  />
-                </div>
-              ) : (
-                // 다른 타입일 때는 단일 이미지 표시
-                <img
-                  src={`/IsoverFile/Popup/${selectedImageType}.jpg`}
-                  alt={`${selectedImageType} 이미지`}
-                  className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
-                  onError={(e) => {
-                    // JPG가 없으면 PNG 시도
-                    if (e.target.src.includes('.jpg')) {
-                      e.target.src = `/IsoverFile/Popup/${selectedImageType}.png`;
-                    } else {
-                      // 이미지 로드 실패 시 메시지 표시
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'block';
-                    }
-                  }}
-                />
-              )}
-              <div
-                className="hidden text-gray-500 text-center"
-                style={{ display: 'none' }}
-              >
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: /IsoverFile/Popup/{selectedImageType}.jpg 또는 .png</p>
-              </div>
             </div>
           </div>
         </div>
@@ -5615,23 +5247,6 @@ function FrienderPage({ onBack = null }) {
           >
             {/* 이미지 표시 */}
             <div className="flex items-center justify-center">
-              <img
-                src="/IsoverFile/Popup/top_3-1.png"
-                alt="무용접 파사드 시스템"
-                className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-lg"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 메시지 표시
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
-              />
-              <div
-                className="hidden text-gray-500 text-center"
-                style={{ display: 'none' }}
-              >
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: /IsoverFile/Popup/top_3-1.png</p>
-              </div>
             </div>
           </div>
         </div>
@@ -5736,58 +5351,6 @@ function FrienderPage({ onBack = null }) {
 
             {/* 이미지 표시 */}
             <div className="flex items-center justify-center">
-              {selectedAdditionalImageType === 'pae_3-1' && (
-                <img
-                  src="/IsoverFile/Popup/pae_3-1_img.png"
-                  alt="Additional Area 7 Image"
-                  className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
-                  }}
-                />
-              )}
-              {selectedAdditionalImageType === 'pae_3-2' && (
-                <img
-                  src="/IsoverFile/Popup/pae_3-2_img.png"
-                  alt="Additional Area 8 Image"
-                  className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
-                  }}
-                />
-              )}
-              {selectedAdditionalImageType === 'pae_3-3' && (
-                <img
-                  src="/IsoverFile/Popup/pae_3-3_img.png"
-                  alt="Additional Area 9 Image"
-                  className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
-                  }}
-                />
-              )}
-              {selectedAdditionalImageType === 'pae_3-4' && (
-                <img
-                  src="/IsoverFile/Popup/pae_3-4_img.png"
-                  alt="Additional Area 10 Image"
-                  className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
-                  }}
-                />
-              )}
-              
-              <div
-                className="hidden text-gray-500 text-center"
-                style={{ display: 'none' }}
-              >
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: /IsoverFile/Popup/{selectedAdditionalImageType}_img.png</p>
-              </div>
             </div>
           </div>
         </div>

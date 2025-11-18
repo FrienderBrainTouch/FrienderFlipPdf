@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="36px" viewBox="0 0 18 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.1 (72631) - https://sketchapp.com -->
+    <title>&gt;</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="0.0216 0.0766914894 17.88471 0.0766914894 17.88471 35.6174043 0.0216 35.6174043"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="3.-KNAUF-cata" transform="translate(-193.000000, -503.000000)">
+            <g id="Group" transform="translate(201.000000, 540.500000) scale(-1, 1) translate(-201.000000, -540.500000) translate(191.000000, 503.000000)">
+                <g id="&gt;">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="Clip-2"></g>
+                    <path d="M2.01672,35.2493617 C1.78596,35.4944681 1.4976,35.6174043 1.18116,35.6174043 C0.86328,35.6174043 0.57672,35.4944681 0.34596,35.2493617 C-0.1152,34.758766 -0.1152,33.9625532 0.34596,33.4719574 L15.03432,17.8460426 L0.34596,2.22204255 C-0.1152,1.73106383 -0.1152,0.933702128 0.34596,0.444638298 C0.80568,-0.0459574468 1.5552,-0.0459574468 2.01672,0.444638298 L17.53884,16.9575319 C18,17.4481277 18,18.2454894 17.53884,18.7349362 L2.01672,35.2493617 Z" id="Fill-1" stroke="#17222E" fill="#17222E" mask="url(#mask-2)"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

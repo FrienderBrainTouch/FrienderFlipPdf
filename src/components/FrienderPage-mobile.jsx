@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
+import { useNavigate, useLocation } from 'react-router-dom';
 import Frender3DModel from './Frender3DModel';
 import Chatbot from './Chatbot';
+import { getLanguageList, getLanguageFromPath, getLanguagePath, getPagePath, getPopupPath } from '../utils/language';
+import { getTranslation } from '../utils/translations';
 
 const DRONE_VIDEO_PLAYLIST = [
   {
@@ -108,7 +111,45 @@ const handleOpenNaverMap = () => {
  * - 스크롤 방식 페이지 네비게이션
  * - 네비게이션 및 툴바 기능
  */
-function FrienderPageMobile({ onBack = null }) {
+function FrienderPageMobile({ onBack = null, language: propLanguage }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // 현재 언어 감지
+  const currentLanguage = propLanguage || getLanguageFromPath(location.pathname);
+  const languageList = getLanguageList();
+  
+  // 번역 함수
+  const t = (key) => getTranslation(currentLanguage, key);
+  
+  // 언어 선택 드롭다운 상태
+  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
+  const languageDropdownRef = useRef(null);
+  
+  // 언어 변경 핸들러
+  const handleLanguageChange = (langCode) => {
+    const targetPath = getLanguagePath(langCode);
+    navigate(targetPath);
+    setIsLanguageDropdownOpen(false);
+  };
+  
+  // 외부 클릭 시 드롭다운 닫기
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (languageDropdownRef.current && !languageDropdownRef.current.contains(event.target)) {
+        setIsLanguageDropdownOpen(false);
+      }
+    };
+    
+    if (isLanguageDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isLanguageDropdownOpen]);
+  
   // 상태 관리 변수들
   const [showIntro, setShowIntro] = useState(true); // 인트로 화면 표시 여부
   const [logoOpacity, setLogoOpacity] = useState(0); // 로고 투명도
@@ -443,75 +484,75 @@ function FrienderPageMobile({ onBack = null }) {
 
 
 
-  // Friender 페이지별 이미지 데이터 (11페이지)
-  const pageImages = [
+  // Friender 페이지별 이미지 데이터 (11페이지) - 언어별 경로 적용
+  const pageImages = useMemo(() => [
     {
       id: 0,
       name: "표지",
-      backgroundImage: "/FrienderFile/Page/1.svg",
+      backgroundImage: getPagePath(currentLanguage, 1),
       overlays: []
     },
     {
       id: 1,
       name: "페이지 1",
-      backgroundImage: "/FrienderFile/Page/2.svg",
+      backgroundImage: getPagePath(currentLanguage, 2),
       overlays: []
     },
     {
       id: 2,
       name: "페이지 2", 
-      backgroundImage: "/FrienderFile/Page/3.svg",
+      backgroundImage: getPagePath(currentLanguage, 3),
       overlays: []
     },
     {
       id: 3,
       name: "페이지 3",
-      backgroundImage: "/FrienderFile/Page/4.svg",
+      backgroundImage: getPagePath(currentLanguage, 4),
       overlays: []
     },
     {
       id: 4,
       name: "페이지 4",
-      backgroundImage: "/FrienderFile/Page/5.svg",
+      backgroundImage: getPagePath(currentLanguage, 5),
       overlays: []
     },
     {
       id: 5,
       name: "페이지 5",
-      backgroundImage: "/FrienderFile/Page/6.svg",
+      backgroundImage: getPagePath(currentLanguage, 6),
       overlays: []
     },
     {
       id: 6,
       name: "페이지 6",
-      backgroundImage: "/FrienderFile/Page/7.svg",
+      backgroundImage: getPagePath(currentLanguage, 7),
       overlays: []
     },
     {
       id: 7,
       name: "페이지 7",
-      backgroundImage: "/FrienderFile/Page/8.svg",
+      backgroundImage: getPagePath(currentLanguage, 8),
       overlays: []
     },
     {
       id: 8,
       name: "페이지 8",
-      backgroundImage: "/FrienderFile/Page/9.svg",
+      backgroundImage: getPagePath(currentLanguage, 9),
       overlays: []
     },
     {
       id: 9,
       name: "페이지 9",
-      backgroundImage: "/FrienderFile/Page/10.svg",
+      backgroundImage: getPagePath(currentLanguage, 10),
       overlays: []
     },
     {
       id: 10,
       name: "페이지 10",
-      backgroundImage: "/FrienderFile/Page/11.svg",
+      backgroundImage: getPagePath(currentLanguage, 11),
       overlays: []
     }
-  ];
+  ], [currentLanguage]);
 
 
   // front.gif 3.2초 후 자동 비활성화, 3초에 SVG 배경 활성화
@@ -3043,7 +3084,7 @@ function FrienderPageMobile({ onBack = null }) {
               <button
                 onClick={handleHomeClick}
                 className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
-                title="홈"
+                title={t('home')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -3054,7 +3095,7 @@ function FrienderPageMobile({ onBack = null }) {
               <button
                 onClick={handlePrintClick}
                 className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
-                title="프린트"
+                title={t('print')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -3076,7 +3117,7 @@ function FrienderPageMobile({ onBack = null }) {
               <button
                 onClick={handleTocClick}
                 className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
-                title="목차"
+                title={t('toc')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
@@ -3087,12 +3128,45 @@ function FrienderPageMobile({ onBack = null }) {
               <button
                 onClick={handleShareClick}
                 className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
-                title="공유"
+                title={t('share')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
                 </svg>
               </button>
+
+              {/* 언어 선택 버튼 */}
+              <div className="relative" ref={languageDropdownRef}>
+                <button
+                  onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
+                  className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
+                  title={t('language')}
+                >
+                  <img 
+                    src="/FrienderFile/Interactive/Language.png" 
+                    alt={t('language')} 
+                    className="w-6 h-6 object-contain"
+                    style={{ filter: 'brightness(0) invert(1)' }}
+                  />
+                </button>
+                
+                {/* 언어 선택 드롭다운 (위로 열림) */}
+                {isLanguageDropdownOpen && (
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white rounded-lg shadow-lg border border-gray-200 min-w-[150px] z-50">
+                    {languageList.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => handleLanguageChange(lang.code)}
+                        className={`w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors duration-200 first:rounded-t-lg last:rounded-b-lg ${
+                          currentLanguage === lang.code ? 'bg-gray-100 font-semibold' : ''
+                        }`}
+                      >
+                        <span className="text-gray-800">{lang.nativeName}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -3132,13 +3206,13 @@ function FrienderPageMobile({ onBack = null }) {
             {/* 이미지 표시 */}
             <div className="flex items-center justify-center relative">
               <img
-                src={`/FrienderFile/Popup/3-${selectedArea}.jpg`}
+                src={getPopupPath(currentLanguage, `3-${selectedArea}.jpg`)}
                 alt={`영역 ${selectedArea}`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
                   // PNG가 없으면 JPG 시도
                   if (e.target.src.includes('.png')) {
-                    e.target.src = `/FrienderFile/Popup/3-${selectedArea}.png`;
+                    e.target.src = getPopupPath(currentLanguage, `3-${selectedArea}.png`);
                   } else {
                     // 이미지 로드 실패 시 메시지 표시
                     e.target.style.display = 'none';
@@ -3284,7 +3358,7 @@ function FrienderPageMobile({ onBack = null }) {
             {/* 이미지와 3D 모델 표시 */}
             <div className="relative flex items-center justify-center">
               <img
-                src={`/FrienderFile/Popup/3-${selectedAdditionalArea}.jpg`}
+                src={getPopupPath(currentLanguage, `3-${selectedAdditionalArea}.jpg`)}
                 alt={`영역 ${selectedAdditionalArea}`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -3415,7 +3489,7 @@ function FrienderPageMobile({ onBack = null }) {
             {/* 이미지와 3D 모델 표시 */}
             <div className="relative flex items-center justify-center">
               <img
-                src={`/FrienderFile/Popup/4-${selectedPage4Area}.jpg`}
+                src={getPopupPath(currentLanguage, `4-${selectedPage4Area}.png`)}
                 alt={`영역 ${selectedPage4Area}`}
                 className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -3464,7 +3538,7 @@ function FrienderPageMobile({ onBack = null }) {
             {/* 이미지와 3D 모델 표시 */}
             <div className="relative flex items-center justify-center">
               <img
-                src="/FrienderFile/Popup/4-2.jpg"
+                src={getPopupPath(currentLanguage, '4-2.png')}
                 alt="영역 2 (테스트용)"
                 className="max-w-full min-h-[40vh] max-h-[75vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -3513,7 +3587,7 @@ function FrienderPageMobile({ onBack = null }) {
             {/* 이미지 표시 */}
             <div className="flex items-center justify-center">
               <img
-                src="/FrienderFile/Popup/5-2.jpg"
+                src={getPopupPath(currentLanguage, '5-2.png')}
                 alt="5페이지 2번째 영역"
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -3571,12 +3645,12 @@ function FrienderPageMobile({ onBack = null }) {
               {currentPartModel && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <img
-                    src={`/FrienderFile/Popup/5-${selectedPage5Area}.jpg`}
+                    src={getPopupPath(currentLanguage, `5-${selectedPage5Area}.png`)}
                     alt={`5페이지 배경 이미지 ${selectedPart}`}
                     className="max-w-full max-h-full object-contain"
                     onError={(e) => {
                       // PNG가 없으면 기본 이미지 사용
-                      e.target.src = "/FrienderFile/Popup/5-2.jpg";
+                      e.target.src = getPopupPath(currentLanguage, '5-2.png');
                     }}
                   />
                 </div>
@@ -3616,7 +3690,7 @@ function FrienderPageMobile({ onBack = null }) {
             {/* 모달 하단 컨트롤 */}
             <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
               <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">마우스로 회전, 휠로 확대/축소 가능</p>
+                <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
                 {currentPartModel && (
                   <p className="text-sm text-blue-600 mb-2">선택된 파트: {selectedPart}</p>
                 )}
@@ -3678,7 +3752,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomIn();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="확대"
+              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -3690,7 +3764,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="축소"
+              title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
@@ -3703,7 +3777,7 @@ function FrienderPageMobile({ onBack = null }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title="원본 크기로 복원"
+                title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -3767,13 +3841,13 @@ function FrienderPageMobile({ onBack = null }) {
                 />
               ) : selectedPage6Area && selectedPage6Area >= 1 && selectedPage6Area <= 4 ? (
                 <img
-                  src={`/FrienderFile/Popup/${
-                    selectedPage6Area === 1 ? '6-1.jpg' :
-                    selectedPage6Area === 2 ? '6-2.jpg' :
-                    selectedPage6Area === 3 ? '6-3.jpg' :
-                    selectedPage6Area === 4 ? '6-4.jpg' :
-                    '6-1.jpg'
-                  }`}
+                  src={getPopupPath(currentLanguage,
+                    selectedPage6Area === 1 ? '6-1.png' :
+                    selectedPage6Area === 2 ? '6-2.png' :
+                    selectedPage6Area === 3 ? '6-3.png' :
+                    selectedPage6Area === 4 ? '6-4.png' :
+                    '6-1.png'
+                  )}
                   alt={`영역 ${selectedPage6Area} 팝업`}
                   className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                   onError={(e) => {
@@ -3838,7 +3912,7 @@ function FrienderPageMobile({ onBack = null }) {
             {/* 모달 하단 컨트롤 */}
             <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
               <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">마우스로 회전, 휠로 확대/축소 가능</p>
+                <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
                 <div className="flex justify-center">
                   <button
                     onClick={closePage63DModal}
@@ -3921,7 +3995,7 @@ function FrienderPageMobile({ onBack = null }) {
                 // 3-4-1 타입일 때 두 이미지를 나란히 표시
                 <div className="flex max-w-full max-h-[85vh]">
                   <img
-                    src="/FrienderFile/Popup/3-4-2.jpg"
+                    src={getPopupPath(currentLanguage, '3-4.jpg')}
                     alt="3-4-2 Korean 이미지"
                     className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
                     onError={(e) => {
@@ -3934,13 +4008,13 @@ function FrienderPageMobile({ onBack = null }) {
               ) : (
                 // 다른 타입일 때는 단일 이미지 표시
                 <img
-                  src={`/FrienderFile/Popup/${selectedImageType}.jpg`}
+                  src={getPopupPath(currentLanguage, `${selectedImageType}.jpg`)}
                   alt={`${selectedImageType} 이미지`}
                   className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
                   onError={(e) => {
                     // JPG가 없으면 PNG 시도
                     if (e.target.src.includes('.jpg')) {
-                      e.target.src = `/FrienderFile/Popup/${selectedImageType}.png`;
+                      e.target.src = getPopupPath(currentLanguage, `${selectedImageType}.png`);
                     } else {
                       // 이미지 로드 실패 시 메시지 표시
                       e.target.style.display = 'none';
@@ -3984,7 +4058,7 @@ function FrienderPageMobile({ onBack = null }) {
             {/* 이미지 표시 */}
             <div className="flex items-center justify-center">
               <img
-                src={`/FrienderFile/Popup/${selectedAdditionalImageType}.png`}
+                src={getPopupPath(currentLanguage, `${selectedAdditionalImageType}.png`)}
                 alt={`${selectedAdditionalImageType} 이미지`}
                 className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -4030,12 +4104,12 @@ function FrienderPageMobile({ onBack = null }) {
               {/* 배경 이미지 - 외장재 타입에 따라 표시 */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <img
-                  src={`/FrienderFile/Popup/5-${selectedExteriorType}.jpg`}
+                  src={getPopupPath(currentLanguage, `5-${selectedExteriorType}.png`)}
                   alt={`외장재 타입 ${selectedExteriorType} 배경 이미지`}
                   className="max-w-full max-h-full object-contain"
                   onError={(e) => {
                     // PNG가 없으면 기본 이미지 사용
-                    e.target.src = "/FrienderFile/Popup/5-2.jpg";
+                    e.target.src = getPopupPath(currentLanguage, '5-2.png');
                   }}
                 />
               </div>
@@ -4062,7 +4136,7 @@ function FrienderPageMobile({ onBack = null }) {
             {/* 모달 하단 컨트롤 */}
             <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
               <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">마우스로 회전, 휠로 확대/축소 가능</p>
+                <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
                 <p className="text-sm text-blue-600 mb-2">외장재 타입: {selectedExteriorType}</p>
                 <div className="flex justify-center space-x-4">
                   <button
@@ -4117,7 +4191,7 @@ function FrienderPageMobile({ onBack = null }) {
             {/* 모달 하단 컨트롤 */}
             <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
               <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">마우스로 회전, 휠로 확대/축소 가능</p>
+                <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
                 <div className="flex justify-center space-x-4">
                   <button
                     onClick={() => setIs3DModalOpen(false)}
@@ -4188,7 +4262,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomIn();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="확대"
+              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -4200,7 +4274,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="축소"
+              title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
@@ -4213,7 +4287,7 @@ function FrienderPageMobile({ onBack = null }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title="원본 크기로 복원"
+                title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -4265,7 +4339,7 @@ function FrienderPageMobile({ onBack = null }) {
           >
             <div className="flex items-center justify-center">
               <img
-                src={`/FrienderFile/Popup/2-${selectedPage2Area}.jpg`}
+                src={getPopupPath(currentLanguage, `2-${selectedPage2Area}.png`)}
                 alt={`2-${selectedPage2Area} 팝업`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -4314,7 +4388,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomIn();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="확대"
+              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -4326,7 +4400,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="축소"
+              title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
@@ -4339,7 +4413,7 @@ function FrienderPageMobile({ onBack = null }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title="원본 크기로 복원"
+                title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -4391,14 +4465,14 @@ function FrienderPageMobile({ onBack = null }) {
           >
             <div className="flex items-center justify-center">
               <img
-                src={`/FrienderFile/Popup/${
+                src={getPopupPath(currentLanguage,
                   selectedPage3Area === 1 ? '3-1.jpg' :
                   selectedPage3Area === 2 ? '3-2.jpg' :
                   selectedPage3Area === 3 ? '3-3.png' :
                   selectedPage3Area === 4 ? '3-4.jpg' :
-                  selectedPage3Area === 5 ? '3-5.jpg' :
+                  selectedPage3Area === 5 ? '3-5.png' :
                   '3-1.jpg'
-                }`}
+                )}
                 alt={`3-${selectedPage3Area} 팝업`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -4447,7 +4521,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomIn();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="확대"
+              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -4459,7 +4533,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="축소"
+              title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
@@ -4472,7 +4546,7 @@ function FrienderPageMobile({ onBack = null }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title="원본 크기로 복원"
+                title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -4571,14 +4645,14 @@ function FrienderPageMobile({ onBack = null }) {
               ) : (
                 <>
                   <img
-                    src={`/FrienderFile/Popup/${
-                      selectedPage4Area === 1 ? '4-1.jpg' :
-                      selectedPage4Area === 2 ? '4-2.jpg' :
-                      selectedPage4Area === 4 ? '4-2-img.jpg' :
-                      selectedPage4Area === 5 ? '4-3-img.jpg' :
-                      selectedPage4Area === 6 ? '4-4-img.jpg' :
-                      '4-1.jpg'
-                    }`}
+                    src={getPopupPath(currentLanguage,
+                      selectedPage4Area === 1 ? '4-1.png' :
+                      selectedPage4Area === 2 ? '4-2.png' :
+                      selectedPage4Area === 4 ? '4-1-img.jpg' :
+                      selectedPage4Area === 5 ? '4-2-img.jpg' :
+                      selectedPage4Area === 6 ? '4-3-img.jpg' :
+                      '4-1.png'
+                    )}
                     alt={`4-${selectedPage4Area} 팝업`}
                     className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-lg"
                     onError={(e) => {
@@ -4629,7 +4703,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomIn();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="확대"
+              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -4641,7 +4715,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="축소"
+              title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
@@ -4654,7 +4728,7 @@ function FrienderPageMobile({ onBack = null }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title="원본 크기로 복원"
+                title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -4706,15 +4780,15 @@ function FrienderPageMobile({ onBack = null }) {
           >
             <div className="flex items-center justify-center">
               <img
-                src={`/FrienderFile/Popup/${
-                  selectedPage5Area === 1 ? '5-1.jpg' :
-                  selectedPage5Area === 2 ? '5-2.jpg' :
+                src={getPopupPath(currentLanguage,
+                  selectedPage5Area === 1 ? '5-1.png' :
+                  selectedPage5Area === 2 ? '5-2.png' :
                   selectedPage5Area === 3 ? '5-1-img.jpg' :
                   selectedPage5Area === 4 ? '5-2-img.jpg' :
                   selectedPage5Area === 5 ? '5-3-img.jpg' :
                   selectedPage5Area === 6 ? '5-4-img.jpg' :
-                  '5-1.jpg'
-                }`}
+                  '5-1.png'
+                )}
                 alt={`5-${selectedPage5Area} 팝업`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -4763,7 +4837,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomIn();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="확대"
+              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -4775,7 +4849,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="축소"
+              title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
@@ -4788,7 +4862,7 @@ function FrienderPageMobile({ onBack = null }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title="원본 크기로 복원"
+                title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -4852,16 +4926,16 @@ function FrienderPageMobile({ onBack = null }) {
                 />
               ) : (
                 <img
-                  src={`/FrienderFile/Popup/${
-                    selectedPage7Area === 1 ? '7-1.jpg' :
-                    selectedPage7Area === 2 ? '7-2.jpg' :
-                    selectedPage7Area === 3 ? '7-3.jpg' :
-                    selectedPage7Area === 4 ? '7-4.jpg' :
+                  src={getPopupPath(currentLanguage,
+                    selectedPage7Area === 1 ? '7-1.png' :
+                    selectedPage7Area === 2 ? '7-2.png' :
+                    selectedPage7Area === 3 ? '7-3.png' :
+                    selectedPage7Area === 4 ? '7-4.png' :
                     selectedPage7Area === 5 ? '7-1-img.jpg' :
                     selectedPage7Area === 6 ? '7-2-img.jpg' :
                     selectedPage7Area === 7 ? '7-3-img.jpg' :
-                    '7-1.jpg'
-                  }`}
+                    '7-1.png'
+                  )}
                   alt={`7-${selectedPage7Area} 팝업`}
                   className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                   onError={(e) => {
@@ -4914,7 +4988,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomIn();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="확대"
+              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -4926,7 +5000,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="축소"
+              title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
@@ -4939,7 +5013,7 @@ function FrienderPageMobile({ onBack = null }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title="원본 크기로 복원"
+                title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -4991,13 +5065,13 @@ function FrienderPageMobile({ onBack = null }) {
           >
             <div className="flex items-center justify-center">
               <img
-                src={`/FrienderFile/Popup/${
-                  selectedPage8Area === 1 ? '8-1.jpg' :
-                  selectedPage8Area === 2 ? '8-2.jpg' :
-                  selectedPage8Area === 3 ? '8-3.jpg' :
+                src={getPopupPath(currentLanguage,
+                  selectedPage8Area === 1 ? '8-1.png' :
+                  selectedPage8Area === 2 ? '8-2.png' :
+                  selectedPage8Area === 3 ? '8-3.png' :
                   selectedPage8Area === 4 ? '8-1-img.jpg' :
-                  '8-1.jpg'
-                }`}
+                  '8-1.png'
+                )}
                 alt={`8-${selectedPage8Area} 팝업`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -5046,7 +5120,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomIn();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="확대"
+              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -5058,7 +5132,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="축소"
+              title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
@@ -5071,7 +5145,7 @@ function FrienderPageMobile({ onBack = null }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title="원본 크기로 복원"
+                title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -5123,7 +5197,7 @@ function FrienderPageMobile({ onBack = null }) {
           >
             <div className="flex items-center justify-center">
               <img
-                src={`/FrienderFile/Popup/9-${selectedPage9Area}.jpg`}
+                src={getPopupPath(currentLanguage, `9-${selectedPage9Area}.png`)}
                 alt={`9-${selectedPage9Area} 팝업`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -5172,7 +5246,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomIn();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="확대"
+              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -5184,7 +5258,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="축소"
+              title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
@@ -5197,7 +5271,7 @@ function FrienderPageMobile({ onBack = null }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title="원본 크기로 복원"
+                title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -5249,15 +5323,15 @@ function FrienderPageMobile({ onBack = null }) {
           >
             <div className="flex items-center justify-center">
               <img
-                src={`/FrienderFile/Popup/${
-                  selectedPage10Area === 1 ? '10-1.jpg' :
-                  selectedPage10Area === 2 ? '10-2.jpg' :
+                src={getPopupPath(currentLanguage,
+                  selectedPage10Area === 1 ? '10-1.png' :
+                  selectedPage10Area === 2 ? '10-2.png' :
                   selectedPage10Area === 3 ? '10-1-img.jpg' :
                   selectedPage10Area === 4 ? '10-2-img.jpg' :
                   selectedPage10Area === 5 ? '10-3-img.jpg' :
                   selectedPage10Area === 6 ? '10-4-img.jpg' :
-                  '10-1.jpg'
-                }`}
+                  '10-1.png'
+                )}
                 alt={`10-${selectedPage10Area} 팝업`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -5306,7 +5380,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomIn();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="확대"
+              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -5318,7 +5392,7 @@ function FrienderPageMobile({ onBack = null }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title="축소"
+              title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
@@ -5331,7 +5405,7 @@ function FrienderPageMobile({ onBack = null }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title="원본 크기로 복원"
+                title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -5386,7 +5460,7 @@ function FrienderPageMobile({ onBack = null }) {
               <div className="flex-1 flex items-center justify-center">
                 <div className="flex flex-col items-center gap-3">
                   <img
-                    src="/FrienderFile/Popup/11-1.jpg"
+                    src={getPopupPath(currentLanguage, '11-1.png')}
                     alt="11-1 팝업"
                     className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                     onError={(e) => {

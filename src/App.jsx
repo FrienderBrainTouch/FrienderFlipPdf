@@ -1,8 +1,13 @@
-import { lazy, Suspense } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React, { lazy, Suspense, useEffect } from 'react';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { detectBrowserLanguage, getLanguagePath } from './utils/language';
 
 // Lazy loading - 각 페이지를 필요할 때만 불러옴
-const FrienderPage = lazy(() => import('./components/FrienderPage'));
+const FrienderPageKo = lazy(() => import('./components/FrienderPage-ko'));
+const FrienderPageEn = lazy(() => import('./components/FrienderPage-en'));
+const FrienderPageJa = lazy(() => import('./components/FrienderPage-ja'));
+const FrienderPageZh = lazy(() => import('./components/FrienderPage-zh'));
+const FrienderPageEs = lazy(() => import('./components/FrienderPage-es'));
 const DreamPathPage = lazy(() => import('./components/dreampath/DreamPathPage'));
 const StoryPage = lazy(() => import('./components/story/StoryPage'));
 const InnoWorksPage = lazy(() => import('./components/innoworks/InnoWorksPage'));
@@ -18,25 +23,51 @@ const LoadingSpinner = () => (
   </div>
 );
 
+// 브라우저 언어 감지 및 리다이렉트 컴포넌트
+function LanguageRedirect() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // 이미 언어 경로가 있으면 리다이렉트하지 않음
+    if (location.pathname !== '/') {
+      return;
+    }
+
+    // 브라우저 언어 감지
+    const browserLang = detectBrowserLanguage();
+    const targetPath = getLanguagePath(browserLang);
+
+    // 기본 언어(한국어)가 아니면 리다이렉트
+    if (browserLang !== 'ko') {
+      navigate(targetPath, { replace: true });
+    }
+  }, [navigate, location]);
+
+  return null;
+}
+
 function App() {
   return (
     <>
+      <LanguageRedirect />
       <Suspense fallback={<LoadingSpinner />}>
         <Routes>
-          {/* 기존 Friender 페이지 */}
-          <Route path="/" element={<FrienderPage />} />
-          
-          {/* DreamPath 페이지 - 언어별 라우트 */}
+          {/* 다국어 PC 페이지 */}
+          <Route path="/" element={<FrienderPageKo />} />
+          <Route path="/ko" element={<FrienderPageKo />} />
+          <Route path="/en" element={<FrienderPageEn />} />
+          <Route path="/ja" element={<FrienderPageJa />} />
+          <Route path="/zh" element={<FrienderPageZh />} />
+          <Route path="/es" element={<FrienderPageEs />} />
+
+          {/* DreamPath / Story / InnoWorks 언어별 라우트 유지 */}
           <Route path="/dreampath/:language" element={<DreamPathPage />} />
-
-          {/* Story 페이지 - 언어별 라우트 */}
           <Route path="/story/:language" element={<StoryPage />} />
-
-          {/* InnoWorks 페이지 - 언어별 라우트 */}
           <Route path="/innoworks/:language" element={<InnoWorksPage />} />
-          
-          {/* 기본 경로는 Friender로 리다이렉트 */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+
+          {/* 기본 경로는 한국어 페이지로 포워딩 */}
+          <Route path="*" element={<Navigate to="/ko" replace />} />
         </Routes>
         <Chatbot />
       </Suspense>

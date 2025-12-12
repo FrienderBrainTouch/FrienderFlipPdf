@@ -1,6 +1,6 @@
 import React, { useRef, useState, Suspense } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF, OrbitControls, Environment, useProgress } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import { useGLTF, OrbitControls, useProgress } from '@react-three/drei';
 import * as THREE from 'three';
 
 // Draco 압축 모델 지원: CDN에서 자동 로드
@@ -254,13 +254,6 @@ function FrenderModel({ modelPath, customScale = null, showWireframe = false, on
   const [isModelFullyLoaded, setIsModelFullyLoaded] = useState(false);
   const [actualModelLoaded, setActualModelLoaded] = useState(false);
 
-  // 자동 회전 애니메이션 비활성화
-  // useFrame((state, delta) => {
-  //   if (meshRef.current) {
-  //     meshRef.current.rotation.y += delta * 0.5;
-  //   }
-  // });
-
   // 모델 경로가 변경될 때 상태 초기화
   React.useEffect(() => {
     setIsInitialized(false);
@@ -361,33 +354,13 @@ function FrenderModel({ modelPath, customScale = null, showWireframe = false, on
  * 평행사변형 3D 모델 뷰어 컴포넌트
  * 표지 페이지에 absolute로 배치되어 3D 모델을 표시합니다.
  */
-// 모델 파일명을 한국어 이름으로 매핑하는 함수
+// 모델 파일명을 추출하는 함수
 const getModelDisplayName = (modelPath) => {
-  const fileName = modelPath.split('/').pop().replace('.glb', '');
-  
-  const modelNames = {
-    '1_System_Fiber_SET': '파이버시멘트보드',
-    '2_System_Alu-Complex_SET': 'AL 복합판넬',
-    '3_System_Alu-Sheet_SET': 'AL 시트판넬',
-    '4_System_Three_SET': '조적판넬',
-    'system_with_panel': '시스템 with 패널',
-    'system_without_panel': '시스템 without 패널',
-    'L-AnkerBracket': 'L-앙카프라켓',
-    'L-Bar': '수직 L-Bar',
-    'L-HBar': '수평바',
-    'L-Holder': '수평바 브라켓',
-    'BlackFacing': '검은색 마감재'
-  };
-  
-  return modelNames[fileName] || fileName;
+  return modelPath.split('/').pop().replace('.glb', '') || 'Drone';
 };
 
 function Frender3DModel({ 
   isVisible = true, 
-  opacity = 1, 
-  scale = 1, 
-  position = { x: 0, y: 0 },
-  animationDelay = 0,
   modelPath: propModelPath = "/FrienderFile/3DModel/Drone.glb",
   isModal = false,
   cameraPosition = [0, 0, 8],
@@ -403,14 +376,11 @@ function Frender3DModel({
   const modelPath = propModelPath || "/FrienderFile/3DModel/Drone.glb";
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [animationOpacity, setAnimationOpacity] = useState(0);
-  const [animationScale, setAnimationScale] = useState(0.8);
-  const [animationPosition, setAnimationPosition] = useState({ x: 0, y: 0 });
   const [loadingTimeout, setLoadingTimeout] = useState(null);
   const [actualModelLoaded, setActualModelLoaded] = useState(false);
 
   // 로더 진행률 (drei)
-  const { active, progress, errors, item, loaded, total } = useProgress();
+  const { active, progress, errors } = useProgress();
 
   React.useEffect(() => {
     // 에러가 발생한 경우만 로그 출력
@@ -469,19 +439,6 @@ function Frender3DModel({
     setActualModelLoaded(false);
   }, [modelPath]);
 
-  // 애니메이션 효과
-  React.useEffect(() => {
-    if (isVisible) {
-      const timer = setTimeout(() => {
-        setAnimationOpacity(opacity);
-        setAnimationScale(scale);
-        setAnimationPosition(position);
-      }, animationDelay);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isVisible, opacity, scale, position, animationDelay]);
-
   // 컴포넌트 언마운트 시 타임아웃 정리
   React.useEffect(() => {
     return () => {
@@ -508,10 +465,7 @@ function Frender3DModel({
       <div 
         className="relative w-full h-full"
         style={{
-          clipPath: 'none',
-          // transform: 'perspective(1000px) rotateX(0deg) rotateY(-20deg) rotateZ(2deg)',
-          // transformStyle: 'preserve-3d',
-          // transformOrigin: 'center center'
+          clipPath: 'none'
         }}
       >
         {/* 3D 모델 캔버스 - clip-path 영역 내에서 중앙 배치 */}
@@ -587,8 +541,6 @@ function Frender3DModel({
                 <ambientLight intensity={3} />
                 <directionalLight position={[-3, 0, 6]} intensity={2} />
                 <pointLight position={[-3, 0, 6]} intensity={1.6} />
-
-                
                 
                 {/* 3D 모델 */}
                 <FrenderModel 
@@ -599,9 +551,6 @@ function Frender3DModel({
                   onModelLoad={handleLoad}
                   boxOpacity={boxOpacity} 
                 />
-                
-                {/* 환경 설정 - HDRI 로딩 오류 방지를 위해 제거 */}
-                {/* <Environment preset="studio" /> */}
                 
                 {/* 오빗 컨트롤 - 모델링 중심(0,0,0) 기준 회전 */}
                 <OrbitControls

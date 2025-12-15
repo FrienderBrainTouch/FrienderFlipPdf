@@ -3210,9 +3210,9 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 alt={`영역 ${selectedArea}`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
-                  // PNG가 없으면 JPG 시도
-                  if (e.target.src.includes('.png')) {
-                    e.target.src = getPopupPath(currentLanguage, `3-${selectedArea}.png`);
+                  // JPG가 없으면 PNG 시도
+                  if (e.target.src.includes('.jpg')) {
+                    e.target.src = getPopupPath(currentLanguage, `3-${selectedArea}.jpg`);
                   } else {
                     // 이미지 로드 실패 시 메시지 표시
                     e.target.style.display = 'none';
@@ -3489,7 +3489,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             {/* 이미지와 3D 모델 표시 */}
             <div className="relative flex items-center justify-center">
               <img
-                src={getPopupPath(currentLanguage, `4-${selectedPage4Area}.png`)}
+                src={getPopupPath(currentLanguage, `4-${selectedPage4Area}.jpg`)}
                 alt={`영역 ${selectedPage4Area}`}
                 className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -3538,7 +3538,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             {/* 이미지와 3D 모델 표시 */}
             <div className="relative flex items-center justify-center">
               <img
-                src={getPopupPath(currentLanguage, '4-2.png')}
+                src={getPopupPath(currentLanguage, '4-2.jpg')}
                 alt="영역 2 (테스트용)"
                 className="max-w-full min-h-[40vh] max-h-[75vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -3587,7 +3587,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             {/* 이미지 표시 */}
             <div className="flex items-center justify-center">
               <img
-                src={getPopupPath(currentLanguage, '5-2.png')}
+                src={getPopupPath(currentLanguage, '5-2.jpg')}
                 alt="5페이지 2번째 영역"
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -3645,12 +3645,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               {currentPartModel && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <img
-                    src={getPopupPath(currentLanguage, `5-${selectedPage5Area}.png`)}
+                    src={getPopupPath(currentLanguage, `5-${selectedPage5Area}.jpg`)}
                     alt={`5페이지 배경 이미지 ${selectedPart}`}
                     className="max-w-full max-h-full object-contain"
                     onError={(e) => {
-                      // PNG가 없으면 기본 이미지 사용
-                      e.target.src = getPopupPath(currentLanguage, '5-2.png');
+                      // JPG가 없으면 기본 이미지 사용
+                      e.target.src = getPopupPath(currentLanguage, '5-2.jpg');
                     }}
                   />
                 </div>
@@ -3842,11 +3842,11 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               ) : selectedPage6Area && selectedPage6Area >= 1 && selectedPage6Area <= 4 ? (
                 <img
                   src={getPopupPath(currentLanguage,
-                    selectedPage6Area === 1 ? '6-1.png' :
-                    selectedPage6Area === 2 ? '6-2.png' :
-                    selectedPage6Area === 3 ? '6-3.png' :
-                    selectedPage6Area === 4 ? '6-4.png' :
-                    '6-1.png'
+                    selectedPage6Area === 1 ? '6-1.jpg' :
+                    selectedPage6Area === 2 ? '6-2.jpg' :
+                    selectedPage6Area === 3 ? '6-3.jpg' :
+                    selectedPage6Area === 4 ? '6-4.jpg' :
+                    '6-1.jpg'
                   )}
                   alt={`영역 ${selectedPage6Area} 팝업`}
                   className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
@@ -4012,9 +4012,9 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   alt={`${selectedImageType} 이미지`}
                   className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
                   onError={(e) => {
-                    // JPG가 없으면 PNG 시도
+                    // JPG가 없으면 기본 이미지 사용
                     if (e.target.src.includes('.jpg')) {
-                      e.target.src = getPopupPath(currentLanguage, `${selectedImageType}.png`);
+                      e.target.src = getPopupPath(currentLanguage, `${selectedImageType}.jpg`);
                     } else {
                       // 이미지 로드 실패 시 메시지 표시
                       e.target.style.display = 'none';
@@ -4058,13 +4058,13 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             {/* 이미지 표시 */}
             <div className="flex items-center justify-center">
               <img
-                src={getPopupPath(currentLanguage, `${selectedAdditionalImageType}.png`)}
+                src={getPopupPath(currentLanguage, `${selectedAdditionalImageType}.jpg`)}
                 alt={`${selectedAdditionalImageType} 이미지`}
                 className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
-                  // PNG가 없으면 JPG 시도
-                  if (e.target.src.endsWith('.png')) {
-                    e.target.src = `/FrienderFile/Popup/${selectedAdditionalImageType}.jpg`;
+                  // JPG가 없으면 PNG 시도
+                  if (e.target.src.endsWith('.jpg')) {
+                    e.target.src = getPopupPath(currentLanguage, `${selectedAdditionalImageType}.jpg`);
                   } else {
                     e.target.style.display = 'none';
                     e.target.nextSibling.style.display = 'block';
@@ -4104,12 +4104,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               {/* 배경 이미지 - 외장재 타입에 따라 표시 */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <img
-                  src={getPopupPath(currentLanguage, `5-${selectedExteriorType}.png`)}
+                  src={getPopupPath(currentLanguage, `5-${selectedExteriorType}.jpg`)}
                   alt={`외장재 타입 ${selectedExteriorType} 배경 이미지`}
                   className="max-w-full max-h-full object-contain"
                   onError={(e) => {
-                    // PNG가 없으면 기본 이미지 사용
-                    e.target.src = getPopupPath(currentLanguage, '5-2.png');
+                    // JPG가 없으면 기본 이미지 사용
+                    e.target.src = getPopupPath(currentLanguage, '5-2.jpg');
                   }}
                 />
               </div>
@@ -4339,7 +4339,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
           >
             <div className="flex items-center justify-center">
               <img
-                src={getPopupPath(currentLanguage, `2-${selectedPage2Area}.png`)}
+                src={getPopupPath(currentLanguage, `2-${selectedPage2Area}.jpg`)}
                 alt={`2-${selectedPage2Area} 팝업`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -4468,9 +4468,9 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 src={getPopupPath(currentLanguage,
                   selectedPage3Area === 1 ? '3-1.jpg' :
                   selectedPage3Area === 2 ? '3-2.jpg' :
-                  selectedPage3Area === 3 ? '3-3.png' :
+                  selectedPage3Area === 3 ? '3-3.jpg' :
                   selectedPage3Area === 4 ? '3-4.jpg' :
-                  selectedPage3Area === 5 ? '3-5.png' :
+                  selectedPage3Area === 5 ? '3-5.jpg' :
                   '3-1.jpg'
                 )}
                 alt={`3-${selectedPage3Area} 팝업`}
@@ -4646,12 +4646,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 <>
                   <img
                     src={getPopupPath(currentLanguage,
-                      selectedPage4Area === 1 ? '4-1.png' :
-                      selectedPage4Area === 2 ? '4-2.png' :
+                      selectedPage4Area === 1 ? '4-1.jpg' :
+                      selectedPage4Area === 2 ? '4-2.jpg' :
                       selectedPage4Area === 4 ? '4-1-img.jpg' :
                       selectedPage4Area === 5 ? '4-2-img.jpg' :
                       selectedPage4Area === 6 ? '4-3-img.jpg' :
-                      '4-1.png'
+                      '4-1.jpg'
                     )}
                     alt={`4-${selectedPage4Area} 팝업`}
                     className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-lg"
@@ -4781,13 +4781,13 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             <div className="flex items-center justify-center">
               <img
                 src={getPopupPath(currentLanguage,
-                  selectedPage5Area === 1 ? '5-1.png' :
-                  selectedPage5Area === 2 ? '5-2.png' :
+                  selectedPage5Area === 1 ? '5-1.jpg' :
+                  selectedPage5Area === 2 ? '5-2.jpg' :
                   selectedPage5Area === 3 ? '5-1-img.jpg' :
                   selectedPage5Area === 4 ? '5-2-img.jpg' :
                   selectedPage5Area === 5 ? '5-3-img.jpg' :
                   selectedPage5Area === 6 ? '5-4-img.jpg' :
-                  '5-1.png'
+                  '5-1.jpg'
                 )}
                 alt={`5-${selectedPage5Area} 팝업`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
@@ -4927,14 +4927,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               ) : (
                 <img
                   src={getPopupPath(currentLanguage,
-                    selectedPage7Area === 1 ? '7-1.png' :
-                    selectedPage7Area === 2 ? '7-2.png' :
-                    selectedPage7Area === 3 ? '7-3.png' :
-                    selectedPage7Area === 4 ? '7-4.png' :
+                    selectedPage7Area === 1 ? '7-1.jpg' :
+                    selectedPage7Area === 2 ? '7-2.jpg' :
+                    selectedPage7Area === 3 ? '7-3.jpg' :
+                    selectedPage7Area === 4 ? '7-4.jpg' :
                     selectedPage7Area === 5 ? '7-1-img.jpg' :
                     selectedPage7Area === 6 ? '7-2-img.jpg' :
                     selectedPage7Area === 7 ? '7-3-img.jpg' :
-                    '7-1.png'
+                    '7-1.jpg'
                   )}
                   alt={`7-${selectedPage7Area} 팝업`}
                   className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
@@ -5197,7 +5197,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
           >
             <div className="flex items-center justify-center">
               <img
-                src={getPopupPath(currentLanguage, `9-${selectedPage9Area}.png`)}
+                src={getPopupPath(currentLanguage, `9-${selectedPage9Area}.jpg`)}
                 alt={`9-${selectedPage9Area} 팝업`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -5324,13 +5324,13 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             <div className="flex items-center justify-center">
               <img
                 src={getPopupPath(currentLanguage,
-                  selectedPage10Area === 1 ? '10-1.png' :
-                  selectedPage10Area === 2 ? '10-2.png' :
+                  selectedPage10Area === 1 ? '10-1.jpg' :
+                  selectedPage10Area === 2 ? '10-2.jpg' :
                   selectedPage10Area === 3 ? '10-1-img.jpg' :
                   selectedPage10Area === 4 ? '10-2-img.jpg' :
                   selectedPage10Area === 5 ? '10-3-img.jpg' :
                   selectedPage10Area === 6 ? '10-4-img.jpg' :
-                  '10-1.png'
+                  '10-1.jpg'
                 )}
                 alt={`10-${selectedPage10Area} 팝업`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
@@ -5460,7 +5460,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               <div className="flex-1 flex items-center justify-center">
                 <div className="flex flex-col items-center gap-3">
                   <img
-                    src={getPopupPath(currentLanguage, '11-1.png')}
+                    src={getPopupPath(currentLanguage, '11-1.jpg')}
                     alt="11-1 팝업"
                     className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                     onError={(e) => {

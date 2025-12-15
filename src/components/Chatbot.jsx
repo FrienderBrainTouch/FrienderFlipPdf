@@ -52,6 +52,78 @@ const TRANSLATIONS = {
     chatbot_innoWorks_title: 'InnoWorks Info',
     chatbot_innoWorks_subtitle: 'Innovation & Solutions',
     chatbot_innoWorks_welcome: 'I can explain Friender\'s technology and InnoWorks projects.',
+  },
+  ja: {
+    chatbot_placeholder: 'メッセージを入力してください...',
+    chatbot_title: 'Friender チャットボット',
+    chatbot_subtitle: '何でも聞いてください！',
+    chatbot_welcome: 'こんにちは！Frienderへようこそ。ご用件をお聞かせください。',
+    
+    chatbot_home_title: 'Friender アシスタント',
+    chatbot_home_subtitle: '会社紹介と一般案内',
+    chatbot_home_welcome: 'Frienderについて何でもお尋ねください。',
+    chatbot_home_response_default: 'すみません、理解できませんでした。もう一度お願いします。',
+    chatbot_home_response_error: '申し訳ありません。エラーが発生しました。しばらくしてからお試しください。',
+
+    chatbot_story_title: 'Friender ストーリー',
+    chatbot_story_subtitle: '私たちの歩み',
+    chatbot_story_welcome: 'Frienderの成長ストーリーやビジョンについてお尋ねください！',
+
+    chatbot_dreamPath_title: 'DreamPath ガイド',
+    chatbot_dreamPath_subtitle: 'キャリア探索サポート',
+    chatbot_dreamPath_welcome: '夢への旅路、DreamPathについてご案内します。',
+
+    chatbot_innoWorks_title: 'InnoWorks 紹介',
+    chatbot_innoWorks_subtitle: '革新的な技術とソリューション',
+    chatbot_innoWorks_welcome: 'Frienderの技術力とInnoWorksプロジェクトをご説明します。',
+  },
+  es: {
+    chatbot_placeholder: 'Escribe tu mensaje...',
+    chatbot_title: 'Chatbot de Friender',
+    chatbot_subtitle: 'Pregunta lo que quieras!',
+    chatbot_welcome: 'Hola! Bienvenido a Friender. Como puedo ayudarte hoy?',
+    
+    chatbot_home_title: 'Asistente de Friender',
+    chatbot_home_subtitle: 'Consultas generales',
+    chatbot_home_welcome: 'Hola! Pregunta lo que quieras sobre Friender.',
+    chatbot_home_response_default: 'Lo siento, no entendi. Podrias reformularlo?',
+    chatbot_home_response_error: 'Lo siento, se produjo un error. Intentalo de nuevo mas tarde.',
+
+    chatbot_story_title: 'Historia de Friender',
+    chatbot_story_subtitle: 'Nuestro viaje',
+    chatbot_story_welcome: 'Pregunta sobre la historia y la vision de Friender!',
+
+    chatbot_dreamPath_title: 'Guia de DreamPath',
+    chatbot_dreamPath_subtitle: 'Asistente de trayectoria profesional',
+    chatbot_dreamPath_welcome: 'Te guiaremos por DreamPath, el camino a tus suenos.',
+
+    chatbot_innoWorks_title: 'Info de InnoWorks',
+    chatbot_innoWorks_subtitle: 'Innovacion y soluciones',
+    chatbot_innoWorks_welcome: 'Puedo explicarte la tecnologia de Friender y los proyectos InnoWorks.',
+  },
+  zh: {
+    chatbot_placeholder: '请输入消息...',
+    chatbot_title: 'Friender 聊天机器人',
+    chatbot_subtitle: '有什么都可以问！',
+    chatbot_welcome: '你好！欢迎来到 Friender。我能帮你做什么？',
+    
+    chatbot_home_title: 'Friender 助理',
+    chatbot_home_subtitle: '公司介绍与常见咨询',
+    chatbot_home_welcome: '关于 Friender 有任何问题都可以问我。',
+    chatbot_home_response_default: '抱歉，我没有理解。可以再说一遍吗？',
+    chatbot_home_response_error: '抱歉，发生错误，请稍后再试。',
+
+    chatbot_story_title: 'Friender 故事',
+    chatbot_story_subtitle: '我们的旅程',
+    chatbot_story_welcome: '欢迎询问 Friender 的成长故事和愿景！',
+
+    chatbot_dreamPath_title: 'DreamPath 指南',
+    chatbot_dreamPath_subtitle: '职业路径助手',
+    chatbot_dreamPath_welcome: '让我为你介绍通往梦想的 DreamPath。',
+
+    chatbot_innoWorks_title: 'InnoWorks 介绍',
+    chatbot_innoWorks_subtitle: '创新技术与解决方案',
+    chatbot_innoWorks_welcome: '我可以介绍 Friender 的技术力和 InnoWorks 项目。',
   }
 };
 

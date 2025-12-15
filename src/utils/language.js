@@ -78,9 +78,51 @@ export const getPagePath = (langCode, pageNumber) => {
 // 언어에 따른 Popup 파일 경로 반환
 export const getPopupPath = (langCode, fileName) => {
   const folder = LANGUAGE_FOLDER_MAP[langCode];
+  
+  // 파일명에서 확장자 추출
+  const fileExtension = fileName.split('.').pop().toLowerCase();
+  const fileNameWithoutExt = fileName.replace(/\.[^/.]+$/, '');
+  
+  // 한국어는 jpg만 사용
+  if (langCode === 'ko') {
+    // 한국어는 항상 jpg 확장자 사용
+    const finalFileName = fileExtension === 'jpg' || fileExtension === 'jpeg' 
+      ? fileName 
+      : `${fileNameWithoutExt}.jpg`;
+    return `/FrienderFile/Popup/${finalFileName}`;
+  }
+  
+  // 다른 언어들은 파일명 패턴에 따라 확장자 결정
+  // jpg 파일이 있는 특정 파일명들 (3-1, 3-2, 3-4)
+  const jpgFiles = ['3-1', '3-2', '3-4'];
+  const shouldUseJpg = jpgFiles.some(jpgFile => fileNameWithoutExt === jpgFile);
+  
+  if (shouldUseJpg || fileNameWithoutExt.includes('-img')) {
+    // jpg 파일이 있는 경우 또는 -img가 포함된 경우 jpg 확장자 사용
+    return `/FrienderFile/Multilingual/${folder}/Popup/${fileNameWithoutExt}.jpg`;
+  } else {
+    // 그 외의 경우 png 확장자 사용
+    return `/FrienderFile/Multilingual/${folder}/Popup/${fileNameWithoutExt}.png`;
+  }
+};
+
+// 언어별 PDF 파일명 매핑
+const PDF_FILENAME_MAP = {
+  ko: '프랜더-카탈로그.pdf',
+  en: 'Friender-Catalog.pdf',
+  ja: 'Friender-カタログ.pdf',
+  zh: 'Friender-目录.pdf',
+  es: 'Friender-Catalogo.pdf',
+};
+
+// 언어에 따른 PDF 파일 경로 반환
+export const getPdfPath = (langCode) => {
+  const folder = LANGUAGE_FOLDER_MAP[langCode];
+  const filename = PDF_FILENAME_MAP[langCode] || PDF_FILENAME_MAP['ko'];
+  
   if (folder) {
-    return `/FrienderFile/Multilingual/${folder}/Popup/${fileName}`;
+    return `/FrienderFile/Multilingual/${folder}/Friender-Pdf/${filename}`;
   }
   // 한국어는 기본 경로
-  return `/FrienderFile/Popup/${fileName}`;
+  return `/FrienderFile/Friender-Pdf/${filename}`;
 };

@@ -2,6 +2,7 @@ import React, { useRef, useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useGLTF, OrbitControls, useProgress } from '@react-three/drei';
 import * as THREE from 'three';
+import { getTranslation } from '../utils/translations';
 
 // Draco 압축 모델 지원: CDN에서 자동 로드
 useGLTF.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
@@ -370,10 +371,12 @@ function Frender3DModel({
   showWireframe = false,
   onPartClick = null,
   onModelLoad = null,
-  boxOpacity = 0.2
+  boxOpacity = 0.2,
+  language = 'ko'
 }) {
   // 빈 문자열이나 falsy 값일 때 기본값 사용
   const modelPath = propModelPath || "/FrienderFile/3DModel/Drone.glb";
+  const t = (key) => getTranslation(language, key);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [loadingTimeout, setLoadingTimeout] = useState(null);
@@ -482,7 +485,7 @@ function Frender3DModel({
           {hasError && (
             <div className="w-full h-full bg-red-50 flex items-center justify-center">
               <div className="text-center">
-                <p className="text-red-600 mb-2 font-medium">3D 모델 로딩 실패</p>
+                <p className="text-red-600 mb-2 font-medium">{t('modelLoadFailed')}</p>
                 <p className="text-red-500 text-sm mb-4">모델: {getModelDisplayName(modelPath)}</p>
                 <button 
                   onClick={() => {
@@ -492,7 +495,7 @@ function Frender3DModel({
                   }}
                   className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
                 >
-                  다시 시도
+                  {t('modelRetry')}
                 </button>
               </div>
             </div>
@@ -502,17 +505,17 @@ function Frender3DModel({
             <div className="absolute inset-0 bg-gray-100 flex flex-col items-center justify-center">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                <p className="text-gray-600 mb-2 font-medium">3D 모델 로딩 중...</p>
+                <p className="text-gray-600 mb-2 font-medium">{t('modelLoading')}</p>
                 
                 {/* useProgress 정보 표시 */}
                 <div className="text-sm text-gray-500 mb-2">
-                  {active ? `로딩 중... ${Math.round(progress)}%` : '처리 중...'}
+                  {active ? `${t('chatbotLoading')} ${Math.round(progress)}%` : t('modelProcessing')}
                 </div>
                 
                 {/* 타임아웃 경고 */}
                 {progress > 0 && progress < 100 && (
                   <div className="text-xs text-orange-500">
-                    로딩이 오래 걸리고 있습니다...
+                    {t('modelLoadingLong')}
                   </div>
                 )}
                 

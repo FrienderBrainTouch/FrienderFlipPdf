@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import Frender3DModel from './Frender3DModel';
 import Chatbot from './Chatbot';
-import { getLanguageList, getLanguageFromPath, getLanguagePath, getPagePath, getPopupPath, getPdfPath } from '../utils/language';
+import { getLanguageList, getLanguageFromPath, getLanguagePath, getPagePath, getPopupPath, getPdfPath, getFrontGifPath } from '../utils/language';
 import { getTranslation } from '../utils/translations';
 
 const getDroneVideoPlaylist = (t) => [
@@ -1387,7 +1387,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                         {showFrontGif && (
                           <div className="absolute inset-0 w-full h-full">
                             <img
-                              src="/FrienderFile/Interactive/Front.gif"
+                              src={getFrontGifPath(currentLanguage)}
                               alt="Front Animation"
                               className="w-full h-full object-cover"
                             />
@@ -1855,6 +1855,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '4-1-img')}
                         >
+                          {/* 영상 목록 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 6h2v2H4zm0 5h2v2H4zm0 5h2v2H4zm16-7H8v-2h12zm0 5H8v-2h12zm0 5H8v-2h12z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                         
                         <div 
@@ -1886,6 +1894,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '4-2-img')}
                         >
+                          {/* 이미지 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                         
                         <div 
@@ -1917,6 +1933,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '4-3-img')}
                         >
+                          {/* 이미지 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                         
                         <div 
@@ -1948,6 +1972,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '4-4-img')}
                         >
+                          {/* 이미지 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                       </>
                     )}
@@ -2047,6 +2079,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '5-1-img')}
                         >
+                          {/* 이미지 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                         
                         <div 
@@ -2078,6 +2118,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '5-2-img')}
                         >
+                          {/* 이미지 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                         
                         <div 
@@ -2109,6 +2157,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '5-3-img')}
                         >
+                          {/* 이미지 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                         
                         <div 
@@ -2140,6 +2196,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '5-4-img')}
                         >
+                          {/* 이미지 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                       </>
                     )}
@@ -2301,6 +2365,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '6-1-img')}
                         >
+                          {/* 재생 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 5v14l11-7z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                         
                         <div 
@@ -2332,6 +2404,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '6-2-img')}
                         >
+                          {/* 재생 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 5v14l11-7z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                         
                         <div 
@@ -2363,6 +2443,15 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '6-3-img')}
                         >
+                          {/* 3D 모델 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18l8 4v8.64l-8-4V4.18zM4 8.82l8 4v8.64l-8-4V8.82z" opacity="0.9"/>
+                                <path d="M12 6L4 9.5v5L12 18l8-3.5v-5L12 6z" opacity="0.6"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                       </>
                     )}
@@ -2524,6 +2613,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '7-1-img')}
                         >
+                          {/* 재생 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 5v14l11-7z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                         
                         <div 
@@ -2555,6 +2652,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '7-2-img')}
                         >
+                          {/* 재생 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 5v14l11-7z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                         
                         <div 
@@ -2586,6 +2691,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '7-3-img')}
                         >
+                          {/* 재생 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 5v14l11-7z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                       </>
                     )}
@@ -2716,6 +2829,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '8-1-img')}
                         >
+                          {/* 이미지 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                       </>
                     )}
@@ -2945,6 +3066,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '10-1-img')}
                         >
+                          {/* 이미지 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                         
                         <div 
@@ -2976,6 +3105,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '10-2-img')}
                         >
+                          {/* 이미지 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                         
                         <div 
@@ -3007,6 +3144,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '10-3-img')}
                         >
+                          {/* 이미지 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                         
                         <div 
@@ -3038,6 +3183,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '10-4-img')}
                         >
+                          {/* 이미지 아이콘 */}
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                       </>
                     )}
@@ -4602,7 +4755,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {DRONE_VIDEO_PLAYLIST.map((video, index) => {
+                    {getDroneVideoPlaylist(t).map((video, index) => {
                       const embedUrl = getYouTubeEmbedUrl(video.url);
                       return (
                         <div

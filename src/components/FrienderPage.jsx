@@ -4,7 +4,7 @@ import HTMLFlipBook from 'react-pageflip';
 import FrienderPageMobile from './FrienderPage-mobile';
 import Frender3DModel from './Frender3DModel';
 import Chatbot from './Chatbot';
-import { getLanguageList, getLanguageFromPath, getLanguagePath, getPagePath, getPopupPath, getPdfPath } from '../utils/language';
+import { getLanguageList, getLanguageFromPath, getLanguagePath, getPagePath, getPopupPath, getPdfPath, getFrontGifPath } from '../utils/language';
 import { getTranslation } from '../utils/translations';
 
 const getDroneVideoPlaylist = (t) => [
@@ -1714,7 +1714,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                 {showFrontGif && (
                   <div className="absolute inset-0 w-full h-full">
                     <img
-                      src="/FrienderFile/Interactive/Front.gif"
+                      src={getFrontGifPath(currentLanguage)}
                       alt="Front Animation"
                       className="w-full h-full object-cover"
                     />
@@ -1757,8 +1757,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                     position: 'absolute',
                     top: '16%',
                     left: '7%',
-                    width: '50%',
-                    height: '11%'
+                    width: '62%',
+                    height: '16%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage2AreaClick(1)}
@@ -1840,10 +1840,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage2ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea2 === 6 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '3%',
-                    right: '4%',
-                    width: '21%',
-                    height: '41%'
+                    bottom: '2%',
+                    right: '0.5%',
+                    width: '27%',
+                    height: '44%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage2AreaClick(6)}
@@ -1890,7 +1890,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                     top: '30%',
                     left: '7%',
                     width: '24%',
-                    height: '25%'
+                    height: '27%'
                   }}
                   onClick={() => handlePage3AreaClick(1)}
                   onMouseEnter={() => setHoveredArea3(1)}
@@ -1906,7 +1906,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                     top: '30%',
                     left: '32%',
                     width: '24%',
-                    height: '25%'
+                    height: '27%'
                   }}
                   onClick={() => handlePage3AreaClick(2)}
                   onMouseEnter={() => setHoveredArea3(2)}
@@ -1919,10 +1919,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   className={`absolute cursor-pointer rounded-lg ${(isPage3ModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea3 === 3 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '14%',
+                    bottom: '13%',
                     left: '6%',
                     width: '25%',
-                    height: '26%'
+                    height: '27%'
                   }}
                   onClick={() => handlePage3AreaClick(3)}
                   onMouseEnter={() => setHoveredArea3(3)}
@@ -1935,10 +1935,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   className={`absolute cursor-pointer rounded-lg ${(isPage3ModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea3 === 4 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '14%',
+                    bottom: '13%',
                     left: '32%',
                     width: '24%',
-                    height: '26%'
+                    height: '27%'
                   }}
                   onClick={() => handlePage3AreaClick(4)}
                   onMouseEnter={() => setHoveredArea3(4)}
@@ -1951,10 +1951,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   className={`absolute cursor-pointer rounded-lg ${(isPage3ModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea3 === 5 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '15%',
-                    right: '6%',
-                    width: '29%',
-                    height: '25%'
+                    bottom: '13%',
+                    right: '2%',
+                    width: '37%',
+                    height: '35%'
                   }}
                   onClick={() => handlePage3AreaClick(5)}
                   onMouseEnter={() => setHoveredArea3(5)}
@@ -2019,8 +2019,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                     position: 'absolute',
                     top: '10%',
                     left: '17%',
-                    width: '74%',
-                    height: '23%'
+                    width: '81%',
+                    height: '25%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage4AreaClick(1)}
@@ -2034,10 +2034,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea4 === 2 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '24%',
+                    bottom: '22%',
                     left: '17%',
-                    width: '74%',
-                    height: '20%'
+                    width: '81%',
+                    height: '23%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage4AreaClick(2)}
@@ -2062,6 +2062,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea4(null)}
                   title={t('popupWithNumber').replace('{number}', '4-1-img')}
                 >
+                  {/* 영상 목록 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 6h2v2H4zm0 5h2v2H4zm0 5h2v2H4zm16-7H8v-2h12zm0 5H8v-2h12zm0 5H8v-2h12z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 <div 
@@ -2151,8 +2159,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                     position: 'absolute',
                     top: '10%',
                     left: '5%',
-                    width: '74%',
-                    height: '22%'
+                    width: '78%',
+                    height: '23%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage5AreaClick(1)}
@@ -2170,7 +2178,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                     position: 'absolute',
                     bottom: '23%',
                     left: '5%',
-                    width: '74%',
+                    width: '80%',
                     height: '21%'
                   }}
                   data-clickable="true"
@@ -2198,8 +2206,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea5(null)}
                   title={t('popupWithNumber').replace('{number}', '5-1-img')}
                 >
-                  {/* 기존 외장재 영역 주석 처리 */}
-                  {/* onClick={() => handlePage5AreaClick(3)} - 외장재 모달 */}
+                  {/* 이미지 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 <div 
@@ -2217,8 +2231,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea5(null)}
                   title={t('popupWithNumber').replace('{number}', '5-2-img')}
                 >
-                  {/* 기존 외장재 영역 주석 처리 */}
-                  {/* onClick={() => handlePage5AreaClick(4)} - 외장재 모달 */}
+                  {/* 이미지 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 <div 
@@ -2236,8 +2256,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea5(null)}
                   title={t('popupWithNumber').replace('{number}', '5-3-img')}
                 >
-                  {/* 기존 외장재 영역 주석 처리 */}
-                  {/* onClick={() => handlePage5AreaClick(5)} - 외장재 모달 */}
+                  {/* 이미지 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 <div 
@@ -2255,8 +2281,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea5(null)}
                   title={t('popupWithNumber').replace('{number}', '5-4-img')}
                 >
-                  {/* 기존 외장재 영역 주석 처리 */}
-                  {/* onClick={() => handlePage5AreaClick(6)} - 외장재 모달 */}
+                  {/* 이미지 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 {/* 오른쪽 터치 영역 (5페이지는 오른쪽) */}
@@ -2293,10 +2325,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 1 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '20%',
+                    top: '14%',
                     left: '6%',
-                    width: '82%',
-                    height: '9%'
+                    width: '88%',
+                    height: '17%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage6AreaClick(1)}
@@ -2311,8 +2343,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   style={{
                     position: 'absolute',
                     top: '31%',
-                    right: '6%',
-                    width: '43%',
+                    right: '1%',
+                    width: '49%',
                     height: '19%'
                   }}
                   data-clickable="true"
@@ -2328,8 +2360,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   style={{
                     position: 'absolute',
                     top: '52%',
-                    right: '6%',
-                    width: '43%',
+                    right: '1%',
+                    width: '49%',
                     height: '19%'
                   }}
                   data-clickable="true"
@@ -2345,8 +2377,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   style={{
                     position: 'absolute',
                     bottom: '8%',
-                    right: '6%',
-                    width: '43%',
+                    right: '1%',
+                    width: '49%',
                     height: '19%'
                   }}
                   data-clickable="true"
@@ -2372,6 +2404,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea6(null)}
                   title={t('popupWithNumber').replace('{number}', '6-1-img')}
                 >
+                  {/* 재생 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 <div 
@@ -2389,6 +2429,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea6(null)}
                   title={t('popupWithNumber').replace('{number}', '6-2-img')}
                 >
+                  {/* 재생 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 <div 
@@ -2406,6 +2454,15 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea6(null)}
                   title={t('popupWithNumber').replace('{number}', '6-3-img')}
                 >
+                  {/* 3D 모델 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18l8 4v8.64l-8-4V4.18zM4 8.82l8 4v8.64l-8-4V8.82z" opacity="0.9"/>
+                        <path d="M12 6L4 9.5v5L12 18l8-3.5v-5L12 6z" opacity="0.6"/>
+                      </svg>
+                    </div>
+                  </div>
                   {/* 유튜브 링크는 주석 처리 */}
                   {/* onClick={() => window.open('https://www.youtube.com/@%EC%83%9D%EA%B3%A0%EB%B1%85%EC%9D%B4%EC%86%8C%EB%B0%94%EC%BD%94%EB%A6%AC%EC%95%84/videos', '_blank')} */}
                 </div>
@@ -2444,10 +2501,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage7ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea7 === 1 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '20%',
+                    top: '14%',
                     left: '6%',
-                    width: '82%',
-                    height: '9%'
+                    width: '93%',
+                    height: '16%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage7AreaClick(1)}
@@ -2462,8 +2519,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   style={{
                     position: 'absolute',
                     top: '31%',
-                    right: '6%',
-                    width: '43%',
+                    right: '1%',
+                    width: '50%',
                     height: '19%'
                   }}
                   data-clickable="true"
@@ -2479,8 +2536,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   style={{
                     position: 'absolute',
                     top: '52%',
-                    right: '6%',
-                    width: '43%',
+                    right: '1%',
+                    width: '50%',
                     height: '19%'
                   }}
                   data-clickable="true"
@@ -2496,8 +2553,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   style={{
                     position: 'absolute',
                     bottom: '8%',
-                    right: '6%',
-                    width: '43%',
+                    right: '1%',
+                    width: '50%',
                     height: '19%'
                   }}
                   data-clickable="true"
@@ -2523,6 +2580,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea7(null)}
                   title={t('popupWithNumber').replace('{number}', '7-1-img')}
                 >
+                  {/* 재생 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 <div 
@@ -2540,6 +2605,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea7(null)}
                   title={t('popupWithNumber').replace('{number}', '7-2-img')}
                 >
+                  {/* 재생 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 <div 
@@ -2557,6 +2630,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea7(null)}
                   title={t('popupWithNumber').replace('{number}', '7-3-img')}
                 >
+                  {/* 재생 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 {/* 오른쪽 터치 영역 (7페이지는 오른쪽) */}
@@ -2592,10 +2673,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage8ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea8 === 1 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '26%',
-                    left: '6%',
-                    width: '43%',
-                    height: '21%'
+                    top: '24%',
+                    left: '5%',
+                    width: '46%',
+                    height: '26%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage8AreaClick(1)}
@@ -2609,10 +2690,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage8ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea8 === 2 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '5%',
-                    left: '6%',
-                    width: '43%',
-                    height: '21%'
+                    bottom: '4%',
+                    left: '4%',
+                    width: '45%',
+                    height: '22%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage8AreaClick(2)}
@@ -2626,10 +2707,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage8ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea8 === 3 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '5%',
-                    right: '6%',
-                    width: '43%',
-                    height: '21%'
+                    bottom: '4%',
+                    right: '2%',
+                    width: '47%',
+                    height: '22%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage8AreaClick(3)}
@@ -2654,6 +2735,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea8(null)}
                   title={t('popupWithNumber').replace('{number}', '8-1-img')}
                 >
+                  {/* 이미지 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 {/* 왼쪽 터치 영역 (8페이지는 왼쪽) */}
@@ -2689,10 +2778,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage9ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea9 === 1 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '13%',
+                    top: '12%',
                     left: '6%',
-                    width: '80%',
-                    height: '10%'
+                    width: '88%',
+                    height: '13%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage9AreaClick(1)}
@@ -2706,10 +2795,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage9ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea9 === 2 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '24%',
+                    top: '22%',
                     left: '6%',
-                    width: '87%',
-                    height: '26%'
+                    width: '92%',
+                    height: '28%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage9AreaClick(2)}
@@ -2723,10 +2812,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage9ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea9 === 3 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '53%',
+                    top: '52%',
                     left: '6%',
-                    width: '80%',
-                    height: '18%'
+                    width: '90%',
+                    height: '19%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage9AreaClick(3)}
@@ -2742,8 +2831,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                     position: 'absolute',
                     top: '74%',
                     left: '6%',
-                    width: '80%',
-                    height: '21%'
+                    width: '92%',
+                    height: '24%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage9AreaClick(4)}
@@ -2786,10 +2875,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage10ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea10 === 1 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '13%',
+                    top: '12%',
                     left: '6%',
-                    width: '80%',
-                    height: '10%'
+                    width: '93%',
+                    height: '12%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage10AreaClick(1)}
@@ -2803,10 +2892,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage10ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea10 === 2 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    top: '28%',
-                    left: '6%',
-                    width: '80%',
-                    height: '17%'
+                    top: '26%',
+                    left: '5%',
+                    width: '95%',
+                    height: '20%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage10AreaClick(2)}
@@ -2831,6 +2920,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea10(null)}
                   title={t('popupWithNumber').replace('{number}', '10-1-img')}
                 >
+                  {/* 이미지 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 <div 
@@ -2848,6 +2945,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea10(null)}
                   title={t('popupWithNumber').replace('{number}', '10-2-img')}
                 >
+                  {/* 이미지 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 <div 
@@ -2865,6 +2970,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea10(null)}
                   title={t('popupWithNumber').replace('{number}', '10-3-img')}
                 >
+                  {/* 이미지 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 <div 
@@ -2882,6 +2995,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea10(null)}
                   title={t('popupWithNumber').replace('{number}', '10-4-img')}
                 >
+                  {/* 이미지 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 {/* 왼쪽 터치 영역 (10페이지는 왼쪽) */}
@@ -2917,10 +3038,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea11 === 1 ? 'border-2 border-yellow-500' : ''}`}
                   style={{
                     position: 'absolute',
-                    bottom: '30%',
-                    right: '25%',
-                    width: '35%',
-                    height: '30%'
+                    bottom: '27%',
+                    right: '8%',
+                    width: '54%',
+                    height: '33%'
                   }}
                   data-clickable="true"
                   onClick={handlePage11AreaClick}
@@ -3675,9 +3796,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                     src={getPopupPath(currentLanguage,
                       selectedPage4Area === 1 ? '4-1.jpg' :
                       selectedPage4Area === 2 ? '4-2.jpg' :
-                      selectedPage4Area === 4 ? '4-1-img.jpg' :
-                      selectedPage4Area === 5 ? '4-2-img.jpg' :
-                      selectedPage4Area === 6 ? '4-3-img.jpg' :
+                      selectedPage4Area === 3 ? '4-1-img.jpg' :
+                      selectedPage4Area === 4 ? '4-2-img.jpg' :
+                      selectedPage4Area === 5 ? '4-3-img.jpg' :
+                      selectedPage4Area === 6 ? '4-4-img.jpg' :
                       '4-1.jpg'
                     )}
                     alt={t('popupWithNumber').replace('{number}', `4-${selectedPage4Area}`)}

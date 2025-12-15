@@ -126,3 +126,17 @@ export const getPdfPath = (langCode) => {
   // 한국어는 기본 경로
   return `/FrienderFile/Friender-Pdf/${filename}`;
 };
+
+// 언어에 따른 Front GIF 파일 경로 반환
+export const getFrontGifPath = (langCode) => {
+  const frontGifMap = {
+    ko: 'Front.gif',           // 한국어 (기본)
+    en: 'Front-English.gif',   // 영어
+    ja: 'Front-Japan.gif',     // 일본어
+    zh: 'Front-China.gif',     // 중국어
+    es: 'Front-spain.gif',     // 스페인어
+  };
+  
+  const filename = frontGifMap[langCode] || frontGifMap['ko'];
+  return `/FrienderFile/Interactive/${filename}`;
+};

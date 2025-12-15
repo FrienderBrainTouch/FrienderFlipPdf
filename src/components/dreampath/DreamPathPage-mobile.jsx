@@ -3,39 +3,48 @@ import React from 'react';
 function DreamPathPageMobile({ language = 'ko' }) {
   const [currentPage, setCurrentPage] = React.useState(0);
   
-  // DreamPath 페이지 데이터 (6페이지)
-  const pageImages = React.useMemo(() => [
-    {
-      id: 0,
-      name: "표지",
-      backgroundImage: `/DreamPath/Page/${language}/1.svg`,
-    },
-    {
-      id: 1,
-      name: "페이지 1",
-      backgroundImage: `/DreamPath/Page/${language}/2.svg`,
-    },
-    {
-      id: 2,
-      name: "페이지 2",
-      backgroundImage: `/DreamPath/Page/${language}/3.svg`,
-    },
-    {
-      id: 3,
-      name: "페이지 3",
-      backgroundImage: `/DreamPath/Page/${language}/4.svg`,
-    },
-    {
-      id: 4,
-      name: "페이지 4",
-      backgroundImage: `/DreamPath/Page/${language}/5.svg`,
-    },
-    {
-      id: 5,
-      name: "페이지 5",
-      backgroundImage: `/DreamPath/Page/${language}/6.svg`,
-    },
-  ], [language]);
+  // 경로 생성: 한국어는 루트, 다국어는 Multilingual 하위
+  const pageImages = React.useMemo(() => {
+    const getPagePath = (pageNum) => {
+      if (language === 'ko') {
+        return `/DreamPath/Page/${pageNum}.svg`;
+      }
+      return `/DreamPath/Multilingual/${language}/Page/${pageNum}.svg`;
+    };
+    
+    return [
+      {
+        id: 0,
+        name: "표지",
+        backgroundImage: getPagePath(1),
+      },
+      {
+        id: 1,
+        name: "페이지 1",
+        backgroundImage: getPagePath(2),
+      },
+      {
+        id: 2,
+        name: "페이지 2",
+        backgroundImage: getPagePath(3),
+      },
+      {
+        id: 3,
+        name: "페이지 3",
+        backgroundImage: getPagePath(4),
+      },
+      {
+        id: 4,
+        name: "페이지 4",
+        backgroundImage: getPagePath(5),
+      },
+      {
+        id: 5,
+        name: "페이지 5",
+        backgroundImage: getPagePath(6),
+      },
+    ];
+  }, [language]);
   
   const handlePrevPage = () => {
     if (currentPage > 0) {

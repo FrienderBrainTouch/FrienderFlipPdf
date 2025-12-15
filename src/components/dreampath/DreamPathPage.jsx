@@ -73,15 +73,24 @@ function DreamPathPage() {
   // 플립북 컨테이너 참조
   const flipBookContainerRef = React.useRef(null);
   
-  // DreamPath 페이지 데이터 (6페이지)
-  const pageData = React.useMemo(() => [
-    { id: 1, svg: `/DreamPath/Page/${validLanguage}/1.svg`, isCover: true },
-    { id: 2, svg: `/DreamPath/Page/${validLanguage}/2.svg` },
-    { id: 3, svg: `/DreamPath/Page/${validLanguage}/3.svg` },
-    { id: 4, svg: `/DreamPath/Page/${validLanguage}/4.svg` },
-    { id: 5, svg: `/DreamPath/Page/${validLanguage}/5.svg` },
-    { id: 6, svg: `/DreamPath/Page/${validLanguage}/6.svg` }
-  ], [validLanguage]);
+  // 경로 생성: 한국어는 루트, 다국어는 Multilingual 하위
+  const pageData = React.useMemo(() => {
+    const getPagePath = (pageNum) => {
+      if (validLanguage === 'ko') {
+        return `/DreamPath/Page/${pageNum}.svg`;
+      }
+      return `/DreamPath/Multilingual/${validLanguage}/Page/${pageNum}.svg`;
+    };
+    
+    return [
+      { id: 1, svg: getPagePath(1), isCover: true },
+      { id: 2, svg: getPagePath(2) },
+      { id: 3, svg: getPagePath(3) },
+      { id: 4, svg: getPagePath(4) },
+      { id: 5, svg: getPagePath(5) },
+      { id: 6, svg: getPagePath(6) }
+    ];
+  }, [validLanguage]);
   
   // 화면 크기 변경 감지
   React.useEffect(() => {
@@ -191,7 +200,13 @@ function DreamPathPage() {
    */
   const handlePrintClick = () => {
     // DreamPath PDF가 있다면 사용, 없으면 현재 페이지 인쇄
-    const pdfUrl = `/DreamPath/pdf/dreampath-${validLanguage}.pdf`;
+    // 경로 생성: 한국어는 루트, 다국어는 Multilingual 하위
+    let pdfUrl;
+    if (validLanguage === 'ko') {
+      pdfUrl = `/DreamPath/DreamPath-Pdf/한국어.pdf`;
+    } else {
+      pdfUrl = `/DreamPath/Multilingual/${validLanguage}/DreamPath-Pdf/dreampath-${validLanguage}.pdf`;
+    }
     const pdfWindow = window.open(pdfUrl, '_blank');
     if (pdfWindow) {
       pdfWindow.onload = () => {
@@ -207,9 +222,18 @@ function DreamPathPage() {
    * PDF 다운로드 버튼 클릭 핸들러
    */
   const handleDownloadClick = () => {
+    // 경로 생성: 한국어는 루트, 다국어는 Multilingual 하위
+    let pdfUrl, pdfFileName;
+    if (validLanguage === 'ko') {
+      pdfUrl = `/DreamPath/DreamPath-Pdf/한국어.pdf`;
+      pdfFileName = 'dreampath-ko.pdf';
+    } else {
+      pdfUrl = `/DreamPath/Multilingual/${validLanguage}/DreamPath-Pdf/dreampath-${validLanguage}.pdf`;
+      pdfFileName = `dreampath-${validLanguage}.pdf`;
+    }
     const link = document.createElement('a');
-    link.href = `/DreamPath/pdf/dreampath-${validLanguage}.pdf`;
-    link.download = `dreampath-${validLanguage}.pdf`;
+    link.href = pdfUrl;
+    link.download = pdfFileName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

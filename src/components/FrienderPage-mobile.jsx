@@ -750,7 +750,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     if (navigator.share) {
       navigator.share({
         title: 'Friender',
-        text: 'Friender에 대해 확인해보세요!',
+        text: '프랜더 Friender 카탈로그에 대한 설명',
         url: window.location.href,
       }).then(() => {
         // Web Share API 성공 후에도 클립보드에 복사
@@ -781,7 +781,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    * 목차 버튼 클릭 핸들러
    */
   const handleTocClick = () => {
-    const targetPage = document.querySelector('[data-page-index="1"]');
+    const targetPage = document.querySelector('[data-page-index="0"]');
     if (targetPage) {
       targetPage.scrollIntoView({ behavior: 'smooth' });
     }
@@ -3123,8 +3123,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 </svg>
               </button>
 
-              {/* 목차 버튼 */}
-              <button
+              {/* 목차 버튼 숨김 처리 */}
+              {/* <button
                 onClick={handleTocClick}
                 className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
                 title={t('toc')}
@@ -3132,7 +3132,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                 </svg>
-              </button>
+              </button> */}
 
               {/* 공유 버튼 */}
               <button

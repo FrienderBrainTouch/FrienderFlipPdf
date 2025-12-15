@@ -3662,12 +3662,12 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                 <>
                   <img
                     src={getPopupPath(currentLanguage,
-                      selectedPage4Area === 1 ? '4-1.png' :
-                      selectedPage4Area === 2 ? '4-2.png' :
+                      selectedPage4Area === 1 ? '4-1.jpg' :
+                      selectedPage4Area === 2 ? '4-2.jpg' :
                       selectedPage4Area === 4 ? '4-1-img.jpg' :
                       selectedPage4Area === 5 ? '4-2-img.jpg' :
                       selectedPage4Area === 6 ? '4-3-img.jpg' :
-                      '4-1.png'
+                      '4-1.jpg'
                     )}
                     alt={`4-${selectedPage4Area} 팝업`}
                     className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-lg"
@@ -3817,13 +3817,13 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
             <div className="flex items-center justify-center">
               <img
                 src={getPopupPath(currentLanguage,
-                  selectedPage5Area === 1 ? '5-1.png' :
-                  selectedPage5Area === 2 ? '5-2.png' :
+                  selectedPage5Area === 1 ? '5-1.jpg' :
+                  selectedPage5Area === 2 ? '5-2.jpg' :
                   selectedPage5Area === 3 ? '5-1-img.jpg' :
                   selectedPage5Area === 4 ? '5-2-img.jpg' :
                   selectedPage5Area === 5 ? '5-3-img.jpg' :
                   selectedPage5Area === 6 ? '5-4-img.jpg' :
-                  '5-1.png'
+                  '5-1.jpg'
                 )}
                 alt={`5-${selectedPage5Area} 팝업`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
@@ -3960,14 +3960,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
               ) : (
                 <img
                   src={getPopupPath(currentLanguage,
-                    selectedPage6Area === 1 ? '6-1.png' :
-                    selectedPage6Area === 2 ? '6-2.png' :
-                    selectedPage6Area === 3 ? '6-3.png' :
-                    selectedPage6Area === 4 ? '6-4.png' :
+                    selectedPage6Area === 1 ? '6-1.jpg' :
+                    selectedPage6Area === 2 ? '6-2.jpg' :
+                    selectedPage6Area === 3 ? '6-3.jpg' :
+                    selectedPage6Area === 4 ? '6-4.jpg' :
                     selectedPage6Area === 5 ? '6-1-img.jpg' :
                     selectedPage6Area === 6 ? '6-2-img.jpg' :
                     selectedPage6Area === 7 ? '6-3-img.jpg' :
-                    '6-1.png'
+                    '6-1.jpg'
                   )}
                   alt={`영역 ${selectedPage6Area} 팝업`}
                   className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
@@ -4142,7 +4142,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
             {/* 팝업 이미지 표시 */}
             <div className="flex items-center justify-center">
               <img
-                src={getPopupPath(currentLanguage, `2-${selectedPage2Area}.png`)}
+                src={getPopupPath(currentLanguage, `2-${selectedPage2Area}.jpg`)}
                 alt={`2-${selectedPage2Area} 팝업`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -4265,9 +4265,9 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                 src={getPopupPath(currentLanguage,
                   selectedPage3Area === 1 ? '3-1.jpg' :
                   selectedPage3Area === 2 ? '3-2.jpg' :
-                  selectedPage3Area === 3 ? '3-3.png' :
+                  selectedPage3Area === 3 ? '3-3.jpg' :
                   selectedPage3Area === 4 ? '3-4.jpg' :
-                  selectedPage3Area === 5 ? '3-5.png' :
+                  selectedPage3Area === 5 ? '3-5.jpg' :
                   '3-1.jpg'
                 )}
                 alt={`3-${selectedPage3Area} 팝업`}
@@ -4401,14 +4401,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
               ) : (
                 <img
                   src={getPopupPath(currentLanguage,
-                    selectedPage7Area === 1 ? '7-1.png' :
-                    selectedPage7Area === 2 ? '7-2.png' :
-                    selectedPage7Area === 3 ? '7-3.png' :
-                    selectedPage7Area === 4 ? '7-4.png' :
+                    selectedPage7Area === 1 ? '7-1.jpg' :
+                    selectedPage7Area === 2 ? '7-2.jpg' :
+                    selectedPage7Area === 3 ? '7-3.jpg' :
+                    selectedPage7Area === 4 ? '7-4.jpg' :
                     selectedPage7Area === 5 ? '7-1-img.jpg' :
                     selectedPage7Area === 6 ? '7-2-img.jpg' :
                     selectedPage7Area === 7 ? '7-3-img.jpg' :
-                    '7-1.png'
+                    '7-1.jpg'
                   )}
                   alt={`7-${selectedPage7Area} 팝업`}
                   className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
@@ -4535,11 +4535,11 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
             <div className="flex items-center justify-center">
               <img
                 src={getPopupPath(currentLanguage,
-                  selectedPage8Area === 1 ? '8-1.png' :
-                  selectedPage8Area === 2 ? '8-2.png' :
-                  selectedPage8Area === 3 ? '8-3.png' :
+                  selectedPage8Area === 1 ? '8-1.jpg' :
+                  selectedPage8Area === 2 ? '8-2.jpg' :
+                  selectedPage8Area === 3 ? '8-3.jpg' :
                   selectedPage8Area === 4 ? '8-1-img.jpg' :
-                  '8-1.png'
+                  '8-1.jpg'
                 )}
                 alt={`8-${selectedPage8Area} 팝업`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
@@ -4659,7 +4659,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
             {/* 팝업 이미지 표시 */}
             <div className="flex items-center justify-center">
               <img
-                src={getPopupPath(currentLanguage, `9-${selectedPage9Area}.png`)}
+                src={getPopupPath(currentLanguage, `9-${selectedPage9Area}.jpg`)}
                 alt={`9-${selectedPage9Area} 팝업`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -4779,13 +4779,13 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
             <div className="flex items-center justify-center">
               <img
                 src={getPopupPath(currentLanguage,
-                  selectedPage10Area === 1 ? '10-1.png' :
-                  selectedPage10Area === 2 ? '10-2.png' :
+                  selectedPage10Area === 1 ? '10-1.jpg' :
+                  selectedPage10Area === 2 ? '10-2.jpg' :
                   selectedPage10Area === 3 ? '10-1-img.jpg' :
                   selectedPage10Area === 4 ? '10-2-img.jpg' :
                   selectedPage10Area === 5 ? '10-3-img.jpg' :
                   selectedPage10Area === 6 ? '10-4-img.jpg' :
-                  '10-1.png'
+                  '10-1.jpg'
                 )}
                 alt={`10-${selectedPage10Area} 팝업`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
@@ -4907,7 +4907,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
               <div className="flex-1 flex items-center justify-center">
                 <div className="flex flex-col items-center gap-3">
                   <img
-                    src={getPopupPath(currentLanguage, '11-1.png')}
+                    src={getPopupPath(currentLanguage, '11-1.jpg')}
                     alt="11-1 팝업"
                     className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                     onError={(e) => {

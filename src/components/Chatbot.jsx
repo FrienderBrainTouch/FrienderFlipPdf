@@ -179,8 +179,13 @@ const Chatbot = () => {
         responseData = { message: `${t('chatbot_' + activeChatbotType + '_response_default')} (Demo)` };
       }
 
+      const replyText =
+        responseData?.answer ||
+        responseData?.message ||
+        t(`chatbot_${activeChatbotType}_response_default`);
+
       const botMessage = {
-        text: responseData.message || t(`chatbot_${activeChatbotType}_response_default`),
+        text: replyText,
         sender: 'bot',
         timestamp: new Date(),
       };

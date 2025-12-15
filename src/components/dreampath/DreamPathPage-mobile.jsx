@@ -1,4 +1,5 @@
 import React from 'react';
+import { LANGUAGE_FOLDER_MAP } from '../../utils/language';
 
 function DreamPathPageMobile({ language = 'ko' }) {
   const [currentPage, setCurrentPage] = React.useState(0);
@@ -9,7 +10,9 @@ function DreamPathPageMobile({ language = 'ko' }) {
       if (language === 'ko') {
         return `/DreamPath/Page/${pageNum}.svg`;
       }
-      return `/DreamPath/Multilingual/${language}/Page/${pageNum}.svg`;
+      // 언어 코드를 폴더명으로 변환 (ja -> Japan, zh -> China 등)
+      const folderName = LANGUAGE_FOLDER_MAP[language] || language;
+      return `/DreamPath/Multilingual/${folderName}/Page/${pageNum}.svg`;
     };
     
     return [

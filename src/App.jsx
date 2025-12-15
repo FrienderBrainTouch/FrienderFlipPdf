@@ -29,7 +29,7 @@ function LanguageRedirect() {
   const location = useLocation();
 
   useEffect(() => {
-    // 이미 언어 경로가 있으면 리다이렉트하지 않음
+    // 이미 언어 경로가 있거나 서브 페이지인 경우 리다이렉트하지 않음
     if (location.pathname !== '/') {
       return;
     }
@@ -69,6 +69,7 @@ function App() {
           {/* 기본 경로는 한국어 페이지로 포워딩 */}
           <Route path="*" element={<Navigate to="/ko" replace />} />
         </Routes>
+        {/* 챗봇 컴포넌트 */}
         <Chatbot />
       </Suspense>
     </>

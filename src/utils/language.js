@@ -57,7 +57,7 @@ export const getLanguageList = () => {
 };
 
 // 언어별 폴더명 매핑
-const LANGUAGE_FOLDER_MAP = {
+export const LANGUAGE_FOLDER_MAP = {
   ko: null, // 한국어는 기본 경로 사용
   en: 'English',
   ja: 'Japan',

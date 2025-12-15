@@ -12,6 +12,8 @@ export function getLanguage() {
     const langCode = browserLang.split('-')[0].toLowerCase();
     
     // 지원하는 언어 목록 (기본값: ko)
-    const supportedLanguages = ['ko', 'en', 'ja', 'zh-hans', 'es'];
-    return supportedLanguages.includes(langCode) ? langCode : 'ko';
+    // zh-hans, zh-cn 등은 zh로 변환
+    const supportedLanguages = ['ko', 'en', 'ja', 'zh', 'es'];
+    const normalizedLangCode = langCode === 'zh-hans' || langCode === 'zh-cn' ? 'zh' : langCode;
+    return supportedLanguages.includes(normalizedLangCode) ? normalizedLangCode : 'ko';
   }

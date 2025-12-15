@@ -2087,6 +2087,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea4(null)}
                   title={t('popupWithNumber').replace('{number}', '4-2-img')}
                 >
+                  {/* 이미지 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 <div 
@@ -2104,6 +2112,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea4(null)}
                   title={t('popupWithNumber').replace('{number}', '4-3-img')}
                 >
+                  {/* 이미지 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 <div 
@@ -2121,6 +2137,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onMouseLeave={() => setHoveredArea4(null)}
                   title={t('popupWithNumber').replace('{number}', '4-4-img')}
                 >
+                  {/* 이미지 아이콘 */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
                 
                 {/* 왼쪽 터치 영역 (4페이지는 왼쪽) */}

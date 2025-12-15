@@ -524,8 +524,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     if (navigator.share) {
       navigator
         .share({
-          title: 'Isover',
-          text: 'Isover에 대해 확인해보세요!',
+          title: 'Friender',
+          text: '프랜더 Friender 카탈로그에 대한 설명',
           url: window.location.href,
         })
         .catch(() => {
@@ -541,7 +541,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
    */
   const handleTocClick = () => {
     if (flipBookRef.current) {
-      flipBookRef.current.pageFlip().turnToPage(1); // 2번째 페이지(목차 페이지)로 이동
+      flipBookRef.current.pageFlip().turnToPage(0); // 1페이지로 이동
     }
   };
 
@@ -1757,8 +1757,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                     position: 'absolute',
                     top: '16%',
                     left: '7%',
-                    width: '65%',
-                    height: '17%'
+                    width: '50%',
+                    height: '11%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage2AreaClick(1)}
@@ -1790,7 +1790,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   style={{
                     position: 'absolute',
                     bottom: '23%',
-                    left: '38%',
+                    left: '40%',
                     width: '28%',
                     height: '17%'
                   }}
@@ -1807,7 +1807,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   style={{
                     position: 'absolute',
                     bottom: '4%',
-                    left: '5%',
+                    left: '7%',
                     width: '28%',
                     height: '17%'
                   }}
@@ -1824,9 +1824,9 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   style={{
                     position: 'absolute',
                     bottom: '4%',
-                    left: '39%',
-                    width: '25%',
-                    height: '16%'
+                    left: '40%',
+                    width: '28%',
+                    height: '17%'
                   }}
                   data-clickable="true"
                   onClick={() => handlePage2AreaClick(5)}
@@ -3014,7 +3014,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           </svg>
         </button>
         
-        <button
+        {/* 목차 버튼 숨김 처리 */}
+        {/* <button
           onClick={handleTocClick}
           className="w-8 h-8 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
           title={t('toc')}
@@ -3022,9 +3023,9 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
           </svg>
-        </button>
+        </button> */}
 
-        <button
+        {/* <button
           onClick={handleShareClick}
           className="w-8 h-8 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
           title={t('share')}
@@ -3104,8 +3105,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
             </svg>
           </button>
 
-          {/* 목차 버튼 */}
-          <button
+          {/* 목차 버튼 숨김 처리 */}
+          {/* <button
             onClick={handleTocClick}
             className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
             title={t('toc')}
@@ -3113,7 +3114,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
             </svg>
-          </button>
+          </button> */}
           
           {/* 공유 버튼 */}
           <button

@@ -2,50 +2,50 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import Frender3DModel from './Frender3DModel';
 import Chatbot from './Chatbot';
-import { getLanguageList, getLanguageFromPath, getLanguagePath, getPagePath, getPopupPath } from '../utils/language';
+import { getLanguageList, getLanguageFromPath, getLanguagePath, getPagePath, getPopupPath, getPdfPath } from '../utils/language';
 import { getTranslation } from '../utils/translations';
 
-const DRONE_VIDEO_PLAYLIST = [
+const getDroneVideoPlaylist = (t) => [
   {
-    title: '드론 이론의 개념',
-    category: '드론 이론',
-    description: '비행 원리를 이해하기 위한 가장 기초적인 개념을 정리했습니다.',
+    title: t('droneTheoryConcept'),
+    category: t('droneTheory'),
+    description: t('droneTheoryConceptDesc'),
     url: 'https://youtu.be/hmxy1YirO4o?si=M1xnCj9c97hTthcf',
   },
   {
-    title: '드론 이론의 구조',
-    category: '드론 이론',
-    description: '기체를 구성하는 핵심 구조와 역할을 확인해보세요.',
+    title: t('droneTheoryStructure'),
+    category: t('droneTheory'),
+    description: t('droneTheoryStructureDesc'),
     url: 'https://youtu.be/d_sz10Lu7cs?si=APcTWNFVp6H5dADX',
   },
   {
-    title: '드론 이론의 원리',
-    category: '드론 이론',
-    description: '비행 제어와 안정화 메커니즘을 자세히 다룹니다.',
+    title: t('droneTheoryPrinciple'),
+    category: t('droneTheory'),
+    description: t('droneTheoryPrincipleDesc'),
     url: 'https://youtu.be/VHH91q3uO0I?si=1hrRYfx0IC-xwb3L',
   },
   {
-    title: '드론 이론의 안전수칙',
-    category: '드론 이론',
-    description: '안전한 비행을 위한 필수 규칙을 체크하세요.',
+    title: t('droneTheorySafety'),
+    category: t('droneTheory'),
+    description: t('droneTheorySafetyDesc'),
     url: 'https://youtu.be/9E1OXKQhXQg?si=hugFJTE2P0uMd3Y6',
   },
   {
-    title: '드론 실습의 조난자 찾기',
-    category: '드론 실습',
-    description: '실전 상황을 가정한 조난자 수색 미션 영상을 제공합니다.',
+    title: t('dronePracticeRescue'),
+    category: t('dronePractice'),
+    description: t('dronePracticeRescueDesc'),
     url: 'https://youtu.be/Z1B4cOrv84c?si=m0SQWZlrjC5aWjSI',
   },
   {
-    title: '드론 실습의 불끄기',
-    category: '드론 실습',
-    description: '화재 대응 훈련을 위한 드론 활용 장면을 확인하세요.',
+    title: t('dronePracticeFire'),
+    category: t('dronePractice'),
+    description: t('dronePracticeFireDesc'),
     url: 'https://youtu.be/bEeKg5p4fJwhttps://youtu.be/bEeKg5p4fJw?si=RQC6FMFBOsErjkBm',
   },
   {
-    title: '드론 트랙',
-    category: '드론 트랙',
-    description: '도시 배경을 활용한 실습 장면을 담았습니다.',
+    title: t('droneTrack'),
+    category: t('droneTrack'),
+    description: t('droneTrackDesc'),
     url: 'https://youtu.be/_ruoKMR3ZEU?si=A2XLRpHrCCuURJiQ',
   },
 ];
@@ -61,31 +61,31 @@ const getYouTubeEmbedUrl = (url) => {
   return videoId ? `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1` : '';
 };
 
-const PAGE6_MEDIA_OVERRIDES = {
+const getPage6MediaOverrides = (t) => ({
   5: {
     src: '/FrienderFile/VideoFile/WorldGIF.gif',
-    alt: 'World GIF 애니메이션',
+    alt: t('worldGifAnimation'),
   },
   6: {
     src: '/FrienderFile/VideoFile/FrinederGIF1.gif',
-    alt: 'Friender GIF 애니메이션',
+    alt: t('frienderGifAnimation'),
   },
-};
+});
 
-const PAGE7_MEDIA_OVERRIDES = {
+const getPage7MediaOverrides = (t) => ({
   5: {
     src: '/FrienderFile/VideoFile/AIStory.gif',
-    alt: 'AI Story GIF 애니메이션',
+    alt: t('aiStoryGifAnimation'),
   },
   6: {
     src: '/FrienderFile/VideoFile/DreampathAI.gif',
-    alt: 'DreamPath AI GIF 애니메이션',
+    alt: t('dreampathAiGifAnimation'),
   },
   7: {
     src: '/FrienderFile/VideoFile/InnoWorks.gif',
-    alt: 'InnoWorks GIF 애니메이션',
+    alt: t('innoWorksGifAnimation'),
   },
-};
+});
 
 const NAVER_MAP_ADDRESS = '경기도 부천시 원미구 길주로 17, 웹툰융합센터 6층 608호';
 const NAVER_MAP_COORDINATES = {
@@ -214,11 +214,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   const [selectedPage6Area, setSelectedPage6Area] = useState(null);
   const [isPage6ModalJustOpened, setIsPage6ModalJustOpened] = useState(false);
   const [isPage6ModalJustClosed, setIsPage6ModalJustClosed] = useState(false);
+  const page6MediaOverrides = getPage6MediaOverrides(t);
   const page6MediaOverride = useMemo(() => {
-    return selectedPage6Area && PAGE6_MEDIA_OVERRIDES[selectedPage6Area] 
-      ? PAGE6_MEDIA_OVERRIDES[selectedPage6Area] 
+    return selectedPage6Area && page6MediaOverrides[selectedPage6Area] 
+      ? page6MediaOverrides[selectedPage6Area] 
       : null;
-  }, [selectedPage6Area]);
+  }, [selectedPage6Area, page6MediaOverrides]);
   
   // 추가 영역 이미지 모달 상태 관리 (돋보기 없이 단순 이미지 표시)
   const [isAdditionalImageModalOpen, setIsAdditionalImageModalOpen] = useState(false);
@@ -229,7 +230,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   const [selectedPage7Area, setSelectedPage7Area] = useState(null);
   const [isPage7ModalJustOpened, setIsPage7ModalJustOpened] = useState(false);
   const [isPage7ModalJustClosed, setIsPage7ModalJustClosed] = useState(false);
-  const page7MediaOverride = selectedPage7Area ? PAGE7_MEDIA_OVERRIDES[selectedPage7Area] : null;
+  const page7MediaOverrides = getPage7MediaOverrides(t);
+  const page7MediaOverride = selectedPage7Area ? page7MediaOverrides[selectedPage7Area] : null;
   
   // 7페이지 영상 상태 관리
   const [showVideo, setShowVideo] = useState(false);
@@ -494,61 +496,61 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     },
     {
       id: 1,
-      name: "페이지 1",
+      name: t('page1'),
       backgroundImage: getPagePath(currentLanguage, 2),
       overlays: []
     },
     {
       id: 2,
-      name: "페이지 2", 
+      name: t('page2'), 
       backgroundImage: getPagePath(currentLanguage, 3),
       overlays: []
     },
     {
       id: 3,
-      name: "페이지 3",
+      name: t('page3'),
       backgroundImage: getPagePath(currentLanguage, 4),
       overlays: []
     },
     {
       id: 4,
-      name: "페이지 4",
+      name: t('page4'),
       backgroundImage: getPagePath(currentLanguage, 5),
       overlays: []
     },
     {
       id: 5,
-      name: "페이지 5",
+      name: t('page5'),
       backgroundImage: getPagePath(currentLanguage, 6),
       overlays: []
     },
     {
       id: 6,
-      name: "페이지 6",
+      name: t('page6'),
       backgroundImage: getPagePath(currentLanguage, 7),
       overlays: []
     },
     {
       id: 7,
-      name: "페이지 7",
+      name: t('page7'),
       backgroundImage: getPagePath(currentLanguage, 8),
       overlays: []
     },
     {
       id: 8,
-      name: "페이지 8",
+      name: t('page8'),
       backgroundImage: getPagePath(currentLanguage, 9),
       overlays: []
     },
     {
       id: 9,
-      name: "페이지 9",
+      name: t('page9'),
       backgroundImage: getPagePath(currentLanguage, 10),
       overlays: []
     },
     {
       id: 10,
-      name: "페이지 10",
+      name: t('page10'),
       backgroundImage: getPagePath(currentLanguage, 11),
       overlays: []
     }
@@ -712,7 +714,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    * 프린터 버튼 클릭 핸들러 - PDF를 열고 프린트
    */
   const handlePrintClick = () => {
-    const pdfUrl = "/FrienderFile/Friender-Pdf/프랜더-카탈로그.pdf";
+    const pdfUrl = getPdfPath(currentLanguage);
     const pdfWindow = window.open(pdfUrl, "_blank");
     if (pdfWindow) {
       pdfWindow.onload = () => {
@@ -725,9 +727,17 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    * PDF 다운로드 버튼 클릭 핸들러
    */
   const handleDownloadClick = () => {
+    const pdfPath = getPdfPath(currentLanguage);
+    const pdfFilenameMap = {
+      ko: '프랜더-카탈로그.pdf',
+      en: 'Friender-Catalog.pdf',
+      ja: 'Friender-カタログ.pdf',
+      zh: 'Friender-目录.pdf',
+      es: 'Friender-Catalogo.pdf',
+    };
     const link = document.createElement("a");
-    link.href = "/FrienderFile/Friender-Pdf/프랜더-카탈로그.pdf";
-    link.download = "프랜더-카탈로그.pdf";
+    link.href = pdfPath;
+    link.download = pdfFilenameMap[currentLanguage] || pdfFilenameMap['ko'];
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -1327,7 +1337,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
           {/* Friender 로고 */}
           <div className="w-full h-full flex flex-col items-center justify-center">
             <img 
-              src="/FrienderFile/Interactive/Freinder-Logo-L-G.png"
+              src="/FrienderFile/Interactive/Friender-Logo-L.png"
               alt="Friender Logo"
               className="max-w-full max-h-full object-contain"
               style={{ opacity: logoOpacity }}
@@ -1433,7 +1443,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             e.stopPropagation();
                             handlePage2AreaClick(1);
                           }}
-                          title="2-1 팝업"
+                          title={t('popupWithNumber').replace('{number}', '2-1')}
                         >
                         </div>
                         
@@ -1464,7 +1474,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage2AreaClick(2);
                           }}
-                          title="2-2 팝업"
+                          title={t('popupWithNumber').replace('{number}', '2-2')}
                         >
                         </div>
                         
@@ -1495,7 +1505,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage2AreaClick(3);
                           }}
-                          title="2-3 팝업"
+                          title={t('popupWithNumber').replace('{number}', '2-3')}
                         >
                         </div>
                         
@@ -1526,7 +1536,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage2AreaClick(4);
                           }}
-                          title="2-4 팝업"
+                          title={t('popupWithNumber').replace('{number}', '2-4')}
                         >
                         </div>
                         
@@ -1557,7 +1567,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage2AreaClick(5);
                           }}
-                          title="2-5 팝업"
+                          title={t('popupWithNumber').replace('{number}', '2-5')}
                         >
                         </div>
                         
@@ -1588,7 +1598,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage2AreaClick(6);
                           }}
-                          title="2-6 팝업"
+                          title={t('popupWithNumber').replace('{number}', '2-6')}
                         >
                         </div>
                       </>
@@ -1781,7 +1791,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage4AreaClick(1);
                           }}
-                          title="4-1 팝업"
+                          title={t('popupWithNumber').replace('{number}', '4-1')}
                         >
                         </div>
                         
@@ -1812,7 +1822,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage4AreaClick(2);
                           }}
-                          title="4-2 팝업"
+                          title={t('popupWithNumber').replace('{number}', '4-2')}
                         >
                         </div>
                         
@@ -1843,7 +1853,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage4AreaClick(3);
                           }}
-                          title="4-1-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '4-1-img')}
                         >
                         </div>
                         
@@ -1874,7 +1884,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage4AreaClick(4);
                           }}
-                          title="4-2-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '4-2-img')}
                         >
                         </div>
                         
@@ -1905,7 +1915,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage4AreaClick(5);
                           }}
-                          title="4-3-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '4-3-img')}
                         >
                         </div>
                         
@@ -1936,7 +1946,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage4AreaClick(6);
                           }}
-                          title="4-4-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '4-4-img')}
                         >
                         </div>
                       </>
@@ -1973,7 +1983,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage5AreaClick(1);
                           }}
-                          title="5-1 팝업"
+                          title={t('popupWithNumber').replace('{number}', '5-1')}
                         >
                         </div>
                         
@@ -2004,7 +2014,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage5AreaClick(2);
                           }}
-                          title="5-2 팝업"
+                          title={t('popupWithNumber').replace('{number}', '5-2')}
                         >
                         </div>
 
@@ -2035,7 +2045,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage5AreaClick(3);
                           }}
-                          title="5-1-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '5-1-img')}
                         >
                         </div>
                         
@@ -2066,7 +2076,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage5AreaClick(4);
                           }}
-                          title="5-2-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '5-2-img')}
                         >
                         </div>
                         
@@ -2097,7 +2107,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage5AreaClick(5);
                           }}
-                          title="5-3-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '5-3-img')}
                         >
                         </div>
                         
@@ -2128,7 +2138,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage5AreaClick(6);
                           }}
-                          title="5-4-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '5-4-img')}
                         >
                         </div>
                       </>
@@ -2165,7 +2175,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage6AreaClick(1);
                           }}
-                          title="6-1 팝업"
+                          title={t('popupWithNumber').replace('{number}', '6-1')}
                         >
                         </div>
                         
@@ -2196,7 +2206,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage6AreaClick(2);
                           }}
-                          title="6-2 팝업"
+                          title={t('popupWithNumber').replace('{number}', '6-2')}
                         >
                         </div>
                         
@@ -2227,7 +2237,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage6AreaClick(3);
                           }}
-                          title="6-3 팝업"
+                          title={t('popupWithNumber').replace('{number}', '6-3')}
                         >
                         </div>
                         
@@ -2258,7 +2268,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage6AreaClick(4);
                           }}
-                          title="6-4 팝업"
+                          title={t('popupWithNumber').replace('{number}', '6-4')}
                         >
                         </div>
                         
@@ -2289,7 +2299,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage6AreaClick(5);
                           }}
-                          title="6-1-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '6-1-img')}
                         >
                         </div>
                         
@@ -2320,7 +2330,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage6AreaClick(6);
                           }}
-                          title="6-2-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '6-2-img')}
                         >
                         </div>
                         
@@ -2351,7 +2361,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage6AreaClick(7);
                           }}
-                          title="6-3-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '6-3-img')}
                         >
                         </div>
                       </>
@@ -2388,7 +2398,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage7AreaClick(1);
                           }}
-                          title="7-1 팝업"
+                          title={t('popupWithNumber').replace('{number}', '7-1')}
                         >
                         </div>
                         
@@ -2419,7 +2429,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage7AreaClick(2);
                           }}
-                          title="7-2 팝업"
+                          title={t('popupWithNumber').replace('{number}', '7-2')}
                         >
                         </div>
                         
@@ -2450,7 +2460,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage7AreaClick(3);
                           }}
-                          title="7-3 팝업"
+                          title={t('popupWithNumber').replace('{number}', '7-3')}
                         >
                         </div>
                         
@@ -2481,7 +2491,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage7AreaClick(4);
                           }}
-                          title="7-4 팝업"
+                          title={t('popupWithNumber').replace('{number}', '7-4')}
                         >
                         </div>
                         
@@ -2512,7 +2522,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage7AreaClick(5);
                           }}
-                          title="7-1-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '7-1-img')}
                         >
                         </div>
                         
@@ -2543,7 +2553,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage7AreaClick(6);
                           }}
-                          title="7-2-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '7-2-img')}
                         >
                         </div>
                         
@@ -2574,7 +2584,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage7AreaClick(7);
                           }}
-                          title="7-3-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '7-3-img')}
                         >
                         </div>
                       </>
@@ -2611,7 +2621,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage8AreaClick(1);
                           }}
-                          title="8-1 팝업"
+                          title={t('popupWithNumber').replace('{number}', '8-1')}
                         >
                         </div>
                         
@@ -2642,7 +2652,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage8AreaClick(2);
                           }}
-                          title="8-2 팝업"
+                          title={t('popupWithNumber').replace('{number}', '8-2')}
                         >
                         </div>
                         
@@ -2673,7 +2683,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage8AreaClick(3);
                           }}
-                          title="8-3 팝업"
+                          title={t('popupWithNumber').replace('{number}', '8-3')}
                         >
                         </div>
                         
@@ -2704,7 +2714,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage8AreaClick(4);
                           }}
-                          title="8-1-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '8-1-img')}
                         >
                         </div>
                       </>
@@ -2741,7 +2751,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage9AreaClick(1);
                           }}
-                          title="9-1 팝업"
+                          title={t('popupWithNumber').replace('{number}', '9-1')}
                         >
                         </div>
                         
@@ -2772,7 +2782,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage9AreaClick(2);
                           }}
-                          title="9-2 팝업"
+                          title={t('popupWithNumber').replace('{number}', '9-2')}
                         >
                         </div>
                         
@@ -2803,7 +2813,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage9AreaClick(3);
                           }}
-                          title="9-3 팝업"
+                          title={t('popupWithNumber').replace('{number}', '9-3')}
                         >
                         </div>
                         
@@ -2834,7 +2844,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage9AreaClick(4);
                           }}
-                          title="9-4 팝업"
+                          title={t('popupWithNumber').replace('{number}', '9-4')}
                         >
                         </div>
                       </>
@@ -2871,7 +2881,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage10AreaClick(1);
                           }}
-                          title="10-1 팝업"
+                          title={t('popupWithNumber').replace('{number}', '10-1')}
                         >
                         </div>
                         
@@ -2902,7 +2912,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage10AreaClick(2);
                           }}
-                          title="10-2 팝업"
+                          title={t('popupWithNumber').replace('{number}', '10-2')}
                         >
                         </div>
                         
@@ -2933,7 +2943,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage10AreaClick(3);
                           }}
-                          title="10-1-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '10-1-img')}
                         >
                         </div>
                         
@@ -2964,7 +2974,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage10AreaClick(4);
                           }}
-                          title="10-2-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '10-2-img')}
                         >
                         </div>
                         
@@ -2995,7 +3005,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage10AreaClick(5);
                           }}
-                          title="10-3-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '10-3-img')}
                         >
                         </div>
                         
@@ -3026,7 +3036,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage10AreaClick(6);
                           }}
-                          title="10-4-img 팝업"
+                          title={t('popupWithNumber').replace('{number}', '10-4-img')}
                         >
                         </div>
                       </>
@@ -3063,7 +3073,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage11AreaClick();
                           }}
-                          title="11-1 팝업"
+                          title={t('popupWithNumber').replace('{number}', '11-1')}
                         >
                         </div>
                       </>
@@ -3106,7 +3116,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               <button
                 onClick={handleDownloadClick}
                 className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
-                title="PDF 다운로드"
+                title={t('download')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -3210,14 +3220,9 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 alt={`영역 ${selectedArea}`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
-                  // JPG가 없으면 PNG 시도
-                  if (e.target.src.includes('.jpg')) {
-                    e.target.src = getPopupPath(currentLanguage, `3-${selectedArea}.jpg`);
-                  } else {
-                    // 이미지 로드 실패 시 메시지 표시
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
-                  }
+                  // 이미지 로드 실패 시 메시지 표시
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'block';
                 }}
               />
               
@@ -3279,7 +3284,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                         height: '16%'
                       }}
                     >
-                      <Frender3DModel 
+                      <Frender3DModel language={currentLanguage} 
                         isVisible={true} 
                         opacity={1}
                         scale={1}
@@ -3324,7 +3329,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
+                <p>{t('imageLoadFailed')}</p>
                 <p className="text-sm">경로: /FrienderFile/Popup/3-{selectedArea}.jpg 또는 .png</p>
               </div>
             </div>
@@ -3373,7 +3378,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 <div className="relative w-full h-full">
                   {selectedAdditionalArea === 7 && (
                     <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]">
-                      <Frender3DModel 
+                      <Frender3DModel language={currentLanguage} 
                         isVisible={true} 
                         opacity={1}
                         scale={1}
@@ -3390,7 +3395,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   
                   {selectedAdditionalArea === 8 && (
                     <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]">
-                    <Frender3DModel 
+                    <Frender3DModel language={currentLanguage} 
                       isVisible={true} 
                       opacity={1}
                       scale={1}
@@ -3407,7 +3412,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   
                   {selectedAdditionalArea === 9 && (
                     <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]">
-                    <Frender3DModel 
+                    <Frender3DModel language={currentLanguage} 
                       isVisible={true} 
                       opacity={1}
                       scale={1}
@@ -3424,7 +3429,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   
                   {selectedAdditionalArea === 10 && (
                     <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]">
-                    <Frender3DModel 
+                    <Frender3DModel language={currentLanguage} 
                       isVisible={true} 
                       opacity={1}
                       scale={1}
@@ -3455,7 +3460,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
+                <p>{t('imageLoadFailed')}</p>
                 <p className="text-sm">경로: /FrienderFile/Popup/3-{selectedAdditionalArea}.jpg</p>
               </div>
             </div>
@@ -3504,7 +3509,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
+                <p>{t('imageLoadFailed')}</p>
                 <p className="text-sm">경로: /FrienderFile/Popup/4-{selectedPage4Area}.jpg</p>
               </div>
             </div>
@@ -3539,7 +3544,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             <div className="relative flex items-center justify-center">
               <img
                 src={getPopupPath(currentLanguage, '4-2.jpg')}
-                alt="영역 2 (테스트용)"
+                alt={t('area2Test')}
                 className="max-w-full min-h-[40vh] max-h-[75vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
                   // 이미지 로드 실패 시 메시지 표시
@@ -3553,7 +3558,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
+                <p>{t('imageLoadFailed')}</p>
                 <p className="text-sm">경로: /FrienderFile/Popup/4-2.jpg</p>
               </div>
             </div>
@@ -3600,7 +3605,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
+                <p>{t('imageLoadFailed')}</p>
                 <p className="text-sm">경로: /FrienderFile/Popup/5-2.jpg</p>
               </div>
             </div>
@@ -3668,7 +3673,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               
               {/* 3D 모델 - 배경 이미지 위에 표시 */}
               <div className={`z-10 w-full h-full ${currentPartModel ? 'absolute inset-0' : 'relative'}`}>
-                <Frender3DModel 
+                <Frender3DModel language={currentLanguage} 
                   isVisible={true} 
                   opacity={0.9}
                   scale={0.7}
@@ -3848,7 +3853,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     selectedPage6Area === 4 ? '6-4.jpg' :
                     '6-1.jpg'
                   )}
-                  alt={`영역 ${selectedPage6Area} 팝업`}
+                  alt={t('popupArea').replace('{area}', selectedPage6Area)}
                   className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                   onError={(e) => {
                     // 이미지 로드 실패 시 메시지 표시
@@ -3861,15 +3866,15 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
+                <p>{t('imageLoadFailed')}</p>
                 <p className="text-sm">
                   {(() => {
-                    const currentOverride = selectedPage6Area && PAGE6_MEDIA_OVERRIDES[selectedPage6Area] 
-                      ? PAGE6_MEDIA_OVERRIDES[selectedPage6Area] 
+                    const currentOverride = selectedPage6Area && page6MediaOverrides[selectedPage6Area] 
+                      ? page6MediaOverrides[selectedPage6Area] 
                       : null;
                     return currentOverride
-                      ? `경로: ${currentOverride.src}`
-                      : `영역 ${selectedPage6Area}의 팝업 파일을 찾을 수 없습니다.`;
+                      ? `${t('path')}: ${currentOverride.src}`
+                      : t('popupFileNotFound').replace('{area}', selectedPage6Area);
                   })()}
                 </p>
               </div>
@@ -3892,7 +3897,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             <div className="w-full h-full relative">
               {/* 3D 모델 */}
               <div className="w-full h-full">
-                <Frender3DModel 
+                <Frender3DModel language={currentLanguage} 
                   isVisible={true} 
                   opacity={0.9}
                   scale={0.7}
@@ -4012,14 +4017,9 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   alt={`${selectedImageType} 이미지`}
                   className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
                   onError={(e) => {
-                    // JPG가 없으면 기본 이미지 사용
-                    if (e.target.src.includes('.jpg')) {
-                      e.target.src = getPopupPath(currentLanguage, `${selectedImageType}.jpg`);
-                    } else {
-                      // 이미지 로드 실패 시 메시지 표시
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'block';
-                    }
+                    // 이미지 로드 실패 시 메시지 표시
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'block';
                   }}
                 />
               )}
@@ -4027,7 +4027,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
+                <p>{t('imageLoadFailed')}</p>
                 <p className="text-sm">경로: /FrienderFile/Popup/{selectedImageType}.jpg 또는 .png</p>
               </div>
             </div>
@@ -4062,20 +4062,16 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 alt={`${selectedAdditionalImageType} 이미지`}
                 className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
-                  // JPG가 없으면 PNG 시도
-                  if (e.target.src.endsWith('.jpg')) {
-                    e.target.src = getPopupPath(currentLanguage, `${selectedAdditionalImageType}.jpg`);
-                  } else {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
-                  }
+                  // 이미지 로드 실패 시 메시지 표시
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'block';
                 }}
               />
               <div
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
+                <p>{t('imageLoadFailed')}</p>
                 <p className="text-sm">경로: /FrienderFile/Popup/{selectedAdditionalImageType}.(png|jpg)</p>
               </div>
             </div>
@@ -4116,7 +4112,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               
               {/* 3D 모델 - 배경 이미지 위에 표시 */}
               <div className="absolute inset-0 z-10 w-full h-full">
-                <Frender3DModel 
+                <Frender3DModel language={currentLanguage} 
                   isVisible={true} 
                   opacity={0.9}
                   scale={0.7}
@@ -4340,7 +4336,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             <div className="flex items-center justify-center">
               <img
                 src={getPopupPath(currentLanguage, `2-${selectedPage2Area}.jpg`)}
-                alt={`2-${selectedPage2Area} 팝업`}
+                alt={t('popupWithNumber').replace('{number}', `2-${selectedPage2Area}`)}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
                   e.target.style.display = 'none';
@@ -4353,7 +4349,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
+                <p>{t('imageLoadFailed')}</p>
                 <p className="text-sm">경로: /FrienderFile/Popup/2-{selectedPage2Area}.jpg</p>
               </div>
             </div>
@@ -4473,7 +4469,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   selectedPage3Area === 5 ? '3-5.jpg' :
                   '3-1.jpg'
                 )}
-                alt={`3-${selectedPage3Area} 팝업`}
+                alt={t('popupWithNumber').replace('{number}', `3-${selectedPage3Area}`)}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
                   e.target.style.display = 'none';
@@ -4486,7 +4482,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
+                <p>{t('imageLoadFailed')}</p>
                 <p className="text-sm">경로: /FrienderFile/Popup/3-{selectedPage3Area}.jpg 또는 .png</p>
               </div>
             </div>
@@ -4601,8 +4597,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               {selectedPage4Area === 3 ? (
                 <div className="w-full space-y-6">
                   <div className="text-center space-y-2">
-                    <p className="text-2xl font-semibold text-gray-900">드론 학습 콘텐츠</p>
-                    <p className="text-sm text-gray-600">이론부터 실습, 트랙 주행까지 이어지는 7편의 플레이리스트입니다.</p>
+                    <p className="text-2xl font-semibold text-gray-900">{t('droneLearningContent')}</p>
+                    <p className="text-sm text-gray-600">{t('dronePlaylistDescription')}</p>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -4653,7 +4649,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                       selectedPage4Area === 6 ? '4-3-img.jpg' :
                       '4-1.jpg'
                     )}
-                    alt={`4-${selectedPage4Area} 팝업`}
+                    alt={t('popupWithNumber').replace('{number}', `4-${selectedPage4Area}`)}
                     className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-lg"
                     onError={(e) => {
                       // 이미지 로드 실패 시 메시지 표시
@@ -4666,7 +4662,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     className="hidden text-gray-500 text-center"
                     style={{ display: 'none' }}
                   >
-                    <p>이미지를 불러올 수 없습니다.</p>
+                    <p>{t('imageLoadFailed')}</p>
                     <p className="text-sm">경로: /FrienderFile/Popup/4-{selectedPage4Area}.jpg</p>
                   </div>
                 </>
@@ -4789,7 +4785,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   selectedPage5Area === 6 ? '5-4-img.jpg' :
                   '5-1.jpg'
                 )}
-                alt={`5-${selectedPage5Area} 팝업`}
+                alt={t('popupWithNumber').replace('{number}', `5-${selectedPage5Area}`)}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
                   e.target.style.display = 'none';
@@ -4802,7 +4798,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
+                <p>{t('imageLoadFailed')}</p>
                 <p className="text-sm">경로: /FrienderFile/Popup/5-{selectedPage5Area}.jpg</p>
               </div>
             </div>
@@ -4936,7 +4932,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     selectedPage7Area === 7 ? '7-3-img.jpg' :
                     '7-1.jpg'
                   )}
-                  alt={`7-${selectedPage7Area} 팝업`}
+                  alt={t('popupWithNumber').replace('{number}', `7-${selectedPage7Area}`)}
                   className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                   onError={(e) => {
                     // 이미지 로드 실패 시 메시지 표시
@@ -4949,11 +4945,11 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
+                <p>{t('imageLoadFailed')}</p>
                 <p className="text-sm">
                   {page7MediaOverride
-                    ? `경로: ${page7MediaOverride.src}`
-                    : `경로: /FrienderFile/Popup/7-${selectedPage7Area}.jpg`}
+                    ? `${t('path')}: ${page7MediaOverride.src}`
+                    : `${t('path')}: /FrienderFile/Popup/7-${selectedPage7Area}.jpg`}
                 </p>
               </div>
             </div>
@@ -5072,7 +5068,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   selectedPage8Area === 4 ? '8-1-img.jpg' :
                   '8-1.png'
                 )}
-                alt={`8-${selectedPage8Area} 팝업`}
+                alt={t('popupWithNumber').replace('{number}', `8-${selectedPage8Area}`)}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
                   e.target.style.display = 'none';
@@ -5085,7 +5081,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
+                <p>{t('imageLoadFailed')}</p>
                 <p className="text-sm">경로: /FrienderFile/Popup/8-{selectedPage8Area}.jpg</p>
               </div>
             </div>
@@ -5198,7 +5194,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             <div className="flex items-center justify-center">
               <img
                 src={getPopupPath(currentLanguage, `9-${selectedPage9Area}.jpg`)}
-                alt={`9-${selectedPage9Area} 팝업`}
+                alt={t('popupWithNumber').replace('{number}', `9-${selectedPage9Area}`)}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
                   e.target.style.display = 'none';
@@ -5211,7 +5207,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
+                <p>{t('imageLoadFailed')}</p>
                 <p className="text-sm">경로: /FrienderFile/Popup/9-{selectedPage9Area}.jpg</p>
               </div>
             </div>
@@ -5332,7 +5328,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   selectedPage10Area === 6 ? '10-4-img.jpg' :
                   '10-1.jpg'
                 )}
-                alt={`10-${selectedPage10Area} 팝업`}
+                alt={t('popupWithNumber').replace('{number}', `10-${selectedPage10Area}`)}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
                   e.target.style.display = 'none';
@@ -5345,7 +5341,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 className="hidden text-gray-500 text-center"
                 style={{ display: 'none' }}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
+                <p>{t('imageLoadFailed')}</p>
                 <p className="text-sm">경로: /FrienderFile/Popup/10-{selectedPage10Area}.jpg</p>
               </div>
             </div>
@@ -5461,7 +5457,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 <div className="flex flex-col items-center gap-3">
                   <img
                     src={getPopupPath(currentLanguage, '11-1.jpg')}
-                    alt="11-1 팝업"
+                    alt={t('popupWithNumber').replace('{number}', '11-1')}
                     className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                     onError={(e) => {
                       // 이미지 로드 실패 시 메시지 표시
@@ -5473,7 +5469,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     className="hidden text-gray-500 text-center"
                     style={{ display: 'none' }}
                   >
-                    <p>이미지를 불러올 수 없습니다.</p>
+                    <p>{t('imageLoadFailed')}</p>
                     <p className="text-sm">경로: /FrienderFile/Popup/11-1.jpg</p>
                   </div>
                 </div>
@@ -5538,7 +5534,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
       )}
 
       {/* Dialogflow 챗봇 플로팅 버튼 */}
-      <Chatbot />
+      <Chatbot language={currentLanguage} />
     </div>
   );
 }

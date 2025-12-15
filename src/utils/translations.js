@@ -35,6 +35,73 @@ export const translations = {
     selectPart: '파트를 선택해보세요!',
     close: '닫기',
     mapNotVisible: '지도가 보이지 않으면 아래 버튼을 눌러 새 창에서 확인해주세요.',
+    
+    // 드론 비디오 플레이리스트
+    droneTheoryConcept: '드론 이론의 개념',
+    droneTheory: '드론 이론',
+    droneTheoryConceptDesc: '비행 원리를 이해하기 위한 가장 기초적인 개념을 정리했습니다.',
+    droneTheoryStructure: '드론 이론의 구조',
+    droneTheoryStructureDesc: '기체를 구성하는 핵심 구조와 역할을 확인해보세요.',
+    droneTheoryPrinciple: '드론 이론의 원리',
+    droneTheoryPrincipleDesc: '비행 제어와 안정화 메커니즘을 자세히 다룹니다.',
+    droneTheorySafety: '드론 이론의 안전수칙',
+    droneTheorySafetyDesc: '안전한 비행을 위한 필수 규칙을 체크하세요.',
+    dronePracticeRescue: '드론 실습의 조난자 찾기',
+    dronePractice: '드론 실습',
+    dronePracticeRescueDesc: '실전 상황을 가정한 조난자 수색 미션 영상을 제공합니다.',
+    dronePracticeFire: '드론 실습의 불끄기',
+    dronePracticeFireDesc: '화재 대응 훈련을 위한 드론 활용 장면을 확인하세요.',
+    droneTrack: '드론 트랙',
+    droneTrackDesc: '도시 배경을 활용한 실습 장면을 담았습니다.',
+    
+    // 미디어 alt 텍스트
+    worldGifAnimation: 'World GIF 애니메이션',
+    frienderGifAnimation: 'Friender GIF 애니메이션',
+    aiStoryGifAnimation: 'AI Story GIF 애니메이션',
+    dreampathAiGifAnimation: 'DreamPath AI GIF 애니메이션',
+    innoWorksGifAnimation: 'InnoWorks GIF 애니메이션',
+    
+    // 챗봇
+    chatbotTitle: 'E카탈로그 도우미',
+    chatbotLoading: '로딩 중...',
+    chatbotLoadFailed: '로딩 실패',
+    
+    // 3D 모델
+    modelLoading: '3D 모델 로딩 중...',
+    modelLoadFailed: '3D 모델 로딩 실패',
+    modelRetry: '다시 시도',
+    modelLoadingLong: '로딩이 오래 걸리고 있습니다...',
+    modelProcessing: '처리 중...',
+    
+    // 추가 네비게이션
+    alreadyLastPage: '이미 마지막 페이지입니다',
+    
+    // 페이지 이름
+    page1: '페이지 1',
+    page2: '페이지 2',
+    page3: '페이지 3',
+    page4: '페이지 4',
+    page5: '페이지 5',
+    page6: '페이지 6',
+    page7: '페이지 7',
+    page8: '페이지 8',
+    page9: '페이지 9',
+    page10: '페이지 10',
+    
+    // 에러 메시지
+    imageLoadFailed: '이미지를 불러올 수 없습니다.',
+    path: '경로',
+    popupFileNotFound: '영역 {area}의 팝업 파일을 찾을 수 없습니다.',
+    area2Test: '영역 2 (테스트용)',
+    
+    // 드론 콘텐츠
+    droneLearningContent: '드론 학습 콘텐츠',
+    dronePlaylistDescription: '이론부터 실습, 트랙 주행까지 이어지는 7편의 플레이리스트입니다.',
+    
+    // 팝업 관련
+    popup: '팝업',
+    popupArea: '영역 {area} 팝업',
+    popupWithNumber: '{number} 팝업',
   },
   
   en: {
@@ -72,6 +139,73 @@ export const translations = {
     selectPart: 'Select a Part!',
     close: 'Close',
     mapNotVisible: 'If the map is not visible, please click the button below to open it in a new window.',
+    
+    // 드론 비디오 플레이리스트
+    droneTheoryConcept: 'Drone Theory: Concept',
+    droneTheory: 'Drone Theory',
+    droneTheoryConceptDesc: 'Basic concepts for understanding flight principles.',
+    droneTheoryStructure: 'Drone Theory: Structure',
+    droneTheoryStructureDesc: 'Check the core structure and role of the airframe.',
+    droneTheoryPrinciple: 'Drone Theory: Principle',
+    droneTheoryPrincipleDesc: 'Detailed coverage of flight control and stabilization mechanisms.',
+    droneTheorySafety: 'Drone Theory: Safety Rules',
+    droneTheorySafetyDesc: 'Check essential rules for safe flight.',
+    dronePracticeRescue: 'Drone Practice: Rescue Mission',
+    dronePractice: 'Drone Practice',
+    dronePracticeRescueDesc: 'Rescue mission video assuming real-world scenarios.',
+    dronePracticeFire: 'Drone Practice: Fire Extinguishing',
+    dronePracticeFireDesc: 'Check drone usage scenes for fire response training.',
+    droneTrack: 'Drone Track',
+    droneTrackDesc: 'Practice scenes using urban backgrounds.',
+    
+    // 미디어 alt 텍스트
+    worldGifAnimation: 'World GIF Animation',
+    frienderGifAnimation: 'Friender GIF Animation',
+    aiStoryGifAnimation: 'AI Story GIF Animation',
+    dreampathAiGifAnimation: 'DreamPath AI GIF Animation',
+    innoWorksGifAnimation: 'InnoWorks GIF Animation',
+    
+    // 챗봇
+    chatbotTitle: 'E-Catalog Assistant',
+    chatbotLoading: 'Loading...',
+    chatbotLoadFailed: 'Load Failed',
+    
+    // 3D 모델
+    modelLoading: 'Loading 3D Model...',
+    modelLoadFailed: '3D Model Load Failed',
+    modelRetry: 'Retry',
+    modelLoadingLong: 'Loading is taking longer than expected...',
+    modelProcessing: 'Processing...',
+    
+    // 추가 네비게이션
+    alreadyLastPage: 'Already on the last page',
+    
+    // 페이지 이름
+    page1: 'Page 1',
+    page2: 'Page 2',
+    page3: 'Page 3',
+    page4: 'Page 4',
+    page5: 'Page 5',
+    page6: 'Page 6',
+    page7: 'Page 7',
+    page8: 'Page 8',
+    page9: 'Page 9',
+    page10: 'Page 10',
+    
+    // 에러 메시지
+    imageLoadFailed: 'Failed to load image.',
+    path: 'Path',
+    popupFileNotFound: 'Popup file for area {area} not found.',
+    area2Test: 'Area 2 (Test)',
+    
+    // 드론 콘텐츠
+    droneLearningContent: 'Drone Learning Content',
+    dronePlaylistDescription: 'A playlist of 7 videos covering theory, practice, and track driving.',
+    
+    // 팝업 관련
+    popup: 'Popup',
+    popupArea: 'Area {area} Popup',
+    popupWithNumber: '{number} Popup',
   },
   
   ja: {
@@ -109,6 +243,73 @@ export const translations = {
     selectPart: 'パーツを選択してください！',
     close: '閉じる',
     mapNotVisible: '地図が表示されない場合は、下のボタンをクリックして新しいウィンドウで確認してください。',
+    
+    // 드론 비디오 플레이리스트
+    droneTheoryConcept: 'ドローン理論の概念',
+    droneTheory: 'ドローン理論',
+    droneTheoryConceptDesc: '飛行原理を理解するための最も基礎的な概念を整理しました。',
+    droneTheoryStructure: 'ドローン理論の構造',
+    droneTheoryStructureDesc: '機体を構成する核心構造と役割を確認してください。',
+    droneTheoryPrinciple: 'ドローン理論の原理',
+    droneTheoryPrincipleDesc: '飛行制御と安定化メカニズムを詳しく扱います。',
+    droneTheorySafety: 'ドローン理論の安全規則',
+    droneTheorySafetyDesc: '安全な飛行のための必須規則をチェックしてください。',
+    dronePracticeRescue: 'ドローン実習の遭難者探し',
+    dronePractice: 'ドローン実習',
+    dronePracticeRescueDesc: '実戦状況を想定した遭難者捜索ミッション映像を提供します。',
+    dronePracticeFire: 'ドローン実習の消火',
+    dronePracticeFireDesc: '火災対応訓練のためのドローン活用場面を確認してください。',
+    droneTrack: 'ドローントラック',
+    droneTrackDesc: '都市背景を活用した実習場面を収めました。',
+    
+    // 미디어 alt 텍스트
+    worldGifAnimation: 'World GIFアニメーション',
+    frienderGifAnimation: 'Friender GIFアニメーション',
+    aiStoryGifAnimation: 'AI Story GIFアニメーション',
+    dreampathAiGifAnimation: 'DreamPath AI GIFアニメーション',
+    innoWorksGifAnimation: 'InnoWorks GIFアニメーション',
+    
+    // 챗봇
+    chatbotTitle: 'Eカタログアシスタント',
+    chatbotLoading: '読み込み中...',
+    chatbotLoadFailed: '読み込み失敗',
+    
+    // 3D 모델
+    modelLoading: '3Dモデル読み込み中...',
+    modelLoadFailed: '3Dモデル読み込み失敗',
+    modelRetry: '再試行',
+    modelLoadingLong: '読み込みに時間がかかっています...',
+    modelProcessing: '処理中...',
+    
+    // 추가 네비게이션
+    alreadyLastPage: 'すでに最後のページです',
+    
+    // 페이지 이름
+    page1: 'ページ 1',
+    page2: 'ページ 2',
+    page3: 'ページ 3',
+    page4: 'ページ 4',
+    page5: 'ページ 5',
+    page6: 'ページ 6',
+    page7: 'ページ 7',
+    page8: 'ページ 8',
+    page9: 'ページ 9',
+    page10: 'ページ 10',
+    
+    // 에러 메시지
+    imageLoadFailed: '画像を読み込めませんでした。',
+    path: 'パス',
+    popupFileNotFound: 'エリア {area} のポップアップファイルが見つかりません。',
+    area2Test: 'エリア 2 (テスト用)',
+    
+    // 드론 콘텐츠
+    droneLearningContent: 'ドローン学習コンテンツ',
+    dronePlaylistDescription: '理論から実習、トラック走行まで続く7本のプレイリストです。',
+    
+    // 팝업 관련
+    popup: 'ポップアップ',
+    popupArea: 'エリア {area} ポップアップ',
+    popupWithNumber: '{number} ポップアップ',
   },
   
   zh: {
@@ -146,6 +347,73 @@ export const translations = {
     selectPart: '请选择一个部分！',
     close: '关闭',
     mapNotVisible: '如果地图不可见，请点击下面的按钮在新窗口中查看。',
+    
+    // 드론 비디오 플레이리스트
+    droneTheoryConcept: '无人机理论：概念',
+    droneTheory: '无人机理论',
+    droneTheoryConceptDesc: '整理了理解飞行原理的最基本概念。',
+    droneTheoryStructure: '无人机理论：结构',
+    droneTheoryStructureDesc: '请确认构成机体的核心结构和作用。',
+    droneTheoryPrinciple: '无人机理论：原理',
+    droneTheoryPrincipleDesc: '详细讲解飞行控制和稳定化机制。',
+    droneTheorySafety: '无人机理论：安全规则',
+    droneTheorySafetyDesc: '请检查安全飞行所需的必要规则。',
+    dronePracticeRescue: '无人机实践：寻找遇难者',
+    dronePractice: '无人机实践',
+    dronePracticeRescueDesc: '提供假设实战情况的遇难者搜索任务视频。',
+    dronePracticeFire: '无人机实践：灭火',
+    dronePracticeFireDesc: '请确认用于火灾应对训练的无人机使用场景。',
+    droneTrack: '无人机轨道',
+    droneTrackDesc: '收录了利用城市背景的实践场景。',
+    
+    // 미디어 alt 텍스트
+    worldGifAnimation: 'World GIF动画',
+    frienderGifAnimation: 'Friender GIF动画',
+    aiStoryGifAnimation: 'AI Story GIF动画',
+    dreampathAiGifAnimation: 'DreamPath AI GIF动画',
+    innoWorksGifAnimation: 'InnoWorks GIF动画',
+    
+    // 챗봇
+    chatbotTitle: '电子目录助手',
+    chatbotLoading: '加载中...',
+    chatbotLoadFailed: '加载失败',
+    
+    // 3D 모델
+    modelLoading: '正在加载3D模型...',
+    modelLoadFailed: '3D模型加载失败',
+    modelRetry: '重试',
+    modelLoadingLong: '加载时间较长...',
+    modelProcessing: '处理中...',
+    
+    // 추가 네비게이션
+    alreadyLastPage: '已经在最后一页',
+    
+    // 페이지 이름
+    page1: '第1页',
+    page2: '第2页',
+    page3: '第3页',
+    page4: '第4页',
+    page5: '第5页',
+    page6: '第6页',
+    page7: '第7页',
+    page8: '第8页',
+    page9: '第9页',
+    page10: '第10页',
+    
+    // 에러 메시지
+    imageLoadFailed: '无法加载图像。',
+    path: '路径',
+    popupFileNotFound: '找不到区域 {area} 的弹出文件。',
+    area2Test: '区域 2 (测试)',
+    
+    // 드론 콘텐츠
+    droneLearningContent: '无人机学习内容',
+    dronePlaylistDescription: '包含理论、实践和轨道驾驶的7个视频播放列表。',
+    
+    // 팝업 관련
+    popup: '弹出窗口',
+    popupArea: '区域 {area} 弹出窗口',
+    popupWithNumber: '{number} 弹出窗口',
   },
   
   es: {
@@ -183,6 +451,73 @@ export const translations = {
     selectPart: '¡Selecciona una Parte!',
     close: 'Cerrar',
     mapNotVisible: 'Si el mapa no es visible, haga clic en el botón de abajo para abrirlo en una nueva ventana.',
+    
+    // 드론 비디오 플레이리스트
+    droneTheoryConcept: 'Teoría de Drones: Concepto',
+    droneTheory: 'Teoría de Drones',
+    droneTheoryConceptDesc: 'Conceptos básicos para entender los principios de vuelo.',
+    droneTheoryStructure: 'Teoría de Drones: Estructura',
+    droneTheoryStructureDesc: 'Verifique la estructura central y el papel del fuselaje.',
+    droneTheoryPrinciple: 'Teoría de Drones: Principio',
+    droneTheoryPrincipleDesc: 'Cobertura detallada de los mecanismos de control de vuelo y estabilización.',
+    droneTheorySafety: 'Teoría de Drones: Reglas de Seguridad',
+    droneTheorySafetyDesc: 'Verifique las reglas esenciales para un vuelo seguro.',
+    dronePracticeRescue: 'Práctica de Drones: Misión de Rescate',
+    dronePractice: 'Práctica de Drones',
+    dronePracticeRescueDesc: 'Video de misión de rescate asumiendo escenarios del mundo real.',
+    dronePracticeFire: 'Práctica de Drones: Extinción de Incendios',
+    dronePracticeFireDesc: 'Verifique las escenas de uso de drones para entrenamiento de respuesta a incendios.',
+    droneTrack: 'Pista de Drones',
+    droneTrackDesc: 'Escenas de práctica utilizando fondos urbanos.',
+    
+    // 미디어 alt 텍스트
+    worldGifAnimation: 'Animación GIF World',
+    frienderGifAnimation: 'Animación GIF Friender',
+    aiStoryGifAnimation: 'Animación GIF AI Story',
+    dreampathAiGifAnimation: 'Animación GIF DreamPath AI',
+    innoWorksGifAnimation: 'Animación GIF InnoWorks',
+    
+    // 챗봇
+    chatbotTitle: 'Asistente de Catálogo E',
+    chatbotLoading: 'Cargando...',
+    chatbotLoadFailed: 'Error de Carga',
+    
+    // 3D 모델
+    modelLoading: 'Cargando Modelo 3D...',
+    modelLoadFailed: 'Error al Cargar Modelo 3D',
+    modelRetry: 'Reintentar',
+    modelLoadingLong: 'La carga está tardando más de lo esperado...',
+    modelProcessing: 'Procesando...',
+    
+    // 추가 네비게이션
+    alreadyLastPage: 'Ya estás en la última página',
+    
+    // 페이지 이름
+    page1: 'Página 1',
+    page2: 'Página 2',
+    page3: 'Página 3',
+    page4: 'Página 4',
+    page5: 'Página 5',
+    page6: 'Página 6',
+    page7: 'Página 7',
+    page8: 'Página 8',
+    page9: 'Página 9',
+    page10: 'Página 10',
+    
+    // 에러 메시지
+    imageLoadFailed: 'No se pudo cargar la imagen.',
+    path: 'Ruta',
+    popupFileNotFound: 'No se encontró el archivo emergente para el área {area}.',
+    area2Test: 'Área 2 (Prueba)',
+    
+    // 드론 콘텐츠
+    droneLearningContent: 'Contenido de Aprendizaje de Drones',
+    dronePlaylistDescription: 'Una lista de reproducción de 7 videos que cubren teoría, práctica y conducción en pista.',
+    
+    // 팝업 관련
+    popup: 'Ventana Emergente',
+    popupArea: 'Área {area} Ventana Emergente',
+    popupWithNumber: '{number} Ventana Emergente',
   },
 };
 

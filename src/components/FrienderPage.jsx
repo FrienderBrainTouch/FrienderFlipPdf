@@ -76,11 +76,9 @@ const getPage6MediaOverrides = (t) => ({
   5: {
     src: '/FrienderFile/VideoFile/WorldGIF.gif',
     alt: t('worldGifAnimation'),
-    alt: t('worldGifAnimation'),
   },
   6: {
     src: '/FrienderFile/VideoFile/FrinederGIF1.gif',
-    alt: t('frienderGifAnimation'),
     alt: t('frienderGifAnimation'),
   },
 });
@@ -89,16 +87,13 @@ const getPage7MediaOverrides = (t) => ({
   5: {
     src: '/FrienderFile/VideoFile/AIStory.gif',
     alt: t('aiStoryGifAnimation'),
-    alt: t('aiStoryGifAnimation'),
   },
   6: {
     src: '/FrienderFile/VideoFile/DreampathAI.gif',
     alt: t('dreampathAiGifAnimation'),
-    alt: t('dreampathAiGifAnimation'),
   },
   7: {
     src: '/FrienderFile/VideoFile/InnoWorks.gif',
-    alt: t('innoWorksGifAnimation'),
     alt: t('innoWorksGifAnimation'),
   },
 });
@@ -331,11 +326,9 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
 
   // 튜토리얼 모드 상태 관리
   const [isTutorialMode, setIsTutorialMode] = React.useState(false);
-  const [tutorialTooltip, setTutorialTooltip] = React.useState(null);
+  const [tutorialTooltip, setTutorialTooltip] = React.useState(null); // 현재 호버된 영역의 툴팁
   const [tutorialTooltipPosition, setTutorialTooltipPosition] = React.useState({ x: 0, y: 0 });
-  const [tutorialTooltipDirection, setTutorialTooltipDirection] = React.useState('top'); // 'top', 'bottom', 'left', 'right'
-  const [tutorialTargetArea, setTutorialTargetArea] = React.useState(null); // 확대할 영역 정보
-  const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 }); // 마우스 커서 위치
+  const [tutorialTooltipDirection, setTutorialTooltipDirection] = React.useState('top');
 
   // SVG 페이지 데이터 (언어별 경로 적용)
   const pageData = React.useMemo(
@@ -462,6 +455,9 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     setIsZoomed(false);
     setShowMinimap(false);
     setDragOffset({ x: 0, y: 0 });
+
+    // 페이지 변경 시 툴팁 숨김
+    setTutorialTooltip(null);
   };
 
   /**
@@ -547,8 +543,6 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     if (navigator.share) {
       navigator
         .share({
-          title: 'Friender',
-          text: '프랜더 Friender 카탈로그에 대한 설명',
           title: 'Friender',
           text: '프랜더 Friender 카탈로그에 대한 설명',
           url: window.location.href,
@@ -1084,82 +1078,293 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     return { x, y, direction, transform };
   };
 
-  // 튜토리얼 모드 관련 ref (무한 루프 방지)
-  const tutorialLastAreaElementRef = React.useRef(null);
-  const tutorialIsZoomedRef = React.useRef(false);
-  const tutorialTooltipRef = React.useRef(tutorialTooltip);
-  const tutorialTargetAreaRef = React.useRef(tutorialTargetArea);
+  /**
+   * 영역의 팝업 타입 자동 감지 (실제 모달 내용 기준)
+   */
+  const detectPopupType = React.useCallback((area) => {
+    // data-tutorial-popup-type 속성이 있으면 우선 사용
+    const manualType = area.getAttribute('data-tutorial-popup-type');
+    if (manualType) {
+      return manualType;
+    }
 
-  // ref 동기화
-  React.useEffect(() => {
-    tutorialTooltipRef.current = tutorialTooltip;
-  }, [tutorialTooltip]);
+    // title 속성에서 페이지와 영역 번호 추출
+    const title = area.getAttribute('title') || '';
+    const pageMatch = title.match(/(\d+)-(\d+)/);
+    
+    if (pageMatch) {
+      const pageNum = parseInt(pageMatch[1]);
+      const areaNum = parseInt(pageMatch[2]);
+      
+      // 페이지별 타입 매핑 (실제 모달 내용 기준)
+      if (pageNum === 2) {
+        // 2페이지: 2-1.jpg ~ 2-6.jpg → 모두 확대 팝업
+        return 'zoom';
+      } else if (pageNum === 3) {
+        // 3페이지: 3-1.jpg, 3-2.jpg, 3-3.png, 3-4.jpg, 3-5.jpg → 모두 확대 팝업
+        return 'zoom';
+      } else if (pageNum === 4) {
+        // 4페이지: 영역 1=4-1.jpg(확대), 영역 2=4-2.jpg(확대), 영역 3=4-1-img(영상목록), 영역 4=4-2-img(이미지), 영역 5=4-3-img(이미지), 영역 6=4-4-img(이미지)
+        // 4-1-img만 영상목록이고, 나머지 img는 모두 이미지 팝업
+        if (title.includes('4-1-img')) {
+          return 'video-list'; // 4-1-img는 영상목록
+        } else if (title.includes('-img')) {
+          return 'image'; // 4-2-img, 4-3-img, 4-4-img는 이미지 팝업
+        } else if (areaNum === 1 || areaNum === 2) {
+          return 'zoom'; // 4-1.jpg, 4-2.jpg
+        } else {
+          return 'image'; // 기본값: 이미지 팝업
+        }
+      } else if (pageNum === 5) {
+        // 5페이지: 영역 1=5-1.jpg(확대), 영역 2=5-2.jpg(확대), 영역 3=5-1-img.jpg(이미지), 영역 4=5-2-img.jpg(이미지), 영역 5=5-3-img.jpg(이미지), 영역 6=5-4-img.jpg(이미지)
+        // 5페이지의 모든 img는 이미지 팝업
+        if (title.includes('-img')) {
+          return 'image'; // 5-1-img.jpg, 5-2-img.jpg, 5-3-img.jpg, 5-4-img.jpg는 모두 이미지 팝업
+        } else if (areaNum === 1 || areaNum === 2) {
+          return 'zoom'; // 5-1.jpg, 5-2.jpg
+        } else {
+          return 'image'; // 기본값: 이미지 팝업
+        }
+      } else if (pageNum === 6) {
+        // 6페이지: 영역 1=6-1.jpg, 영역 2=6-2.jpg, 영역 3=6-3.jpg, 영역 4=6-4.jpg, 영역 5=6-1-img.jpg(영상), 영역 6=6-2-img.jpg(영상), 영역 7=6-3-img.jpg(3D 모델)
+        // title 속성에서 확인
+        if (title.includes('6-3-img')) {
+          return '3d'; // 6-3-img는 3D 모델
+        } else if (title.includes('6-1-img') || title.includes('6-2-img')) {
+          return 'video'; // 6-1-img, 6-2-img는 영상
+        } else if (areaNum >= 1 && areaNum <= 4) {
+          return 'zoom'; // 6-1.jpg, 6-2.jpg, 6-3.jpg, 6-4.jpg
+        }
+      } else if (pageNum === 7) {
+        // 7페이지: 영역 1=7-1.jpg, 영역 2=7-2.jpg, 영역 3=7-3.jpg, 영역 4=7-4.jpg, 영역 5=7-1-img.jpg(영상), 영역 6=7-2-img.jpg(영상), 영역 7=7-3-img.jpg(영상)
+        // title 속성에서 확인
+        if (title.includes('7-1-img') || title.includes('7-2-img') || title.includes('7-3-img')) {
+          return 'video'; // 7-1-img, 7-2-img, 7-3-img는 영상
+        } else if (areaNum >= 1 && areaNum <= 4) {
+          return 'zoom'; // 7-1.jpg, 7-2.jpg, 7-3.jpg, 7-4.jpg
+        }
+      } else if (pageNum === 8) {
+        // 8페이지: 영역 1=8-1.jpg, 영역 2=8-2.jpg, 영역 3=8-3.jpg, 영역 4=8-1-img.jpg(이미지)
+        if (title.includes('-img')) {
+          return 'image'; // 8-1-img.jpg는 이미지 팝업
+        } else if (areaNum >= 1 && areaNum <= 3) {
+          return 'zoom'; // 8-1.jpg, 8-2.jpg, 8-3.jpg
+        } else {
+          return 'image'; // 기본값: 이미지 팝업
+        }
+      } else if (pageNum === 9) {
+        // 9페이지: 9-1.jpg, 9-2.jpg, 9-3.jpg, 9-4.jpg → 모두 확대 팝업
+        return 'zoom';
+      } else if (pageNum === 10) {
+        // 10페이지: 영역 1=10-1.jpg, 영역 2=10-2.jpg, 영역 3=10-1-img.jpg, 영역 4=10-2-img.jpg, 영역 5=10-3-img.jpg, 영역 6=10-4-img.jpg
+        if (areaNum === 1 || areaNum === 2) {
+          return 'zoom'; // 10-1.jpg, 10-2.jpg
+        } else if (areaNum === 3 || areaNum === 4 || areaNum === 5 || areaNum === 6) {
+          return 'image'; // 10-1-img.jpg, 10-2-img.jpg, 10-3-img.jpg, 10-4-img.jpg
+        }
+      } else if (pageNum === 11) {
+        // 11페이지: 11-1.jpg → 확대 팝업
+        return 'zoom';
+      }
+    }
 
-  React.useEffect(() => {
-    tutorialTargetAreaRef.current = tutorialTargetArea;
-  }, [tutorialTargetArea]);
+    // 기본값: 확대 팝업 (아무것도 표시 안된 것)
+    return 'zoom';
+  }, []);
 
   /**
-   * 튜토리얼 모드 전역 마우스 이벤트 핸들러
+   * 팝업 타입별 제목과 설명 반환
    */
-  React.useEffect(() => {
+  const getPopupTypeInfo = React.useCallback((popupType) => {
+    const typeMap = {
+      'zoom': {
+        title: t('tooltipZoomPopupTitle'),
+        description: t('tooltipZoomPopupDesc'),
+      },
+      'image': {
+        title: t('tooltipImagePopupTitle'),
+        description: t('tooltipImagePopupDesc'),
+      },
+      'video-list': {
+        title: t('tooltipVideoListPopupTitle'),
+        description: t('tooltipVideoListPopupDesc'),
+      },
+      'video': {
+        title: t('tooltipVideoPopupTitle'),
+        description: t('tooltipVideoPopupDesc'),
+      },
+      '3d': {
+        title: t('tooltip3DPopupTitle'),
+        description: t('tooltip3DPopupDesc'),
+      },
+    };
+    return typeMap[popupType] || {
+      title: t('tooltipInfoPopupTitle'),
+      description: t('tooltipInfoPopupDesc'),
+    };
+  }, [currentLanguage, t]);
+
+  /**
+   * 툴바 버튼별 툴팁 정보 반환
+   */
+  const getToolbarButtonInfo = React.useCallback((buttonType) => {
+    const buttonMap = {
+      'home': {
+        title: t('tooltipHomeTitle'),
+        description: t('tooltipHomeDesc'),
+      },
+      'zoom-in': {
+        title: t('tooltipZoomInTitle'),
+        description: t('tooltipZoomInDesc'),
+      },
+      'zoom-out': {
+        title: t('tooltipZoomOutTitle'),
+        description: t('tooltipZoomOutDesc'),
+      },
+      'zoom-reset': {
+        title: t('tooltipZoomResetTitle'),
+        description: t('tooltipZoomResetDesc'),
+      },
+      'print': {
+        title: t('tooltipPrintTitle'),
+        description: t('tooltipPrintDesc'),
+      },
+      'download': {
+        title: t('tooltipDownloadTitle'),
+        description: t('tooltipDownloadDesc'),
+      },
+      'share': {
+        title: t('tooltipShareTitle'),
+        description: t('tooltipShareDesc'),
+      },
+      'toc': {
+        title: t('tooltipTocTitle'),
+        description: t('tooltipTocDesc'),
+      },
+      'language': {
+        title: t('tooltipLanguageTitle'),
+        description: t('tooltipLanguageDesc'),
+      },
+    };
+    return buttonMap[buttonType] || {
+      title: t('tooltipButtonDefaultTitle'),
+      description: t('tooltipButtonDefaultDesc'),
+    };
+  }, [currentLanguage, t]);
+
+  /**
+   * 모든 영역 호버 시 툴팁 표시 (튜토리얼 모드일 때만)
+   */
+  const handleAreaHover = React.useCallback((event) => {
     if (!isTutorialMode) {
-      // 튜토리얼 모드가 꺼지면 리셋
-      tutorialLastAreaElementRef.current = null;
-      tutorialIsZoomedRef.current = false;
       return;
     }
 
-    const handleTutorialMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-      const position = calculateTooltipPosition(e.clientX, e.clientY);
-      setTutorialTooltipPosition({ x: position.x, y: position.y });
-      setTutorialTooltipDirection(position.direction);
+    const areaElement = event.currentTarget;
+    const rect = areaElement.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    
+    // 영역의 중앙 위치 계산
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    // 영역이 화면 상단에 있으면 아래로, 하단에 있으면 위로 표시
+    const isTopHalf = centerY < viewportHeight / 2;
+    const direction = isTopHalf ? 'bottom' : 'top';
+    
+    // 팝업 타입 자동 감지
+    const popupType = detectPopupType(areaElement);
+    const typeInfo = getPopupTypeInfo(popupType);
+    
+    setTutorialTooltip({
+      title: typeInfo.title,
+      description: typeInfo.description,
+    });
+    
+    setTutorialTooltipPosition({
+      x: centerX,
+      y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+    });
+    
+    setTutorialTooltipDirection(direction);
+  }, [isTutorialMode, detectPopupType, getPopupTypeInfo]);
 
-      // 마우스 위치의 요소 찾기
-      const targetElement = document.elementFromPoint(e.clientX, e.clientY);
-      if (targetElement) {
-        // 클릭 가능한 영역 찾기
-        const clickableArea = targetElement.closest('[data-clickable="true"]');
-        
-        if (clickableArea) {
-          // 영역 정보 가져오기
-          const areaTitle = clickableArea.getAttribute('title') || 
-                           clickableArea.getAttribute('data-tutorial-title') || 
-                           '영역 정보';
-          // 영역 설명 가져오기
-          const areaDescription = clickableArea.getAttribute('data-tutorial-description') || 
-                                  clickableArea.getAttribute('data-tutorial-detail') === 'true'
-                                    ? '이 영역을 클릭하면 상세 정보를 확인할 수 있습니다.'
-                                    : '이 영역을 클릭하면 더 자세한 정보를 볼 수 있습니다.';
-          
-          // 툴팁 내용 업데이트 (확대 기능 제거)
-          setTutorialTooltip({
-            title: areaTitle,
-            description: areaDescription,
-            isDetailView: false,
-          });
-          setTutorialTargetArea(clickableArea);
-        } else {
-          // 영역 밖에 있으면 기본 툴팁 표시
-          if (!tutorialTooltipRef.current || tutorialTooltipRef.current.title === '튜토리얼 모드') {
-            setTutorialTooltip({
-              title: '튜토리얼 모드',
-              description: '마우스를 각 영역에 올려보세요.',
-              isDetailView: false,
-            });
-            setTutorialTargetArea(null);
-          }
-        }
-      }
+  /**
+   * 영역에서 마우스가 벗어날 때 툴팁 숨김
+   */
+  const handleAreaLeave = React.useCallback(() => {
+    if (isTutorialMode) {
+      setTutorialTooltip(null);
+    }
+  }, [isTutorialMode]);
+
+  /**
+   * 툴바 버튼 호버 시 툴팁 표시
+   */
+  const handleToolbarButtonHover = React.useCallback((buttonType, event) => {
+    if (!isTutorialMode) {
+      return;
+    }
+
+    const buttonElement = event.currentTarget;
+    const rect = buttonElement.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    
+    // 버튼의 중앙 위치 계산
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    // 버튼이 화면 상단에 있으면 아래로, 하단에 있으면 위로 표시
+    const isTopHalf = centerY < viewportHeight / 2;
+    const direction = isTopHalf ? 'bottom' : 'top';
+    
+    // 버튼 타입별 정보 가져오기
+    const buttonInfo = getToolbarButtonInfo(buttonType);
+    
+    setTutorialTooltip({
+      title: buttonInfo.title,
+      description: buttonInfo.description,
+    });
+    
+    setTutorialTooltipPosition({
+      x: centerX,
+      y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+    });
+    
+    setTutorialTooltipDirection(direction);
+  }, [isTutorialMode, getToolbarButtonInfo]);
+
+  /**
+   * 모든 data-clickable 영역에 튜토리얼 툴팁 이벤트 자동 추가
+   */
+  React.useEffect(() => {
+    if (!isTutorialMode) {
+      return;
+    }
+
+    const clickableElements = document.querySelectorAll('[data-clickable="true"]');
+    
+    const handleMouseEnter = (e) => {
+      handleAreaHover(e);
     };
 
-    document.addEventListener('mousemove', handleTutorialMouseMove);
+    const handleMouseLeave = () => {
+      handleAreaLeave();
+    };
+
+    clickableElements.forEach((element) => {
+      // 기존 이벤트와 충돌하지 않도록 이벤트 캡처 단계에서 추가
+      element.addEventListener('mouseenter', handleMouseEnter, true);
+      element.addEventListener('mouseleave', handleMouseLeave, true);
+    });
 
     return () => {
-      document.removeEventListener('mousemove', handleTutorialMouseMove);
+      clickableElements.forEach((element) => {
+        element.removeEventListener('mouseenter', handleMouseEnter, true);
+        element.removeEventListener('mouseleave', handleMouseLeave, true);
+      });
     };
-  }, [isTutorialMode]);
+  }, [isTutorialMode, handleAreaHover, handleAreaLeave]);
 
   /**
    * 추가 영역 이미지 모달 열기 핸들러
@@ -1664,7 +1869,12 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
         <div className="w-full h-screen overflow-hidden bg-white flex">
           {/* 왼쪽 위 로고 (홈 버튼) */}
           <div className="flex-shrink-0 w-[10%] max-w-[200px] pt-6 pl-4">
-            <button onClick={handleHomeClick} className="cursor-pointer flex items-start w-full">
+            <button 
+              onClick={handleHomeClick} 
+              className="cursor-pointer flex items-start w-full"
+              onMouseEnter={(e) => handleToolbarButtonHover('home', e)}
+              onMouseLeave={handleAreaLeave}
+            >
               <img
                 src="/FrienderFile/Interactive/Friender-Logo-L.png"
                 alt="Friender Logo"
@@ -1746,6 +1956,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                 onClick={handleZoomIn}
                 className="w-12 h-12 bg-white/90 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
                 title={t('zoomIn')}
+                onMouseEnter={(e) => handleToolbarButtonHover('zoom-in', e)}
+                onMouseLeave={handleAreaLeave}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -1762,6 +1974,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                 onClick={handleZoomOut}
                 className="w-12 h-12 bg-white/90 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
                 title={t('zoomOut')}
+                onMouseEnter={(e) => handleToolbarButtonHover('zoom-out', e)}
+                onMouseLeave={handleAreaLeave}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -1779,6 +1993,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onClick={handleZoomReset}
                   className="w-12 h-12 bg-white/90 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
                   title={t('zoomReset')}
+                  onMouseEnter={(e) => handleToolbarButtonHover('zoom-reset', e)}
+                  onMouseLeave={handleAreaLeave}
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
@@ -1794,18 +2010,11 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
               {/* 튜토리얼 모드 버튼 */}
               <button
                 onClick={() => {
-                  setIsTutorialMode(!isTutorialMode);
-                  if (!isTutorialMode) {
-                    // 튜토리얼 모드 시작 시 초기 툴팁 설정
-                    setTutorialTooltip({
-                      title: '튜토리얼 모드',
-                      description: '마우스를 이동하여 각 영역에 대한 정보를 확인하세요.',
-                      isDetailView: false,
-                    });
-                  } else {
-                    // 튜토리얼 모드 종료 시 상태 리셋
+                  const newMode = !isTutorialMode;
+                  setIsTutorialMode(newMode);
+                  // 튜토리얼 모드가 꺼지면 툴팁 숨김
+                  if (!newMode) {
                     setTutorialTooltip(null);
-                    setTutorialTargetArea(null);
                   }
                 }}
                 className={`w-12 h-12 backdrop-blur-sm flex items-center justify-center rounded-full shadow-lg border transition-colors duration-300 cursor-pointer ${
@@ -1980,13 +2189,24 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                             position: 'absolute',
                             top: '16%',
                             left: '7%',
-                            width: '50%',
-                            height: '11%',
+                            width: '62%',
+                            height: '16%',
                           }}
                           data-clickable="true"
-                          onClick={() => handlePage2AreaClick(1)}
-                          onMouseEnter={() => setHoveredArea2(1)}
-                          onMouseLeave={() => setHoveredArea2(null)}
+                          onClick={() => {
+                            if (isTutorialMode) {
+                              setTutorialTooltip(null);
+                            }
+                            handlePage2AreaClick(1);
+                          }}
+                          onMouseEnter={(e) => {
+                            setHoveredArea2(1);
+                            handleAreaHover(e);
+                          }}
+                          onMouseLeave={(e) => {
+                            setHoveredArea2(null);
+                            handleAreaLeave();
+                          }}
                           title={t('popupWithNumber').replace('{number}', '2-1')}
                         ></div>
 
@@ -2011,9 +2231,20 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                             height: '17%',
                           }}
                           data-clickable="true"
-                          onClick={() => handlePage2AreaClick(2)}
-                          onMouseEnter={() => setHoveredArea2(2)}
-                          onMouseLeave={() => setHoveredArea2(null)}
+                          onClick={() => {
+                            if (isTutorialMode) {
+                              setTutorialTooltip(null);
+                            }
+                            handlePage2AreaClick(2);
+                          }}
+                          onMouseEnter={(e) => {
+                            setHoveredArea2(2);
+                            handleAreaHover(e);
+                          }}
+                          onMouseLeave={(e) => {
+                            setHoveredArea2(null);
+                            handleAreaLeave();
+                          }}
                           title={t('popupWithNumber').replace('{number}', '2-2')}
                         ></div>
 
@@ -2038,9 +2269,20 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                             height: '17%',
                           }}
                           data-clickable="true"
-                          onClick={() => handlePage2AreaClick(3)}
-                          onMouseEnter={() => setHoveredArea2(3)}
-                          onMouseLeave={() => setHoveredArea2(null)}
+                          onClick={() => {
+                            if (isTutorialMode) {
+                              setTutorialTooltip(null);
+                            }
+                            handlePage2AreaClick(3);
+                          }}
+                          onMouseEnter={(e) => {
+                            setHoveredArea2(3);
+                            handleAreaHover(e);
+                          }}
+                          onMouseLeave={(e) => {
+                            setHoveredArea2(null);
+                            handleAreaLeave();
+                          }}
                           title={t('popupWithNumber').replace('{number}', '2-3')}
                         ></div>
 
@@ -2065,9 +2307,20 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                             height: '17%',
                           }}
                           data-clickable="true"
-                          onClick={() => handlePage2AreaClick(4)}
-                          onMouseEnter={() => setHoveredArea2(4)}
-                          onMouseLeave={() => setHoveredArea2(null)}
+                          onClick={() => {
+                            if (isTutorialMode) {
+                              setTutorialTooltip(null);
+                            }
+                            handlePage2AreaClick(4);
+                          }}
+                          onMouseEnter={(e) => {
+                            setHoveredArea2(4);
+                            handleAreaHover(e);
+                          }}
+                          onMouseLeave={(e) => {
+                            setHoveredArea2(null);
+                            handleAreaLeave();
+                          }}
                           title={t('popupWithNumber').replace('{number}', '2-4')}
                         ></div>
 
@@ -2092,9 +2345,20 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                             height: '17%',
                           }}
                           data-clickable="true"
-                          onClick={() => handlePage2AreaClick(5)}
-                          onMouseEnter={() => setHoveredArea2(5)}
-                          onMouseLeave={() => setHoveredArea2(null)}
+                          onClick={() => {
+                            if (isTutorialMode) {
+                              setTutorialTooltip(null);
+                            }
+                            handlePage2AreaClick(5);
+                          }}
+                          onMouseEnter={(e) => {
+                            setHoveredArea2(5);
+                            handleAreaHover(e);
+                          }}
+                          onMouseLeave={(e) => {
+                            setHoveredArea2(null);
+                            handleAreaLeave();
+                          }}
                           title={t('popupWithNumber').replace('{number}', '2-5')}
                         ></div>
 
@@ -2113,15 +2377,26 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           } ${hoveredArea2 === 6 ? 'border-2 border-yellow-500' : ''}`}
                           style={{
                             position: 'absolute',
-                            bottom: '3%',
-                            right: '4%',
-                            width: '21%',
-                            height: '41%',
+                            bottom: '2%',
+                            right: '2%',
+                            width: '25%',
+                            height: '42%',
                           }}
                           data-clickable="true"
-                          onClick={() => handlePage2AreaClick(6)}
-                          onMouseEnter={() => setHoveredArea2(6)}
-                          onMouseLeave={() => setHoveredArea2(null)}
+                          onClick={() => {
+                            if (isTutorialMode) {
+                              setTutorialTooltip(null);
+                            }
+                            handlePage2AreaClick(6);
+                          }}
+                          onMouseEnter={(e) => {
+                            setHoveredArea2(6);
+                            handleAreaHover(e);
+                          }}
+                          onMouseLeave={(e) => {
+                            setHoveredArea2(null);
+                            handleAreaLeave();
+                          }}
                           title={t('popupWithNumber').replace('{number}', '2-6')}
                         ></div>
 
@@ -2177,11 +2452,24 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                             top: '30%',
                             left: '7%',
                             width: '24%',
-                            height: '25%',
+                            height: '27%',
                           }}
-                          onClick={() => handlePage3AreaClick(1)}
-                          onMouseEnter={() => setHoveredArea3(1)}
-                          onMouseLeave={() => setHoveredArea3(null)}
+                          data-clickable="true"
+                          onClick={() => {
+                            if (isTutorialMode) {
+                              setTutorialTooltip(null);
+                            }
+                            handlePage3AreaClick(1);
+                          }}
+                          onMouseEnter={(e) => {
+                            setHoveredArea3(1);
+                            handleAreaHover(e);
+                          }}
+                          onMouseLeave={(e) => {
+                            setHoveredArea3(null);
+                            handleAreaLeave();
+                          }}
+                          title={t('popupWithNumber').replace('{number}', '3-1')}
                         ></div>
 
                         {/* 3-2.jpg */}
@@ -2207,11 +2495,24 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                             top: '30%',
                             left: '32%',
                             width: '24%',
-                            height: '25%',
+                            height: '27%',
                           }}
-                          onClick={() => handlePage3AreaClick(2)}
-                          onMouseEnter={() => setHoveredArea3(2)}
-                          onMouseLeave={() => setHoveredArea3(null)}
+                          data-clickable="true"
+                          title={t('popupWithNumber').replace('{number}', '3-2')}
+                          onClick={() => {
+                            if (isTutorialMode) {
+                              setTutorialTooltip(null);
+                            }
+                            handlePage3AreaClick(2);
+                          }}
+                          onMouseEnter={(e) => {
+                            setHoveredArea3(2);
+                            handleAreaHover(e);
+                          }}
+                          onMouseLeave={(e) => {
+                            setHoveredArea3(null);
+                            handleAreaLeave();
+                          }}
                         ></div>
 
                         {/* 3-3.png */}
@@ -2234,14 +2535,27 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           } ${hoveredArea3 === 3 ? 'border-2 border-yellow-500' : ''}`}
                           style={{
                             position: 'absolute',
-                            bottom: '14%',
+                            bottom: '13%',
                             left: '6%',
                             width: '25%',
-                            height: '26%',
+                            height: '27%',
                           }}
-                          onClick={() => handlePage3AreaClick(3)}
-                          onMouseEnter={() => setHoveredArea3(3)}
-                          onMouseLeave={() => setHoveredArea3(null)}
+                          data-clickable="true"
+                          title={t('popupWithNumber').replace('{number}', '3-3')}
+                          onClick={() => {
+                            if (isTutorialMode) {
+                              setTutorialTooltip(null);
+                            }
+                            handlePage3AreaClick(3);
+                          }}
+                          onMouseEnter={(e) => {
+                            setHoveredArea3(3);
+                            handleAreaHover(e);
+                          }}
+                          onMouseLeave={(e) => {
+                            setHoveredArea3(null);
+                            handleAreaLeave();
+                          }}
                         ></div>
 
                         {/* 3-4.jpg */}
@@ -2264,14 +2578,27 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           } ${hoveredArea3 === 4 ? 'border-2 border-yellow-500' : ''}`}
                           style={{
                             position: 'absolute',
-                            bottom: '14%',
+                            bottom: '13%',
                             left: '32%',
                             width: '24%',
-                            height: '26%',
+                            height: '27%',
                           }}
-                          onClick={() => handlePage3AreaClick(4)}
-                          onMouseEnter={() => setHoveredArea3(4)}
-                          onMouseLeave={() => setHoveredArea3(null)}
+                          data-clickable="true"
+                          title={t('popupWithNumber').replace('{number}', '3-4')}
+                          onClick={() => {
+                            if (isTutorialMode) {
+                              setTutorialTooltip(null);
+                            }
+                            handlePage3AreaClick(4);
+                          }}
+                          onMouseEnter={(e) => {
+                            setHoveredArea3(4);
+                            handleAreaHover(e);
+                          }}
+                          onMouseLeave={(e) => {
+                            setHoveredArea3(null);
+                            handleAreaLeave();
+                          }}
                         ></div>
 
                         {/* 3-5.jpg */}
@@ -2295,13 +2622,26 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           style={{
                             position: 'absolute',
                             bottom: '15%',
-                            right: '6%',
-                            width: '29%',
+                            right: '4%',
+                            width: '32%',
                             height: '25%',
                           }}
-                          onClick={() => handlePage3AreaClick(5)}
-                          onMouseEnter={() => setHoveredArea3(5)}
-                          onMouseLeave={() => setHoveredArea3(null)}
+                          data-clickable="true"
+                          title={t('popupWithNumber').replace('{number}', '3-5')}
+                          onClick={() => {
+                            if (isTutorialMode) {
+                              setTutorialTooltip(null);
+                            }
+                            handlePage3AreaClick(5);
+                          }}
+                          onMouseEnter={(e) => {
+                            setHoveredArea3(5);
+                            handleAreaHover(e);
+                          }}
+                          onMouseLeave={(e) => {
+                            setHoveredArea3(null);
+                            handleAreaLeave();
+                          }}
                         ></div>
 
                         {/* 왼쪽 아래 3D 모델 영역 - 주석 처리 */}
@@ -2373,7 +2713,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                             position: 'absolute',
                             top: '10%',
                             left: '17%',
-                            width: '74%',
+                            width: '81%',
                             height: '23%',
                           }}
                           data-clickable="true"
@@ -2399,8 +2739,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                             position: 'absolute',
                             bottom: '24%',
                             left: '17%',
-                            width: '74%',
-                            height: '20%',
+                            width: '81%',
+                            height: '21%',
                           }}
                           data-clickable="true"
                           onClick={() => handlePage4AreaClick(2)}
@@ -2588,7 +2928,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                             position: 'absolute',
                             bottom: '23%',
                             left: '5%',
-                            width: '74%',
+                            width: '80%',
                             height: '21%',
                           }}
                           data-clickable="true"
@@ -2762,10 +3102,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           } ${hoveredArea6 === 1 ? 'border-2 border-yellow-500' : ''}`}
                           style={{
                             position: 'absolute',
-                            top: '20%',
+                            top: '14%',
                             left: '6%',
-                            width: '82%',
-                            height: '9%',
+                            width: '85%',
+                            height: '17%',
                           }}
                           data-clickable="true"
                           onClick={() => handlePage6AreaClick(1)}
@@ -2790,8 +3130,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           style={{
                             position: 'absolute',
                             top: '31%',
-                            right: '6%',
-                            width: '43%',
+                            right: '4%',
+                            width: '46%',
                             height: '19%',
                           }}
                           data-clickable="true"
@@ -2817,8 +3157,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           style={{
                             position: 'absolute',
                             top: '52%',
-                            right: '6%',
-                            width: '43%',
+                            right: '4%',
+                            width: '46%',
                             height: '19%',
                           }}
                           data-clickable="true"
@@ -2844,8 +3184,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           style={{
                             position: 'absolute',
                             bottom: '8%',
-                            right: '6%',
-                            width: '43%',
+                            right: '4%',
+                            width: '46%',
                             height: '19%',
                           }}
                           data-clickable="true"
@@ -2984,10 +3324,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           } ${hoveredArea7 === 1 ? 'border-2 border-yellow-500' : ''}`}
                           style={{
                             position: 'absolute',
-                            top: '20%',
+                            top: '14%',
                             left: '6%',
-                            width: '82%',
-                            height: '9%',
+                            width: '84%',
+                            height: '16%',
                           }}
                           data-clickable="true"
                           onClick={() => handlePage7AreaClick(1)}
@@ -3012,8 +3352,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           style={{
                             position: 'absolute',
                             top: '31%',
-                            right: '6%',
-                            width: '43%',
+                            right: '1%',
+                            width: '50%',
                             height: '19%',
                           }}
                           data-clickable="true"
@@ -3039,8 +3379,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           style={{
                             position: 'absolute',
                             top: '52%',
-                            right: '6%',
-                            width: '43%',
+                            right: '1%',
+                            width: '50%',
                             height: '19%',
                           }}
                           data-clickable="true"
@@ -3066,8 +3406,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           style={{
                             position: 'absolute',
                             bottom: '8%',
-                            right: '6%',
-                            width: '43%',
+                            right: '1%',
+                            width: '50%',
                             height: '19%',
                           }}
                           data-clickable="true"
@@ -3202,10 +3542,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           } ${hoveredArea8 === 1 ? 'border-2 border-yellow-500' : ''}`}
                           style={{
                             position: 'absolute',
-                            top: '26%',
-                            left: '6%',
-                            width: '43%',
-                            height: '21%',
+                            top: '24%',
+                            left: '5%',
+                            width: '46%',
+                            height: '26%',
                           }}
                           data-clickable="true"
                           onClick={() => handlePage8AreaClick(1)}
@@ -3229,10 +3569,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           } ${hoveredArea8 === 2 ? 'border-2 border-yellow-500' : ''}`}
                           style={{
                             position: 'absolute',
-                            bottom: '5%',
-                            left: '6%',
-                            width: '43%',
-                            height: '21%',
+                            bottom: '4%',
+                            left: '4%',
+                            width: '45%',
+                            height: '22%',
                           }}
                           data-clickable="true"
                           onClick={() => handlePage8AreaClick(2)}
@@ -3256,10 +3596,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           } ${hoveredArea8 === 3 ? 'border-2 border-yellow-500' : ''}`}
                           style={{
                             position: 'absolute',
-                            bottom: '5%',
-                            right: '6%',
-                            width: '43%',
-                            height: '21%',
+                            bottom: '4%',
+                            right: '2%',
+                            width: '47%',
+                            height: '22%',
                           }}
                           data-clickable="true"
                           onClick={() => handlePage8AreaClick(3)}
@@ -3339,10 +3679,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           } ${hoveredArea9 === 1 ? 'border-2 border-yellow-500' : ''}`}
                           style={{
                             position: 'absolute',
-                            top: '13%',
+                            top: '12%',
                             left: '6%',
-                            width: '80%',
-                            height: '10%',
+                            width: '88%',
+                            height: '13%',
                           }}
                           data-clickable="true"
                           onClick={() => handlePage9AreaClick(1)}
@@ -3368,7 +3708,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                             position: 'absolute',
                             top: '24%',
                             left: '6%',
-                            width: '87%',
+                            width: '90%',
                             height: '26%',
                           }}
                           data-clickable="true"
@@ -3393,10 +3733,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           } ${hoveredArea9 === 3 ? 'border-2 border-yellow-500' : ''}`}
                           style={{
                             position: 'absolute',
-                            top: '53%',
+                            top: '52%',
                             left: '6%',
-                            width: '80%',
-                            height: '18%',
+                            width: '90%',
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onClick={() => handlePage9AreaClick(3)}
@@ -3422,8 +3762,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                             position: 'absolute',
                             top: '74%',
                             left: '6%',
-                            width: '80%',
-                            height: '21%',
+                            width: '88%',
+                            height: '24%',
                           }}
                           data-clickable="true"
                           onClick={() => handlePage9AreaClick(4)}
@@ -3476,10 +3816,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           } ${hoveredArea10 === 1 ? 'border-2 border-yellow-500' : ''}`}
                           style={{
                             position: 'absolute',
-                            top: '13%',
+                            top: '12%',
                             left: '6%',
-                            width: '80%',
-                            height: '10%',
+                            width: '91%',
+                            height: '12%',
                           }}
                           data-clickable="true"
                           onClick={() => handlePage10AreaClick(1)}
@@ -3503,10 +3843,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           } ${hoveredArea10 === 2 ? 'border-2 border-yellow-500' : ''}`}
                           style={{
                             position: 'absolute',
-                            top: '28%',
-                            left: '6%',
-                            width: '80%',
-                            height: '17%',
+                            top: '26%',
+                            left: '5%',
+                            width: '93%',
+                            height: '20%',
                           }}
                           data-clickable="true"
                           onClick={() => handlePage10AreaClick(2)}
@@ -3667,10 +4007,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                           } ${hoveredArea11 === 1 ? 'border-2 border-yellow-500' : ''}`}
                           style={{
                             position: 'absolute',
-                            bottom: '30%',
-                            right: '25%',
-                            width: '35%',
-                            height: '30%',
+                            bottom: '27%',
+                            right: '8%',
+                            width: '54%',
+                            height: '33%',
                           }}
                           data-clickable="true"
                           onClick={handlePage11AreaClick}
@@ -3749,6 +4089,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           onClick={handlePrintClick}
           className="w-8 h-8 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
           title={t('print')}
+          onMouseEnter={(e) => handleToolbarButtonHover('print', e)}
+          onMouseLeave={handleAreaLeave}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -3759,6 +4101,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           onClick={handleDownloadClick}
           className="w-8 h-8 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
           title={t('download')}
+          onMouseEnter={(e) => handleToolbarButtonHover('download', e)}
+          onMouseLeave={handleAreaLeave}
           title={t('download')}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -3771,6 +4115,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           onClick={handleTocClick}
           className="w-8 h-8 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
           title={t('toc')}
+          onMouseEnter={(e) => handleToolbarButtonHover('toc', e)}
+          onMouseLeave={handleAreaLeave}
           title={t('toc')}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -3782,6 +4128,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           onClick={handleShareClick}
           className="w-8 h-8 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
           title={t('share')}
+          onMouseEnter={(e) => handleToolbarButtonHover('share', e)}
+          onMouseLeave={handleAreaLeave}
           title={t('share')}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -3833,6 +4181,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                 onClick={() => (window.location.href = '/Isover')}
                 className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
                 title={t('home')}
+                data-tutorial-button="true"
+                data-tutorial-popup-type="home"
+                onMouseEnter={(e) => handleToolbarButtonHover('home', e)}
+                onMouseLeave={handleAreaLeave}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -3849,6 +4201,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                 onClick={handlePrintClick}
                 className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
                 title={t('print')}
+                data-tutorial-button="true"
+                data-tutorial-popup-type="print"
+                onMouseEnter={(e) => handleToolbarButtonHover('print', e)}
+                onMouseLeave={handleAreaLeave}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -3865,6 +4221,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                 onClick={handleDownloadClick}
                 className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
                 title={t('download')}
+                data-tutorial-button="true"
+                data-tutorial-popup-type="download"
+                onMouseEnter={(e) => handleToolbarButtonHover('download', e)}
+                onMouseLeave={handleAreaLeave}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -3893,6 +4253,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                 onClick={handleShareClick}
                 className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
                 title={t('share')}
+                data-tutorial-button="true"
+                data-tutorial-popup-type="share"
+                onMouseEnter={(e) => handleToolbarButtonHover('share', e)}
+                onMouseLeave={handleAreaLeave}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -3910,6 +4274,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
                   className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
                   title={t('language')}
+                  data-tutorial-button="true"
+                  data-tutorial-popup-type="language"
+                  onMouseEnter={(e) => handleToolbarButtonHover('language', e)}
+                  onMouseLeave={handleAreaLeave}
                 >
                   <img
                     src="/FrienderFile/Interactive/Language.png"
@@ -3941,7 +4309,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           {/* 3페이지 모달 */}
           {isModalOpen && selectedArea && (
             <div
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[10001]"
               onClick={closeModal}
             >
               {/* 고정 버튼들 - 모달 외부에 배치 */}
@@ -4016,7 +4384,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                       handleModalPositionReset();
                     }}
                     className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                    title="위치 리셋"
+                    title={t('positionReset')}
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -4128,7 +4496,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           {/* 추가 4개 영역 모달 */}
           {isAdditionalModalOpen && selectedAdditionalArea && (
             <div
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[10001]"
               onClick={closeAdditionalModal}
             >
               {/* 고정 버튼들 - 모달 외부에 배치 */}
@@ -4203,7 +4571,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                       handleModalPositionReset();
                     }}
                     className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                    title="위치 리셋"
+                    title={t('positionReset')}
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -4356,7 +4724,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           {/* 4페이지 모달 */}
           {isPage4ModalOpen && selectedPage4Area && (
             <div
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[10001]"
               onClick={closePage4Modal}
             >
               {/* 고정 버튼들 - 모달 외부에 배치 */}
@@ -4431,7 +4799,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                       handleModalPositionReset();
                     }}
                     className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                    title="위치 리셋"
+                    title={t('positionReset')}
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -4511,7 +4879,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                                 </div>
                               ) : (
                                 <div className="p-6 text-center text-sm text-red-500">
-                                  영상을 불러올 수 없습니다.
+                                  {t('videoLoadFailed')}
                                 </div>
                               )}
 
@@ -4570,7 +4938,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           {/* 4페이지 영역 2번 전용 모달 (테스트용) */}
           {isPage4Area2ModalOpen && (
             <div
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[10001]"
               onClick={closePage4Area2Modal}
             >
               <div
@@ -4593,7 +4961,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           {/* 5페이지 모달 */}
           {isPage5ModalOpen && selectedPage5Area && (
             <div
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[10001]"
               onClick={closePage5Modal}
             >
               {/* 고정 버튼들 - 모달 외부에 배치 */}
@@ -4668,7 +5036,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                       handleModalPositionReset();
                     }}
                     className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                    title="위치 리셋"
+                    title={t('positionReset')}
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -4744,8 +5112,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                     }}
                   />
                   <div className="hidden text-gray-500 text-center" style={{ display: 'none' }}>
-                    <p>이미지를 불러올 수 없습니다.</p>
-                    <p className="text-sm">경로: /FrienderFile/Popup/5-{selectedPage5Area}.jpg</p>
+                    <p>{t('imageLoadFailed')}</p>
+                    <p className="text-sm">{t('path')}: /FrienderFile/Popup/5-{selectedPage5Area}.jpg</p>
                   </div>
                 </div>
               </div>
@@ -4754,7 +5122,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           {/* 6페이지 모달 */}
           {isPage6ModalOpen && selectedPage6Area && (
             <div
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[10001]"
               onClick={closePage6Modal}
             >
               {/* 고정 버튼들 - 모달 외부에 배치 */}
@@ -4829,7 +5197,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                       handleModalPositionReset();
                     }}
                     className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                    title="위치 리셋"
+                    title={t('positionReset')}
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -4937,7 +5305,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           {/* 6페이지 3D 모델 모달창 */}
           {isPage63DModalOpen && (
             <div
-              className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/80 flex items-center justify-center z-[10001]"
               onClick={closePage63DModal}
             >
               <div
@@ -4985,7 +5353,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           {/* 2페이지 모달 */}
           {isPage2ModalOpen && selectedPage2Area && (
             <div
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[10001]"
               onClick={closePage2Modal}
             >
               {/* 고정 버튼들 - 모달 외부에 배치 */}
@@ -5060,7 +5428,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                       handleModalPositionReset();
                     }}
                     className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                    title="위치 리셋"
+                    title={t('positionReset')}
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -5121,8 +5489,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                     }}
                   />
                   <div className="hidden text-gray-500 text-center" style={{ display: 'none' }}>
-                    <p>이미지를 불러올 수 없습니다.</p>
-                    <p className="text-sm">경로: /FrienderFile/Popup/2-{selectedPage2Area}.jpg</p>
+                    <p>{t('imageLoadFailed')}</p>
+                    <p className="text-sm">{t('path')}: /FrienderFile/Popup/2-{selectedPage2Area}.jpg</p>
                   </div>
                 </div>
               </div>
@@ -5131,7 +5499,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           {/* 3페이지 모달 */}
           {isPage3ModalOpen && selectedPage3Area && (
             <div
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[10001]"
               onClick={closePage3Modal}
             >
               {/* 고정 버튼들 - 모달 외부에 배치 */}
@@ -5206,7 +5574,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                       handleModalPositionReset();
                     }}
                     className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                    title="위치 리셋"
+                    title={t('positionReset')}
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -5292,7 +5660,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           {/* 7페이지 모달 */}
           {isPage7ModalOpen && selectedPage7Area && (
             <div
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[10001]"
               onClick={closePage7Modal}
             >
               {/* 고정 버튼들 - 모달 외부에 배치 */}
@@ -5367,7 +5735,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                       handleModalPositionReset();
                     }}
                     className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                    title="위치 리셋"
+                    title={t('positionReset')}
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -5471,7 +5839,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           {/* 8페이지 모달 */}
           {isPage8ModalOpen && selectedPage8Area && (
             <div
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[10001]"
               onClick={closePage8Modal}
             >
               {/* 고정 버튼들 - 모달 외부에 배치 */}
@@ -5546,7 +5914,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                       handleModalPositionReset();
                     }}
                     className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                    title="위치 리셋"
+                    title={t('positionReset')}
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -5618,8 +5986,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                     }}
                   />
                   <div className="hidden text-gray-500 text-center" style={{ display: 'none' }}>
-                    <p>이미지를 불러올 수 없습니다.</p>
-                    <p className="text-sm">경로: /FrienderFile/Popup/8-{selectedPage8Area}.jpg</p>
+                    <p>{t('imageLoadFailed')}</p>
+                    <p className="text-sm">{t('path')}: /FrienderFile/Popup/8-{selectedPage8Area}.jpg</p>
                   </div>
                 </div>
               </div>
@@ -5628,7 +5996,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           {/* 9페이지 모달 */}
           {isPage9ModalOpen && selectedPage9Area && (
             <div
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[10001]"
               onClick={closePage9Modal}
             >
               {/* 고정 버튼들 - 모달 외부에 배치 */}
@@ -5703,7 +6071,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                       handleModalPositionReset();
                     }}
                     className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                    title="위치 리셋"
+                    title={t('positionReset')}
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -5764,8 +6132,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                     }}
                   />
                   <div className="hidden text-gray-500 text-center" style={{ display: 'none' }}>
-                    <p>이미지를 불러올 수 없습니다.</p>
-                    <p className="text-sm">경로: /FrienderFile/Popup/9-{selectedPage9Area}.jpg</p>
+                    <p>{t('imageLoadFailed')}</p>
+                    <p className="text-sm">{t('path')}: /FrienderFile/Popup/9-{selectedPage9Area}.jpg</p>
                   </div>
                 </div>
               </div>
@@ -5774,7 +6142,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           {/* 10페이지 모달 */}
           {isPage10ModalOpen && selectedPage10Area && (
             <div
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[10001]"
               onClick={closePage10Modal}
             >
               {/* 고정 버튼들 - 모달 외부에 배치 */}
@@ -5849,7 +6217,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                       handleModalPositionReset();
                     }}
                     className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                    title="위치 리셋"
+                    title={t('positionReset')}
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -5925,8 +6293,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                     }}
                   />
                   <div className="hidden text-gray-500 text-center" style={{ display: 'none' }}>
-                    <p>이미지를 불러올 수 없습니다.</p>
-                    <p className="text-sm">경로: /FrienderFile/Popup/10-{selectedPage10Area}.jpg</p>
+                    <p>{t('imageLoadFailed')}</p>
+                    <p className="text-sm">{t('path')}: /FrienderFile/Popup/10-{selectedPage10Area}.jpg</p>
                   </div>
                 </div>
               </div>
@@ -5935,7 +6303,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           {/* 11페이지 모달 */}
           {isPage11ModalOpen && (
             <div
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[10001]"
               onClick={closePage11Modal}
             >
               {/* 고정 버튼들 - 모달 외부에 배치 */}
@@ -6010,7 +6378,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                       handleModalPositionReset();
                     }}
                     className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                    title="위치 리셋"
+                    title={t('positionReset')}
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -6125,7 +6493,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           {/* 5페이지 3D 모델 모달창 */}
           {isPage53DModalOpen && (
             <div
-              className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/80 flex items-center justify-center z-[10001]"
               onClick={() => {
                 setIsPage53DModalOpen(false);
                 setCurrentPartModel(null);
@@ -6145,7 +6513,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   <div className="absolute top-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-b border-gray-200 p-4">
                     <div className="flex justify-center items-center">
                       <h3 className="text-lg font-semibold text-gray-800">
-                        5페이지 3D 모델 뷰어 - 전체 시스템
+                        {t('page5ModelViewerTitle')}
                       </h3>
                     </div>
                   </div>
@@ -6231,7 +6599,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           {/* 5페이지 외장재 모달창 */}
           {isPage5ExteriorModalOpen && selectedExteriorType && (
             <div
-              className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/80 flex items-center justify-center z-[10001]"
               onClick={closePage5ExteriorModal}
             >
               <div
@@ -6673,33 +7041,22 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
         </div>
       )}
 
-      {/* 튜토리얼 툴팁 */}
+      {/* 튜토리얼 툴팁 - 3페이지 호버 시 표시 */}
       {isTutorialMode && tutorialTooltip && (() => {
-        const isDetailView = tutorialTooltip.isDetailView;
-        const targetArea = tutorialTargetArea;
-        
-        // transform 계산
-        let transform = '';
-        if (tutorialTooltipDirection === 'top') {
-          transform = 'translate(-50%, -100%)';
-        } else if (tutorialTooltipDirection === 'bottom') {
-          transform = 'translate(-50%, 0)';
-        } else if (tutorialTooltipDirection === 'left') {
-          transform = 'translate(-100%, -50%)';
-        } else if (tutorialTooltipDirection === 'right') {
-          transform = 'translate(0, -50%)';
-        }
+        const transform = tutorialTooltipDirection === 'top' 
+          ? 'translate(-50%, -100%)' 
+          : 'translate(-50%, 0)';
 
         return (
           <div
-            className="fixed z-[10000] pointer-events-none"
+            className="fixed z-[9999] pointer-events-none"
             style={{
               left: `${tutorialTooltipPosition.x}px`,
               top: `${tutorialTooltipPosition.y}px`,
               transform: transform,
             }}
           >
-            {/* 상단 방향 */}
+            {/* 상단 방향 (영역이 화면 하단에 있을 때) */}
             {tutorialTooltipDirection === 'top' && (
               <>
                 <div className="bg-blue-600 text-white rounded-lg shadow-2xl p-4 max-w-xs min-w-[280px] mb-2">
@@ -6715,11 +7072,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-bold text-lg mb-2">{tutorialTooltip.title}</h3>
-                      {isDetailView ? (
-                        <p className="text-sm leading-relaxed">이 영역을 확대하여 상세 정보를 확인하세요.</p>
-                      ) : (
-                        <p className="text-sm leading-relaxed">{tutorialTooltip.description}</p>
-                      )}
+                      <p className="text-sm leading-relaxed">{tutorialTooltip.description}</p>
                     </div>
                   </div>
                 </div>
@@ -6731,7 +7084,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
               </>
             )}
 
-            {/* 하단 방향 */}
+            {/* 하단 방향 (영역이 화면 상단에 있을 때) */}
             {tutorialTooltipDirection === 'bottom' && (
               <>
                 {/* 상단 화살표 */}
@@ -6752,79 +7105,11 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-bold text-lg mb-2">{tutorialTooltip.title}</h3>
-                      {isDetailView ? (
-                        <p className="text-sm leading-relaxed">이 영역을 확대하여 상세 정보를 확인하세요.</p>
-                      ) : (
-                        <p className="text-sm leading-relaxed">{tutorialTooltip.description}</p>
-                      )}
+                      <p className="text-sm leading-relaxed">{tutorialTooltip.description}</p>
                     </div>
                   </div>
                 </div>
               </>
-            )}
-
-            {/* 좌측 방향 */}
-            {tutorialTooltipDirection === 'left' && (
-              <div className="flex items-center">
-                <div className="bg-blue-600 text-white rounded-lg shadow-2xl p-4 max-w-xs min-w-[280px] mr-2">
-                  <div className="flex items-start gap-2">
-                    <div className="flex-shrink-0 mt-0.5">
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path
-                          fillRule="evenodd"
-                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-bold text-lg mb-2">{tutorialTooltip.title}</h3>
-                      {isDetailView ? (
-                        <p className="text-sm leading-relaxed">이 영역을 확대하여 상세 정보를 확인하세요.</p>
-                      ) : (
-                        <p className="text-sm leading-relaxed">{tutorialTooltip.description}</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                {/* 우측 화살표 */}
-                <div
-                  className="w-0 h-0 border-t-8 border-b-8 border-l-8 border-transparent border-l-blue-600"
-                  style={{ transform: 'translateY(-50%)' }}
-                />
-              </div>
-            )}
-
-            {/* 우측 방향 */}
-            {tutorialTooltipDirection === 'right' && (
-              <div className="flex items-center">
-                {/* 좌측 화살표 */}
-                <div
-                  className="w-0 h-0 border-t-8 border-b-8 border-r-8 border-transparent border-r-blue-600 mr-2"
-                  style={{ transform: 'translateY(-50%)' }}
-                />
-                <div className="bg-blue-600 text-white rounded-lg shadow-2xl p-4 max-w-xs min-w-[280px]">
-                  <div className="flex items-start gap-2">
-                    <div className="flex-shrink-0 mt-0.5">
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path
-                          fillRule="evenodd"
-                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-bold text-lg mb-2">{tutorialTooltip.title}</h3>
-                      {isDetailView ? (
-                        <p className="text-sm leading-relaxed">이 영역을 확대하여 상세 정보를 확인하세요.</p>
-                      ) : (
-                        <p className="text-sm leading-relaxed">{tutorialTooltip.description}</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
             )}
           </div>
         );

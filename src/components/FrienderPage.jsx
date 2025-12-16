@@ -98,7 +98,7 @@ const getPage7MediaOverrides = (t) => ({
   },
 });
 
-const NAVER_MAP_ADDRESS = '경기도 부천시 원미구 길주로 17, 웹툰융합센터 6층 608호';
+const NAVER_MAP_ADDRESS = '경기도 부천시 부천로 198번길 18, 202동 15층 8호';
 const NAVER_MAP_COORDINATES = {
   lat: 37.5047267,
   lng: 126.7870631,
@@ -1178,31 +1178,31 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
   const getPopupTypeInfo = React.useCallback((popupType) => {
     const typeMap = {
       'zoom': {
-        title: t('tooltipZoomPopupTitle'),
-        description: t('tooltipZoomPopupDesc'),
+        title: getTranslation(currentLanguage, 'tooltipZoomPopupTitle'),
+        description: getTranslation(currentLanguage, 'tooltipZoomPopupDesc'),
       },
       'image': {
-        title: t('tooltipImagePopupTitle'),
-        description: t('tooltipImagePopupDesc'),
+        title: getTranslation(currentLanguage, 'tooltipImagePopupTitle'),
+        description: getTranslation(currentLanguage, 'tooltipImagePopupDesc'),
       },
       'video-list': {
-        title: t('tooltipVideoListPopupTitle'),
-        description: t('tooltipVideoListPopupDesc'),
+        title: getTranslation(currentLanguage, 'tooltipVideoListPopupTitle'),
+        description: getTranslation(currentLanguage, 'tooltipVideoListPopupDesc'),
       },
       'video': {
-        title: t('tooltipVideoPopupTitle'),
-        description: t('tooltipVideoPopupDesc'),
+        title: getTranslation(currentLanguage, 'tooltipVideoPopupTitle'),
+        description: getTranslation(currentLanguage, 'tooltipVideoPopupDesc'),
       },
       '3d': {
-        title: t('tooltip3DPopupTitle'),
-        description: t('tooltip3DPopupDesc'),
+        title: getTranslation(currentLanguage, 'tooltip3DPopupTitle'),
+        description: getTranslation(currentLanguage, 'tooltip3DPopupDesc'),
       },
     };
     return typeMap[popupType] || {
-      title: t('tooltipInfoPopupTitle'),
-      description: t('tooltipInfoPopupDesc'),
+      title: getTranslation(currentLanguage, 'tooltipInfoPopupTitle'),
+      description: getTranslation(currentLanguage, 'tooltipInfoPopupDesc'),
     };
-  }, [currentLanguage, t]);
+  }, [currentLanguage]);
 
   /**
    * 툴바 버튼별 툴팁 정보 반환
@@ -1210,47 +1210,47 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
   const getToolbarButtonInfo = React.useCallback((buttonType) => {
     const buttonMap = {
       'home': {
-        title: t('tooltipHomeTitle'),
-        description: t('tooltipHomeDesc'),
+        title: getTranslation(currentLanguage, 'tooltipHomeTitle'),
+        description: getTranslation(currentLanguage, 'tooltipHomeDesc'),
       },
       'zoom-in': {
-        title: t('tooltipZoomInTitle'),
-        description: t('tooltipZoomInDesc'),
+        title: getTranslation(currentLanguage, 'tooltipZoomInTitle'),
+        description: getTranslation(currentLanguage, 'tooltipZoomInDesc'),
       },
       'zoom-out': {
-        title: t('tooltipZoomOutTitle'),
-        description: t('tooltipZoomOutDesc'),
+        title: getTranslation(currentLanguage, 'tooltipZoomOutTitle'),
+        description: getTranslation(currentLanguage, 'tooltipZoomOutDesc'),
       },
       'zoom-reset': {
-        title: t('tooltipZoomResetTitle'),
-        description: t('tooltipZoomResetDesc'),
+        title: getTranslation(currentLanguage, 'tooltipZoomResetTitle'),
+        description: getTranslation(currentLanguage, 'tooltipZoomResetDesc'),
       },
       'print': {
-        title: t('tooltipPrintTitle'),
-        description: t('tooltipPrintDesc'),
+        title: getTranslation(currentLanguage, 'tooltipPrintTitle'),
+        description: getTranslation(currentLanguage, 'tooltipPrintDesc'),
       },
       'download': {
-        title: t('tooltipDownloadTitle'),
-        description: t('tooltipDownloadDesc'),
+        title: getTranslation(currentLanguage, 'tooltipDownloadTitle'),
+        description: getTranslation(currentLanguage, 'tooltipDownloadDesc'),
       },
       'share': {
-        title: t('tooltipShareTitle'),
-        description: t('tooltipShareDesc'),
+        title: getTranslation(currentLanguage, 'tooltipShareTitle'),
+        description: getTranslation(currentLanguage, 'tooltipShareDesc'),
       },
       'toc': {
-        title: t('tooltipTocTitle'),
-        description: t('tooltipTocDesc'),
+        title: getTranslation(currentLanguage, 'tooltipTocTitle'),
+        description: getTranslation(currentLanguage, 'tooltipTocDesc'),
       },
       'language': {
-        title: t('tooltipLanguageTitle'),
-        description: t('tooltipLanguageDesc'),
+        title: getTranslation(currentLanguage, 'tooltipLanguageTitle'),
+        description: getTranslation(currentLanguage, 'tooltipLanguageDesc'),
       },
     };
     return buttonMap[buttonType] || {
-      title: t('tooltipButtonDefaultTitle'),
-      description: t('tooltipButtonDefaultDesc'),
+      title: getTranslation(currentLanguage, 'tooltipButtonDefaultTitle'),
+      description: getTranslation(currentLanguage, 'tooltipButtonDefaultDesc'),
     };
-  }, [currentLanguage, t]);
+  }, [currentLanguage]);
 
   /**
    * 모든 영역 호버 시 툴팁 표시 (튜토리얼 모드일 때만)

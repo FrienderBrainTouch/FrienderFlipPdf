@@ -18,7 +18,6 @@ const LoadingSpinner = () => (
     </div>
   </div>
 );
-
 // 브라우저 언어 감지 및 리다이렉트 컴포넌트
 function LanguageRedirect() {
   const navigate = useNavigate();

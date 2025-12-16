@@ -8,71 +8,71 @@ import { useFlipBookSize } from '../../hooks/useFlipBookSize';
 function StoryPage() {
   const navigate = useNavigate();
   const validLanguage = useValidLanguage();
-
+  
   // 화면 크기 상태 관리
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1025);
   const [isSmallScreen, setIsSmallScreen] = React.useState(window.innerWidth <= 1450);
-
+  
   // 플립북 크기 계산
   const flipBookSize = useFlipBookSize();
   const flipBookRef = React.useRef(null);
-
+  
   // 현재 페이지 상태 관리
   const [currentPage, setCurrentPage] = React.useState(0);
   const [isCoverPage, setIsCoverPage] = React.useState(true);
   const [isFirstPage, setIsFirstPage] = React.useState(true);
   const [isLastPage, setIsLastPage] = React.useState(false);
-
+  
   // 마우스 이벤트 활성화 상태 관리
   const [mouseEventsEnabled, setMouseEventsEnabled] = React.useState(false);
-
+  
   // 인트로 화면 상태 관리
   const [showIntro, setShowIntro] = React.useState(true);
   const [logoOpacity, setLogoOpacity] = React.useState(0);
   const [whiteScreenVisible, setWhiteScreenVisible] = React.useState(true);
   const [mainScreenVisible, setMainScreenVisible] = React.useState(false);
-
+  
   // 확대/축소 상태 관리
   const [zoomLevel, setZoomLevel] = React.useState(1);
   const [isZoomed, setIsZoomed] = React.useState(false);
-
+  
   // 미니맵 상태 관리
   const [showMinimap, setShowMinimap] = React.useState(false);
-
+  
   // 드래그 상태 관리
   const [isDragging, setIsDragging] = React.useState(false);
   const [dragOffset, setDragOffset] = React.useState({ x: 0, y: 0 });
-
+  
   // 드래그 시작점을 ref로 관리 (무한 루프 방지)
   const dragStartRef = React.useRef({ x: 0, y: 0 });
-
+  
   // 플립북 컨테이너 참조
   const flipBookContainerRef = React.useRef(null);
-
+  
   // DreamPath 페이지 데이터 (6페이지)
   const pageData = React.useMemo(
     () => [
-      { id: 1, svg: `/Story/Page/${validLanguage}/1.svg`, isCover: true },
-      { id: 2, svg: `/Story/Page/${validLanguage}/2.svg` },
-      { id: 3, svg: `/Story/Page/${validLanguage}/3.svg` },
-      { id: 4, svg: `/Story/Page/${validLanguage}/4.svg` },
-      { id: 5, svg: `/Story/Page/${validLanguage}/5.svg` },
+    { id: 1, svg: `/Story/Page/${validLanguage}/1.svg`, isCover: true },
+    { id: 2, svg: `/Story/Page/${validLanguage}/2.svg` },
+    { id: 3, svg: `/Story/Page/${validLanguage}/3.svg` },
+    { id: 4, svg: `/Story/Page/${validLanguage}/4.svg` },
+    { id: 5, svg: `/Story/Page/${validLanguage}/5.svg` },
       { id: 6, svg: `/Story/Page/${validLanguage}/6.svg` },
     ],
     [validLanguage]
   );
-
+  
   // 화면 크기 변경 감지
   React.useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1025);
       setIsSmallScreen(window.innerWidth <= 1450);
     };
-
+    
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
+  
   // 로고 애니메이션 완료 후 화면 전환
   React.useEffect(() => {
     if (logoOpacity === 1) {
@@ -84,55 +84,55 @@ function StoryPage() {
       }, 500);
     }
   }, [logoOpacity]);
-
+  
   // 로고 애니메이션 함수 (재사용 가능)
   const startLogoAnimation = React.useCallback(() => {
     const logoAnimation = () => {
       const startTime = performance.now();
       const duration = 1000;
-
+      
       const animate = (currentTime) => {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const easeOut = 1 - Math.pow(1 - progress, 3);
         setLogoOpacity(easeOut);
-
+        
         if (progress < 1) {
           requestAnimationFrame(animate);
         }
       };
-
+      
       requestAnimationFrame(animate);
     };
-
+    
     setTimeout(() => {
       logoAnimation();
     }, 500);
   }, []);
-
+  
   // 인트로 화면 애니메이션 시퀀스
   React.useEffect(() => {
     startLogoAnimation();
   }, [startLogoAnimation]);
-
+  
   // 페이지 변경 이벤트 핸들러
   const handlePageFlip = (e) => {
     const newPage = e.data;
     setCurrentPage(newPage);
-
+    
     const firstPage = newPage === 0;
     const lastPage = newPage === pageData.length - 1;
     setIsFirstPage(firstPage);
     setIsLastPage(lastPage);
     setIsCoverPage(firstPage || lastPage);
-
+    
     // 페이지 변경 시 확대/축소 상태 리셋
     setZoomLevel(1);
     setIsZoomed(false);
     setShowMinimap(false);
     setDragOffset({ x: 0, y: 0 });
   };
-
+  
   /**
    * 홈 버튼 클릭 핸들러 - 인트로 화면 재시작 및 1페이지로 이동
    */
@@ -142,28 +142,28 @@ function StoryPage() {
     setLogoOpacity(0);
     setWhiteScreenVisible(true);
     setMainScreenVisible(false);
-
+    
     // 확대/축소 상태 리셋
     setZoomLevel(1);
     setIsZoomed(false);
     setShowMinimap(false);
     setDragOffset({ x: 0, y: 0 });
-
+    
     // 1페이지로 이동
     if (flipBookRef.current) {
       flipBookRef.current.pageFlip().turnToPage(0);
     }
-
+    
     // 페이지 상태 리셋
     setCurrentPage(0);
     setIsFirstPage(true);
     setIsLastPage(false);
     setIsCoverPage(true);
-
+    
     // 로고 애니메이션 재시작
     startLogoAnimation();
   };
-
+  
   /**
    * 프린터 버튼 클릭 핸들러
    */
@@ -180,7 +180,7 @@ function StoryPage() {
       window.print();
     }
   };
-
+  
   /**
    * PDF 다운로드 버튼 클릭 핸들러
    */
@@ -192,7 +192,7 @@ function StoryPage() {
     link.click();
     document.body.removeChild(link);
   };
-
+  
   /**
    * 공유 버튼 클릭 핸들러
    */
@@ -211,7 +211,7 @@ function StoryPage() {
       navigator.clipboard.writeText(window.location.href);
     }
   };
-
+  
   /**
    * 목차 버튼 클릭 핸들러
    */
@@ -220,7 +220,7 @@ function StoryPage() {
       flipBookRef.current.pageFlip().turnToPage(1); // 2번째 페이지로 이동
     }
   };
-
+  
   /**
    * 확대 버튼 클릭 핸들러
    */
@@ -233,7 +233,7 @@ function StoryPage() {
       setDragOffset({ x: 0, y: 0 });
     }
   };
-
+  
   /**
    * 축소 버튼 클릭 핸들러
    */
@@ -246,7 +246,7 @@ function StoryPage() {
       setDragOffset({ x: 0, y: 0 });
     }
   };
-
+  
   /**
    * 확대/축소 리셋 핸들러
    */
@@ -256,43 +256,43 @@ function StoryPage() {
     setShowMinimap(false);
     setDragOffset({ x: 0, y: 0 });
   };
-
+  
   // 드래그 핸들러들
   const handleMouseDown = (e) => {
     setIsDragging(true);
     dragStartRef.current = { x: e.clientX, y: e.clientY };
     e.preventDefault();
   };
-
+  
   const handleMouseMove = (e) => {
     if (isDragging) {
       const deltaX = e.clientX - dragStartRef.current.x;
       const deltaY = e.clientY - dragStartRef.current.y;
-
+      
       setDragOffset((prev) => ({
         x: prev.x + deltaX,
         y: prev.y + deltaY,
       }));
-
+      
       dragStartRef.current = { x: e.clientX, y: e.clientY };
     }
   };
-
+  
   const handleMouseUp = () => {
     setIsDragging(false);
   };
-
+  
   const handleTouchStart = (e) => {
     if (e.touches.length === 1) {
       setIsDragging(true);
       dragStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     }
   };
-
+  
   const handleTouchEnd = () => {
     setIsDragging(false);
   };
-
+  
   // 터치 영역 핸들러
   const handleTouchAreaMouseDown = (direction) => {
     if (direction === 'left') {
@@ -301,11 +301,11 @@ function StoryPage() {
       goToNextPage();
     }
   };
-
+  
   const handleTouchAreaMouseUp = () => {
     // 필요시 추가 로직
   };
-
+  
   const handleTouchAreaTouchStart = (direction) => {
     if (direction === 'left') {
       goToPreviousPage();
@@ -313,11 +313,11 @@ function StoryPage() {
       goToNextPage();
     }
   };
-
+  
   const handleTouchAreaTouchEnd = () => {
     // 필요시 추가 로직
   };
-
+  
   /**
    * 페이지 네비게이션 함수들
    */
@@ -326,43 +326,43 @@ function StoryPage() {
       flipBookRef.current.pageFlip().turnToPage(0);
     }
   };
-
+  
   const goToPreviousPage = () => {
     if (flipBookRef.current) {
       flipBookRef.current.pageFlip().flipPrev();
     }
   };
-
+  
   const goToNextPage = () => {
     if (flipBookRef.current) {
       flipBookRef.current.pageFlip().flipNext();
     }
   };
-
+  
   const goToLastPage = () => {
     if (flipBookRef.current) {
       const totalPages = flipBookRef.current.pageFlip().getPageCount();
       flipBookRef.current.pageFlip().turnToPage(totalPages - 1);
     }
   };
-
+  
   // 모바일 화면인 경우 모바일 컴포넌트 렌더링
   if (isMobile) {
     return <StoryPageMobile language={validLanguage} />;
   }
-
+  
   return (
     <div className="w-full h-screen overflow-hidden relative">
       {/* 인트로 화면 (흰 화면 + 로고) */}
       {showIntro && (
-        <div
+        <div 
           className={`fixed inset-0 bg-white z-50 transition-transform duration-500 ease-out ${
             whiteScreenVisible ? 'translate-y-0' : '-translate-y-full'
           }`}
         >
           {/* Friender 로고 */}
           <div className="w-full h-full flex flex-col items-center justify-center">
-            <img
+            <img 
               src="/FrienderFile/Interactive/Freinder-Logo-L-G.png"
               alt="Friender Logo"
               className="max-w-full max-h-full object-contain"
@@ -371,7 +371,7 @@ function StoryPage() {
           </div>
         </div>
       )}
-
+      
       {/* 본 화면 */}
       {mainScreenVisible && (
         <div className="w-full h-screen overflow-hidden bg-white flex">
@@ -384,7 +384,7 @@ function StoryPage() {
                 className="w-full h-auto"
               />
             </button>
-
+            
             {/* 미니맵 */}
             {showMinimap && (
               <div className="mt-4 w-full relative z-[9999]">
@@ -393,7 +393,7 @@ function StoryPage() {
                   <div className="relative w-full h-24 bg-gray-100 rounded overflow-hidden">
                     {/* 표지 페이지인 경우 단일 페이지 표시 */}
                     {isCoverPage ? (
-                      <div
+                      <div 
                         className="w-full h-full bg-cover bg-center bg-no-repeat opacity-30"
                         style={{
                           backgroundImage: `url(${pageData[0]?.svg})`,
@@ -405,7 +405,7 @@ function StoryPage() {
                       /* 일반 페이지인 경우 양쪽 페이지 표시 */
                       <div className="flex w-full h-full">
                         {/* 왼쪽 페이지 */}
-                        <div
+                        <div 
                           className="w-1/2 h-full bg-cover bg-center bg-no-repeat opacity-30"
                           style={{
                             backgroundImage: `url(${pageData[currentPage]?.svg})`,
@@ -414,7 +414,7 @@ function StoryPage() {
                           }}
                         />
                         {/* 오른쪽 페이지 */}
-                        <div
+                        <div 
                           className="w-1/2 h-full bg-cover bg-center bg-no-repeat opacity-30"
                           style={{
                             backgroundImage: `url(${
@@ -426,9 +426,9 @@ function StoryPage() {
                         />
                       </div>
                     )}
-
+                    
                     {/* 현재 뷰포트 표시 */}
-                    <div
+                    <div 
                       className="absolute border-2 border-red-500 bg-red-500/20 transition-all duration-200"
                       style={{
                         width: `${100 / zoomLevel}%`,
@@ -443,7 +443,7 @@ function StoryPage() {
               </div>
             )}
           </div>
-
+          
           {/* 중앙 플립북 컨테이너 */}
           <div className="w-full h-full flex items-center justify-center p-4 relative">
             {/* 돋보기 버튼들 - 플립북 컨테이너 위에 배치 */}
@@ -463,7 +463,7 @@ function StoryPage() {
                   />
                 </svg>
               </button>
-
+              
               {/* 축소 버튼 */}
               <button
                 onClick={handleZoomOut}
@@ -479,7 +479,7 @@ function StoryPage() {
                   />
                 </svg>
               </button>
-
+              
               {/* 확대/축소 리셋 버튼 */}
               {isZoomed && (
                 <button
@@ -498,7 +498,7 @@ function StoryPage() {
                 </button>
               )}
             </div>
-
+            
             <div className="flex items-center xl:gap-4">
               {/* 왼쪽 네비게이션 버튼들 */}
               <div className="flex flex-col items-center gap-2">
@@ -535,9 +535,9 @@ function StoryPage() {
                   />
                 </button>
               </div>
-
+              
               {/* 플립북 컨테이너 */}
-              <div
+              <div 
                 ref={flipBookContainerRef}
                 className="flex items-center justify-center relative overflow-visible"
                 style={{ width: '100%', height: '100%' }}
@@ -549,7 +549,7 @@ function StoryPage() {
                 onTouchEnd={isZoomed ? handleTouchEnd : undefined}
               >
                 {/* 플립북 */}
-                <div
+                <div 
                   className={`${isZoomed ? 'cursor-grab' : ''} ${
                     isDragging ? 'cursor-grabbing' : ''
                   }`}
@@ -565,9 +565,9 @@ function StoryPage() {
                     `,
                   }}
                 >
-                  <HTMLFlipBook
+                  <HTMLFlipBook 
                     ref={flipBookRef}
-                    width={flipBookSize.width}
+                    width={flipBookSize.width} 
                     height={flipBookSize.height}
                     maxShadowOpacity={0}
                     drawShadow={false}
@@ -582,12 +582,12 @@ function StoryPage() {
                     onFlip={handlePageFlip}
                   >
                     {/* 표지 페이지 (첫 번째 페이지) */}
-                    <div
-                      className="page shadow-lg overflow-hidden"
+                    <div 
+                      className="page shadow-lg overflow-hidden" 
                       key={pageData[0].id}
                       data-density="hard"
                     >
-                      <div
+                      <div 
                         className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
                         style={{
                           backgroundImage: `url(${pageData[0].svg})`,
@@ -596,7 +596,7 @@ function StoryPage() {
                         }}
                       >
                         {/* 오른쪽 터치 영역 (표지는 오른쪽) */}
-                        <div
+                        <div 
                           className="absolute right-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
                           onMouseDown={() => handleTouchAreaMouseDown('right')}
                           onMouseUp={handleTouchAreaMouseUp}
@@ -606,15 +606,15 @@ function StoryPage() {
                         />
                       </div>
                     </div>
-
+                    
                     {/* 나머지 페이지들 */}
                     {pageData.slice(1).map((page, index) => (
-                      <div
-                        className="page shadow-lg overflow-hidden"
+                      <div 
+                        className="page shadow-lg overflow-hidden" 
                         key={page.id}
                         data-density="hard"
                       >
-                        <div
+                        <div 
                           className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
                           style={{
                             backgroundImage: `url(${page.svg})`,
@@ -623,7 +623,7 @@ function StoryPage() {
                           }}
                         >
                           {/* 왼쪽 터치 영역 */}
-                          <div
+                          <div 
                             className="absolute left-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
                             onMouseDown={() => handleTouchAreaMouseDown('left')}
                             onMouseUp={handleTouchAreaMouseUp}
@@ -631,9 +631,9 @@ function StoryPage() {
                             onTouchEnd={handleTouchAreaTouchEnd}
                             title="이전 페이지로 이동"
                           />
-
+                          
                           {/* 오른쪽 터치 영역 */}
-                          <div
+                          <div 
                             className="absolute right-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
                             onMouseDown={() => handleTouchAreaMouseDown('right')}
                             onMouseUp={handleTouchAreaMouseUp}
@@ -647,7 +647,7 @@ function StoryPage() {
                   </HTMLFlipBook>
                 </div>
               </div>
-
+              
               {/* 오른쪽 네비게이션 버튼들 */}
               <div className="flex flex-col items-center gap-2">
                 {/* Right 버튼 */}
@@ -685,7 +685,7 @@ function StoryPage() {
               </div>
             </div>
           </div>
-
+          
           {/* 하단 툴바 - 모든 화면 크기에서 표시 */}
           <div className="fixed bottom-0 left-0 right-0 z-50 bg-gray-800 p-3">
             <div className="flex justify-center items-center gap-4">
@@ -704,7 +704,7 @@ function StoryPage() {
                   />
                 </svg>
               </button>
-
+              
               {/* 프린터 버튼 */}
               <button
                 onClick={handlePrintClick}
@@ -720,7 +720,7 @@ function StoryPage() {
                   />
                 </svg>
               </button>
-
+              
               {/* PDF 다운로드 버튼 */}
               <button
                 onClick={handleDownloadClick}
@@ -736,7 +736,7 @@ function StoryPage() {
                   />
                 </svg>
               </button>
-
+              
               {/* 목차 버튼 */}
               <button
                 onClick={handleTocClick}
@@ -752,7 +752,7 @@ function StoryPage() {
                   />
                 </svg>
               </button>
-
+              
               {/* 공유 버튼 */}
               <button
                 onClick={handleShareClick}

@@ -10,7 +10,7 @@ const TRANSLATIONS = {
     chatbot_title: 'Friender 챗봇',
     chatbot_subtitle: '무엇이든 물어보세요!',
     chatbot_welcome: '안녕하세요! Friender에 오신 것을 환영합니다. 궁금한 점이 있으신가요?',
-
+    
     chatbot_home_title: 'Friender 도우미',
     chatbot_home_subtitle: '회사 소개 및 일반 문의',
     chatbot_home_welcome: '안녕하세요! Friender에 대해 무엇이든 물어보세요.',
@@ -34,7 +34,7 @@ const TRANSLATIONS = {
     chatbot_title: 'Friender Chatbot',
     chatbot_subtitle: 'Ask me anything!',
     chatbot_welcome: 'Hello! Welcome to Friender. How can I help you today?',
-
+    
     chatbot_home_title: 'Friender Assistant',
     chatbot_home_subtitle: 'General Inquiries',
     chatbot_home_welcome: 'Hello! Ask me anything about Friender.',
@@ -58,7 +58,7 @@ const TRANSLATIONS = {
     chatbot_title: 'Friender チャットボット',
     chatbot_subtitle: '何でも聞いてください！',
     chatbot_welcome: 'こんにちは！Frienderへようこそ。ご用件をお聞かせください。',
-
+    
     chatbot_home_title: 'Friender アシスタント',
     chatbot_home_subtitle: '会社紹介と一般案内',
     chatbot_home_welcome: 'Frienderについて何でもお尋ねください。',
@@ -83,7 +83,7 @@ const TRANSLATIONS = {
     chatbot_title: 'Chatbot de Friender',
     chatbot_subtitle: 'Pregunta lo que quieras!',
     chatbot_welcome: 'Hola! Bienvenido a Friender. Como puedo ayudarte hoy?',
-
+    
     chatbot_home_title: 'Asistente de Friender',
     chatbot_home_subtitle: 'Consultas generales',
     chatbot_home_welcome: 'Hola! Pregunta lo que quieras sobre Friender.',
@@ -108,7 +108,7 @@ const TRANSLATIONS = {
     chatbot_title: 'Friender 聊天机器人',
     chatbot_subtitle: '有什么都可以问！',
     chatbot_welcome: '你好！欢迎来到 Friender。我能帮你做什么？',
-
+    
     chatbot_home_title: 'Friender 助理',
     chatbot_home_subtitle: '公司介绍与常见咨询',
     chatbot_home_welcome: '关于 Friender 有任何问题都可以问我。',
@@ -204,9 +204,9 @@ const Chatbot = () => {
 
     try {
       const apiUrl = import.meta.env.VITE_CHATBOT_API_URL;
-
+      
       let responseData = { message: '' };
-
+      
       if (apiUrl) {
         // 실제 API 호출
         const payload = {
@@ -222,7 +222,7 @@ const Chatbot = () => {
           },
           body: JSON.stringify(payload),
         });
-
+        
         if (!res.ok) throw new Error('Network response was not ok');
         responseData = await res.json();
       } else {
@@ -341,7 +341,7 @@ const Chatbot = () => {
                   <p className="text-sm whitespace-pre-wrap leading-relaxed">{message.text}</p>
                   <p
                     className={`text-[10px] mt-1 text-right ${
-                      message.sender === 'user' ? 'text-white/70' : 'text-gray-400'
+                    message.sender === 'user' ? 'text-white/70' : 'text-gray-400'
                     }`}
                   >
                     {formatTime(message.timestamp)}

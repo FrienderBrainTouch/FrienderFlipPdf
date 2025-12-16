@@ -6,11 +6,7 @@ import { getLanguageList, getLanguageFromPath, getLanguagePath, getPagePath, get
 import { getTranslation } from '../utils/translations';
 
 const getDroneVideoPlaylist = (t) => [
-const getDroneVideoPlaylist = (t) => [
   {
-    title: t('droneTheoryConcept'),
-    category: t('droneTheory'),
-    description: t('droneTheoryConceptDesc'),
     title: t('droneTheoryConcept'),
     category: t('droneTheory'),
     description: t('droneTheoryConceptDesc'),
@@ -20,15 +16,9 @@ const getDroneVideoPlaylist = (t) => [
     title: t('droneTheoryStructure'),
     category: t('droneTheory'),
     description: t('droneTheoryStructureDesc'),
-    title: t('droneTheoryStructure'),
-    category: t('droneTheory'),
-    description: t('droneTheoryStructureDesc'),
     url: 'https://youtu.be/d_sz10Lu7cs?si=APcTWNFVp6H5dADX',
   },
   {
-    title: t('droneTheoryPrinciple'),
-    category: t('droneTheory'),
-    description: t('droneTheoryPrincipleDesc'),
     title: t('droneTheoryPrinciple'),
     category: t('droneTheory'),
     description: t('droneTheoryPrincipleDesc'),
@@ -38,15 +28,9 @@ const getDroneVideoPlaylist = (t) => [
     title: t('droneTheorySafety'),
     category: t('droneTheory'),
     description: t('droneTheorySafetyDesc'),
-    title: t('droneTheorySafety'),
-    category: t('droneTheory'),
-    description: t('droneTheorySafetyDesc'),
     url: 'https://youtu.be/9E1OXKQhXQg?si=hugFJTE2P0uMd3Y6',
   },
   {
-    title: t('dronePracticeRescue'),
-    category: t('dronePractice'),
-    description: t('dronePracticeRescueDesc'),
     title: t('dronePracticeRescue'),
     category: t('dronePractice'),
     description: t('dronePracticeRescueDesc'),
@@ -56,15 +40,9 @@ const getDroneVideoPlaylist = (t) => [
     title: t('dronePracticeFire'),
     category: t('dronePractice'),
     description: t('dronePracticeFireDesc'),
-    title: t('dronePracticeFire'),
-    category: t('dronePractice'),
-    description: t('dronePracticeFireDesc'),
-    url: 'https://youtu.be/bEeKg5p4fJwhttps://youtu.be/bEeKg5p4fJw?si=RQC6FMFBOsErjkBm',
+    url: 'https://youtu.be/bEeKg5p4fJw?si=RQC6FMFBOsErjkBm',
   },
   {
-    title: t('droneTrack'),
-    category: t('droneTrack'),
-    description: t('droneTrackDesc'),
     title: t('droneTrack'),
     category: t('droneTrack'),
     description: t('droneTrackDesc'),
@@ -86,21 +64,16 @@ const getYouTubeEmbedUrl = (url) => {
 };
 
 const getPage6MediaOverrides = (t) => ({
-const getPage6MediaOverrides = (t) => ({
   5: {
     src: '/FrienderFile/VideoFile/WorldGIF.gif',
-    alt: t('worldGifAnimation'),
     alt: t('worldGifAnimation'),
   },
   6: {
     src: '/FrienderFile/VideoFile/FrinederGIF1.gif',
     alt: t('frienderGifAnimation'),
-    alt: t('frienderGifAnimation'),
   },
 });
-});
 
-const getPage7MediaOverrides = (t) => ({
 const getPage7MediaOverrides = (t) => ({
   5: {
     src: '/FrienderFile/VideoFile/AIStory.gif',
@@ -117,7 +90,6 @@ const getPage7MediaOverrides = (t) => ({
     alt: t('innoWorksGifAnimation'),
     alt: t('innoWorksGifAnimation'),
   },
-});
 });
 
 const NAVER_MAP_ADDRESS = '경기도 부천시 원미구 길주로 17, 웹툰융합센터 6층 608호';
@@ -247,7 +219,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   const [selectedPage6Area, setSelectedPage6Area] = useState(null);
   const [isPage6ModalJustOpened, setIsPage6ModalJustOpened] = useState(false);
   const [isPage6ModalJustClosed, setIsPage6ModalJustClosed] = useState(false);
-  const page6MediaOverrides = getPage6MediaOverrides(t);
   const page6MediaOverrides = getPage6MediaOverrides(t);
   const page6MediaOverride = useMemo(() => {
     return selectedPage6Area && page6MediaOverrides[selectedPage6Area] 
@@ -515,8 +486,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     const isLargeScreen = window.innerWidth >= 1024;
     return isLargeScreen ? baseSize : baseSize * 0.8;
   };
-
-
 
   // Friender 페이지별 이미지 데이터 (11페이지) - 언어별 경로 적용
   const pageImages = useMemo(() => [
@@ -809,7 +778,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    * 목차 버튼 클릭 핸들러
    */
   const handleTocClick = () => {
-    const targetPage = document.querySelector('[data-page-index="0"]');
     const targetPage = document.querySelector('[data-page-index="0"]');
     if (targetPage) {
       targetPage.scrollIntoView({ behavior: 'smooth' });
@@ -3690,7 +3658,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 onClick={handleHomeClick}
                 className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
                 title={t('home')}
-                title={t('home')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -3707,7 +3674,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 onClick={handlePrintClick}
                 className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
                 title={t('print')}
-                title={t('print')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -3723,7 +3689,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               <button
                 onClick={handleDownloadClick}
                 className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
-                title={t('download')}
                 title={t('download')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -3749,13 +3714,11 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                 </svg>
               </button> */}
-              </button> */}
 
               {/* 공유 버튼 */}
               <button
                 onClick={handleShareClick}
                 className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
-                title={t('share')}
                 title={t('share')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -3839,7 +3802,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             {/* 이미지 표시 */}
             <div className="flex items-center justify-center relative">
               <img
-                src={getPopupPath(currentLanguage, `3-${selectedArea}.jpg`)}
                 src={getPopupPath(currentLanguage, `3-${selectedArea}.jpg`)}
                 alt={`영역 ${selectedArea}`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
@@ -4002,7 +3964,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             <div className="relative flex items-center justify-center">
               <img
                 src={getPopupPath(currentLanguage, `3-${selectedAdditionalArea}.jpg`)}
-                src={getPopupPath(currentLanguage, `3-${selectedAdditionalArea}.jpg`)}
                 alt={`영역 ${selectedAdditionalArea}`}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -4135,7 +4096,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             <div className="relative flex items-center justify-center">
               <img
                 src={getPopupPath(currentLanguage, `4-${selectedPage4Area}.jpg`)}
-                src={getPopupPath(currentLanguage, `4-${selectedPage4Area}.jpg`)}
                 alt={`영역 ${selectedPage4Area}`}
                 className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -4186,8 +4146,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               <img
                 src={getPopupPath(currentLanguage, '4-2.jpg')}
                 alt={t('area2Test')}
-                src={getPopupPath(currentLanguage, '4-2.jpg')}
-                alt={t('area2Test')}
                 className="max-w-full min-h-[40vh] max-h-[75vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
                   // 이미지 로드 실패 시 메시지 표시
@@ -4235,7 +4193,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             {/* 이미지 표시 */}
             <div className="flex items-center justify-center">
               <img
-                src={getPopupPath(currentLanguage, '5-2.jpg')}
                 src={getPopupPath(currentLanguage, '5-2.jpg')}
                 alt="5페이지 2번째 영역"
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
@@ -4300,12 +4257,9 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <img
                     src={getPopupPath(currentLanguage, `5-${selectedPage5Area}.jpg`)}
-                    src={getPopupPath(currentLanguage, `5-${selectedPage5Area}.jpg`)}
                     alt={`5페이지 배경 이미지 ${selectedPart}`}
                     className="max-w-full max-h-full object-contain"
                     onError={(e) => {
-                      // JPG가 없으면 기본 이미지 사용
-                      e.target.src = getPopupPath(currentLanguage, '5-2.jpg');
                       // JPG가 없으면 기본 이미지 사용
                       e.target.src = getPopupPath(currentLanguage, '5-2.jpg');
                     }}
@@ -4418,7 +4372,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
               title={t('zoomIn')}
-              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -4435,7 +4388,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -4454,7 +4406,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -4563,8 +4514,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                       ? page6MediaOverrides[selectedPage6Area] 
                       : null;
                     return currentOverride
-                      ? `${t('path')}: ${currentOverride.src}`
-                      : t('popupFileNotFound').replace('{area}', selectedPage6Area);
                       ? `${t('path')}: ${currentOverride.src}`
                       : t('popupFileNotFound').replace('{area}', selectedPage6Area);
                   })()}
@@ -4694,7 +4643,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 <div className="flex max-w-full max-h-[85vh]">
                   <img
                     src={getPopupPath(currentLanguage, '3-4.jpg')}
-                    src={getPopupPath(currentLanguage, '3-4.jpg')}
                     alt="3-4-2 Korean 이미지"
                     className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
                     onError={(e) => {
@@ -4707,7 +4655,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               ) : (
                 // 다른 타입일 때는 단일 이미지 표시
                 <img
-                  src={getPopupPath(currentLanguage, `${selectedImageType}.jpg`)}
                   src={getPopupPath(currentLanguage, `${selectedImageType}.jpg`)}
                   alt={`${selectedImageType} 이미지`}
                   className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
@@ -4757,7 +4704,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             <div className="flex items-center justify-center">
               <img
                 src={getPopupPath(currentLanguage, `${selectedAdditionalImageType}.jpg`)}
-                src={getPopupPath(currentLanguage, `${selectedAdditionalImageType}.jpg`)}
                 alt={`${selectedAdditionalImageType} 이미지`}
                 className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
@@ -4801,7 +4747,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               {/* 배경 이미지 - 외장재 타입에 따라 표시 */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <img
-                  src={getPopupPath(currentLanguage, `5-${selectedExteriorType}.jpg`)}
                   src={getPopupPath(currentLanguage, `5-${selectedExteriorType}.jpg`)}
                   alt={`외장재 타입 ${selectedExteriorType} 배경 이미지`}
                   className="max-w-full max-h-full object-contain"
@@ -4968,7 +4913,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
               title={t('zoomIn')}
-              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -4985,7 +4929,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -5004,7 +4947,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -5076,8 +5018,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               <img
                 src={getPopupPath(currentLanguage, `2-${selectedPage2Area}.jpg`)}
                 alt={t('popupWithNumber').replace('{number}', `2-${selectedPage2Area}`)}
-                src={getPopupPath(currentLanguage, `2-${selectedPage2Area}.jpg`)}
-                alt={t('popupWithNumber').replace('{number}', `2-${selectedPage2Area}`)}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
                   e.target.style.display = 'none';
@@ -5129,7 +5069,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
               title={t('zoomIn')}
-              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -5146,7 +5085,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -5165,7 +5103,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -5295,7 +5232,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
               title={t('zoomIn')}
-              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -5312,7 +5248,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -5331,7 +5266,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -5510,7 +5444,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
               title={t('zoomIn')}
-              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -5527,7 +5460,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -5546,7 +5478,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -5677,7 +5608,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
               title={t('zoomIn')}
-              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -5694,7 +5624,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -5713,7 +5642,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -5764,9 +5692,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             </button>
           </div>
           <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
-              isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
-            }`}
+            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+              }`}
             style={{
               transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
               transformOrigin: 'center center',
@@ -5797,13 +5724,13 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 <img
                   src={getPopupPath(currentLanguage,
                     selectedPage7Area === 1 ? '7-1.jpg' :
-                    selectedPage7Area === 2 ? '7-2.jpg' :
-                    selectedPage7Area === 3 ? '7-3.jpg' :
-                    selectedPage7Area === 4 ? '7-4.jpg' :
-                    selectedPage7Area === 5 ? '7-1-img.jpg' :
-                    selectedPage7Area === 6 ? '7-2-img.jpg' :
-                    selectedPage7Area === 7 ? '7-3-img.jpg' :
-                    '7-1.jpg'
+                      selectedPage7Area === 2 ? '7-2.jpg' :
+                        selectedPage7Area === 3 ? '7-3.jpg' :
+                          selectedPage7Area === 4 ? '7-4.jpg' :
+                            selectedPage7Area === 5 ? '7-1-img.jpg' :
+                              selectedPage7Area === 6 ? '7-2-img.jpg' :
+                                selectedPage7Area === 7 ? '7-3-img.jpg' :
+                                  '7-1.jpg'
                   )}
                   alt={t('popupWithNumber').replace('{number}', `7-${selectedPage7Area}`)}
                   className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
@@ -5823,8 +5750,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   {page7MediaOverride
                     ? `${t('path')}: ${page7MediaOverride.src}`
                     : `${t('path')}: /FrienderFile/Popup/7-${selectedPage7Area}.jpg`}
-                    ? `${t('path')}: ${page7MediaOverride.src}`
-                    : `${t('path')}: /FrienderFile/Popup/7-${selectedPage7Area}.jpg`}
+                  ? `${t('path')}: ${page7MediaOverride.src}`
+                  : `${t('path')}: /FrienderFile/Popup/7-${selectedPage7Area}.jpg`
                 </p>
               </div>
             </div>
@@ -5863,7 +5790,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
               title={t('zoomIn')}
-              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -5880,7 +5806,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -5899,7 +5824,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -6028,7 +5952,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
               title={t('zoomIn')}
-              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -6045,7 +5968,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -6064,7 +5986,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -6136,8 +6057,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               <img
                 src={getPopupPath(currentLanguage, `9-${selectedPage9Area}.jpg`)}
                 alt={t('popupWithNumber').replace('{number}', `9-${selectedPage9Area}`)}
-                src={getPopupPath(currentLanguage, `9-${selectedPage9Area}.jpg`)}
-                alt={t('popupWithNumber').replace('{number}', `9-${selectedPage9Area}`)}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                 onError={(e) => {
                   e.target.style.display = 'none';
@@ -6189,7 +6108,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
               title={t('zoomIn')}
-              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -6206,7 +6124,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -6225,7 +6142,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -6356,7 +6272,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
               title={t('zoomIn')}
-              title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -6373,7 +6288,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 handleModalZoomOut();
               }}
               className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -6392,7 +6306,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   handleModalZoomReset();
                 }}
                 className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -6465,8 +6378,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               <div className="flex-1 flex items-center justify-center">
                 <div className="flex flex-col items-center gap-3">
                   <img
-                    src={getPopupPath(currentLanguage, '11-1.jpg')}
-                    alt={t('popupWithNumber').replace('{number}', '11-1')}
                     src={getPopupPath(currentLanguage, '11-1.jpg')}
                     alt={t('popupWithNumber').replace('{number}', '11-1')}
                     className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"

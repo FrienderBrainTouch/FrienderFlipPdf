@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import Frender3DModel from './Frender3DModel';
 import Chatbot from './Chatbot';
@@ -252,19 +252,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
 
   // 2페이지 모달 상태 변화 추적
   useEffect(() => {
-    console.log('📊 [2페이지] 모달 상태 변화:', {
-      isPage2ModalOpen,
-      selectedPage2Area,
-      timestamp: new Date().toISOString(),
-    });
-
     // 모달이 열릴 때 짧은 시간 동안 배경 클릭 무시
     if (isPage2ModalOpen) {
       setIsPage2ModalJustOpened(true);
-      setIsPage2ModalJustClosed(false); // 모달이 열리면 닫힘 플래그 해제
+      setIsPage2ModalJustClosed(false);
       const timer = setTimeout(() => {
         setIsPage2ModalJustOpened(false);
-        console.log('✅ [2페이지] 모달 열림 후 300ms 경과 - 배경 클릭 활성화');
       }, 300);
       return () => clearTimeout(timer);
     } else {
@@ -274,7 +267,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         setIsPage2ModalJustClosed(true);
         const timer = setTimeout(() => {
           setIsPage2ModalJustClosed(false);
-          console.log('✅ [2페이지] 모달 닫힘 후 300ms 경과 - 영역 클릭 활성화');
         }, 300);
         return () => clearTimeout(timer);
       }
@@ -310,6 +302,13 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   const [modalDragOffset, setModalDragOffset] = useState({ x: 0, y: 0 });
   const [isModalDragging, setIsModalDragging] = useState(false);
   const modalDragStartRef = useRef({ x: 0, y: 0 });
+
+  // 튜토리얼 모드 상태 관리
+  const [isTutorialMode, setIsTutorialMode] = useState(false);
+  const [tutorialTooltip, setTutorialTooltip] = useState(null); // 현재 표시된 영역의 툴팁
+  const [tutorialTooltipPosition, setTutorialTooltipPosition] = useState({ x: 0, y: 0 });
+  const [tutorialTooltipDirection, setTutorialTooltipDirection] = useState('top');
+  const [tutorialTooltipShown, setTutorialTooltipShown] = useState(new Set()); // 툴팁이 표시된 영역 추적
 
   // ref 변수들
   const animationRef = useRef(null);
@@ -577,7 +576,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
 
   // 2단계: 흰 화면이 위로 사라지는 전환
   const startTransition = React.useCallback(() => {
-    console.log('2단계 애니메이션 시작');
     setWhiteScreenVisible(false);
 
     // 전환 완료 후 본 화면 표시
@@ -746,9 +744,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
       }).then(() => {
         // Web Share API 성공 후에도 클립보드에 복사
         navigator.clipboard.writeText(window.location.href).then(() => {
-          console.log('Friender 링크가 클립보드에 복사되었습니다!');
         }).catch(() => {
-          console.log('클립보드 복사에 실패했습니다.');
         });
       }).catch(() => {
         // Web Share API 실패 시 클립보드에 복사
@@ -832,14 +828,256 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   };
 
   /**
+   * 영역의 팝업 타입 자동 감지 (실제 모달 내용 기준)
+   */
+  const detectPopupType = useCallback((area) => {
+    // data-tutorial-popup-type 속성이 있으면 우선 사용
+    const manualType = area.getAttribute('data-tutorial-popup-type');
+    if (manualType) {
+      return manualType;
+    }
+
+    // title 속성에서 페이지와 영역 번호 추출
+    const title = area.getAttribute('title') || '';
+    const pageMatch = title.match(/(\d+)-(\d+)/);
+    
+    if (pageMatch) {
+      const pageNum = parseInt(pageMatch[1]);
+      const areaNum = parseInt(pageMatch[2]);
+      
+      // 페이지별 타입 매핑 (실제 모달 내용 기준)
+      if (pageNum === 2) {
+        return 'zoom';
+      } else if (pageNum === 3) {
+        return 'zoom';
+      } else if (pageNum === 4) {
+        if (title.includes('4-1-img')) {
+          return 'video-list';
+        } else if (title.includes('-img')) {
+          return 'image';
+        } else if (areaNum === 1 || areaNum === 2) {
+          return 'zoom';
+        } else {
+          return 'image';
+        }
+      } else if (pageNum === 5) {
+        if (title.includes('-img')) {
+          return 'image';
+        } else if (areaNum === 1 || areaNum === 2) {
+          return 'zoom';
+        } else {
+          return 'image';
+        }
+      } else if (pageNum === 6) {
+        if (title.includes('6-3-img')) {
+          return '3d';
+        } else if (title.includes('6-1-img') || title.includes('6-2-img')) {
+          return 'video';
+        } else if (areaNum >= 1 && areaNum <= 4) {
+          return 'zoom';
+        }
+      } else if (pageNum === 7) {
+        if (title.includes('7-1-img') || title.includes('7-2-img') || title.includes('7-3-img')) {
+          return 'video';
+        } else if (areaNum >= 1 && areaNum <= 4) {
+          return 'zoom';
+        }
+      } else if (pageNum === 8) {
+        if (title.includes('-img')) {
+          return 'image';
+        } else if (areaNum >= 1 && areaNum <= 3) {
+          return 'zoom';
+        } else {
+          return 'image';
+        }
+      } else if (pageNum === 9) {
+        return 'zoom';
+      } else if (pageNum === 10) {
+        if (areaNum === 1 || areaNum === 2) {
+          return 'zoom';
+        } else if (areaNum === 3 || areaNum === 4 || areaNum === 5 || areaNum === 6) {
+          return 'image';
+        }
+      } else if (pageNum === 11) {
+        return 'zoom';
+      }
+    }
+
+    return 'zoom';
+  }, []);
+
+  /**
+   * 팝업 타입별 제목과 설명 반환
+   */
+  const getPopupTypeInfo = useCallback((popupType) => {
+    const typeMap = {
+      'zoom': {
+        title: t('tooltipZoomPopupTitle'),
+        description: t('tooltipZoomPopupDesc'),
+      },
+      'image': {
+        title: t('tooltipImagePopupTitle'),
+        description: t('tooltipImagePopupDesc'),
+      },
+      'video-list': {
+        title: t('tooltipVideoListPopupTitle'),
+        description: t('tooltipVideoListPopupDesc'),
+      },
+      'video': {
+        title: t('tooltipVideoPopupTitle'),
+        description: t('tooltipVideoPopupDesc'),
+      },
+      '3d': {
+        title: t('tooltip3DPopupTitle'),
+        description: t('tooltip3DPopupDesc'),
+      },
+    };
+    return typeMap[popupType] || {
+      title: t('tooltipInfoPopupTitle'),
+      description: t('tooltipInfoPopupDesc'),
+    };
+  }, [t]);
+
+  /**
+   * 툴바 버튼별 툴팁 정보 반환
+   */
+  const getToolbarButtonInfo = useCallback((buttonType) => {
+    const buttonMap = {
+      'home': {
+        title: t('tooltipHomeTitle'),
+        description: t('tooltipHomeDesc'),
+      },
+      'print': {
+        title: t('tooltipPrintTitle'),
+        description: t('tooltipPrintDesc'),
+      },
+      'download': {
+        title: t('tooltipDownloadTitle'),
+        description: t('tooltipDownloadDesc'),
+      },
+      'share': {
+        title: t('tooltipShareTitle'),
+        description: t('tooltipShareDesc'),
+      },
+      'language': {
+        title: t('tooltipLanguageTitle'),
+        description: t('tooltipLanguageDesc'),
+      },
+    };
+    return buttonMap[buttonType] || {
+      title: t('tooltipButtonDefaultTitle'),
+      description: t('tooltipButtonDefaultDesc'),
+    };
+  }, [t]);
+
+  /**
+   * 튜토리얼 모드에서 영역 터치 핸들러 (모바일 전용)
+   */
+  const handleTutorialAreaTouch = useCallback((event, areaElement, onClickHandler) => {
+    if (!isTutorialMode) {
+      onClickHandler();
+      return;
+    }
+
+    const areaId = areaElement.getAttribute('data-area-id') || 
+                   areaElement.getAttribute('title') || 
+                   `${Date.now()}-${Math.random()}`;
+    
+    // 툴팁이 이미 표시되었는지 확인
+    if (tutorialTooltipShown.has(areaId)) {
+      // 두 번째 터치: 팝업 열기
+      setTutorialTooltip(null);
+      onClickHandler();
+    } else {
+      // 첫 번째 터치: 툴팁 표시
+      const rect = areaElement.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      
+      const isTopHalf = centerY < viewportHeight / 2;
+      const direction = isTopHalf ? 'bottom' : 'top';
+      
+      const popupType = detectPopupType(areaElement);
+      const typeInfo = getPopupTypeInfo(popupType);
+      
+      setTutorialTooltip({
+        title: typeInfo.title,
+        description: typeInfo.description,
+      });
+      
+      setTutorialTooltipPosition({
+        x: centerX,
+        y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+      });
+      
+      setTutorialTooltipDirection(direction);
+      
+      // 툴팁 표시 상태에 추가
+      setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+    }
+  }, [isTutorialMode, tutorialTooltipShown, detectPopupType, getPopupTypeInfo]);
+
+  /**
    * 3페이지 영역 클릭 핸들러
    */
-  const handlePage3AreaClick = (areaNumber) => {
+  const handlePage3AreaClick = (areaNumber, event) => {
     // 모달이 방금 닫힌 경우 영역 클릭 무시
     if (isPage3ModalJustClosed) {
       return;
     }
 
+    // 튜토리얼 모드 처리
+    if (isTutorialMode && event?.currentTarget) {
+      const areaId = `page3-area${areaNumber}`;
+      if (tutorialTooltipShown.has(areaId)) {
+        // 두 번째 터치: 팝업 열기
+        setTutorialTooltip(null);
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(areaId);
+          return newSet;
+        });
+        setModalZoomLevel(1);
+        setIsModalZoomed(false);
+        setModalDragOffset({ x: 0, y: 0 });
+        setIsModalDragging(false);
+        modalDragStartRef.current = { x: 0, y: 0 };
+        setSelectedPage3Area(areaNumber);
+        setIsPage3ModalOpen(true);
+      } else {
+        // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        const areaElement = event.currentTarget;
+        const rect = areaElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const isTopHalf = centerY < viewportHeight / 2;
+        const direction = isTopHalf ? 'bottom' : 'top';
+        
+        const popupType = detectPopupType(areaElement);
+        const typeInfo = getPopupTypeInfo(popupType);
+        
+        setTutorialTooltip({
+          title: typeInfo.title,
+          description: typeInfo.description,
+        });
+        
+        setTutorialTooltipPosition({
+          x: centerX,
+          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+        });
+        
+        setTutorialTooltipDirection(direction);
+        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+      }
+      return; // 튜토리얼 모드에서는 여기서 종료
+    }
+
+    // 튜토리얼 모드가 아닐 때만 팝업 열기
     // 모달 열기 전에 확대/축소 상태 리셋
     setModalZoomLevel(1);
     setIsModalZoomed(false);
@@ -870,17 +1108,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    * 5페이지로 이동하는 핸들러
    */
   const handleGoToPage5 = () => {
-    console.log('🚀 handleGoToPage5 호출됨 - 5페이지로 이동 시작');
     // 모달 닫기
     closeModal();
-    console.log('🚀 모달 닫기 완료');
     // 5페이지로 스크롤 이동 (페이지 인덱스는 0부터 시작하므로 4)
     const targetPage = document.querySelector('[data-page-index="4"]');
     if (targetPage) {
-      console.log('🚀 5페이지 요소 찾음, 스크롤 이동 시작');
       targetPage.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      console.log('🚀 5페이지 요소를 찾을 수 없음');
     }
   };
 
@@ -888,10 +1121,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    * 모달 닫기 핸들러
    */
   const closeModal = () => {
-    console.log('❌ closeModal 호출됨 - 3페이지 모달 닫기');
     setIsModalOpen(false);
     setSelectedArea(null);
-    console.log('❌ 3페이지 모달 상태 초기화 완료');
   };
 
   /**
@@ -906,10 +1137,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    * 이미지 모달 열기 핸들러
    */
   const openImageModal = (imageType) => {
-    console.log('🖼️ openImageModal 호출됨:', imageType);
     setSelectedImageType(imageType);
     setIsImageModalOpen(true);
-    console.log('🖼️ 이미지 모달 상태 설정 완료:', imageType);
   };
 
   // 추가 영역 이미지 모달 열기/닫기 (돋보기 컨트롤 없이)
@@ -926,18 +1155,60 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    * 이미지 모달 닫기 핸들러
    */
   const closeImageModal = () => {
-    console.log('🖼️ closeImageModal 호출됨 - 이미지 모달 닫기');
     setIsImageModalOpen(false);
     setSelectedImageType(null);
-    console.log('🖼️ 이미지 모달 상태 초기화 완료');
   };
 
   /**
    * 4페이지 영역 클릭 핸들러
    */
-  const handlePage4AreaClick = (areaNumber) => {
+  const handlePage4AreaClick = (areaNumber, event) => {
     // 모달이 방금 닫힌 경우 영역 클릭 무시
     if (isPage4ModalJustClosed) {
+      return;
+    }
+
+    // 튜토리얼 모드 처리
+    if (isTutorialMode && event?.currentTarget) {
+      const areaId = `page4-area${areaNumber}`;
+      if (tutorialTooltipShown.has(areaId)) {
+        // 두 번째 터치: 팝업 열기
+        setTutorialTooltip(null);
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(areaId);
+          return newSet;
+        });
+        setSelectedPage4Area(areaNumber);
+        setIsPage4ModalOpen(true);
+      } else {
+        // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        const areaElement = event.currentTarget;
+        const rect = areaElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const isTopHalf = centerY < viewportHeight / 2;
+        const direction = isTopHalf ? 'bottom' : 'top';
+        
+        const popupType = detectPopupType(areaElement);
+        const typeInfo = getPopupTypeInfo(popupType);
+        
+        setTutorialTooltip({
+          title: typeInfo.title,
+          description: typeInfo.description,
+        });
+        
+        setTutorialTooltipPosition({
+          x: centerX,
+          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+        });
+        
+        setTutorialTooltipDirection(direction);
+        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+      }
       return;
     }
 
@@ -975,37 +1246,64 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   /**
    * 5페이지 영역 클릭 핸들러
    */
-  const handlePage5AreaClick = (areaNumber) => {
+  const handlePage5AreaClick = (areaNumber, event) => {
     // 모달이 방금 닫힌 경우 영역 클릭 무시
     if (isPage5ModalJustClosed) {
       return;
     }
 
+    // 튜토리얼 모드 처리
+    if (isTutorialMode && event?.currentTarget) {
+      const areaId = `page5-area${areaNumber}`;
+      if (tutorialTooltipShown.has(areaId)) {
+        // 두 번째 터치: 팝업 열기
+        setTutorialTooltip(null);
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(areaId);
+          return newSet;
+        });
+        setSelectedPage5Area(areaNumber);
+        setIsPage5ModalOpen(true);
+      } else {
+        // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        const areaElement = event.currentTarget;
+        const rect = areaElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const isTopHalf = centerY < viewportHeight / 2;
+        const direction = isTopHalf ? 'bottom' : 'top';
+        
+        const popupType = detectPopupType(areaElement);
+        const typeInfo = getPopupTypeInfo(popupType);
+        
+        setTutorialTooltip({
+          title: typeInfo.title,
+          description: typeInfo.description,
+        });
+        
+        setTutorialTooltipPosition({
+          x: centerX,
+          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+        });
+        
+        setTutorialTooltipDirection(direction);
+        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+      }
+      return;
+    }
+
     setSelectedPage5Area(areaNumber);
     setIsPage5ModalOpen(true);
-    // 기존 3D 모델 및 외장재 로직 주석 처리
-    // if (areaNumber === 1) {
-    //   // 첫 번째 영역 - 3D 모델 모달 열기
-    //   setCurrentPartModel(null);
-    //   setSelectedPart(1);
-    //   setIsPage53DModelLoading(true); // 로딩 상태 시작
-    //   setModalKey(prev => prev + 1); // 모달 새로고침을 위한 키 증가
-    //   setIsPage53DModalOpen(true);
-    // } else if (areaNumber === 2) {
-    //   // 두 번째 영역만 모달 열기
-    //   setIsPage5ModalOpen(true);
-    // } else if (areaNumber >= 3 && areaNumber <= 6) {
-    //   // 외장재 영역들 (3-6번) - 외장재 모달 열기
-    //   setSelectedExteriorType(areaNumber);
-    //   setIsPage5ExteriorModalOpen(true);
-    // }
   };
 
   /**
    * 5페이지 3D 모델 파트 클릭 핸들러
    */
   const handlePage5PartClick = (partNumber) => {
-    console.log(`Part ${partNumber} clicked`);
     setSelectedPart(partNumber);
     setIsPage53DModelLoading(true); // 파트 변경 시 로딩 상태 시작
 
@@ -1040,16 +1338,63 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   /**
    * 6페이지 영역 클릭 핸들러
    */
-  const handlePage6AreaClick = (areaNumber) => {
+  const handlePage6AreaClick = (areaNumber, event) => {
     // 모달이 방금 닫힌 경우 영역 클릭 무시
     if (isPage6ModalJustClosed) {
       return;
     }
 
+    // 튜토리얼 모드 처리
+    if (isTutorialMode && event?.currentTarget) {
+      const areaId = `page6-area${areaNumber}`;
+      if (tutorialTooltipShown.has(areaId)) {
+        // 두 번째 터치: 팝업 열기
+        setTutorialTooltip(null);
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(areaId);
+          return newSet;
+        });
+        // areaNumber에 따라 파일명 결정
+        if (areaNumber === 7) {
+          setIsPage63DModalOpen(true);
+        } else {
+          setSelectedPage6Area(areaNumber);
+          setIsPage6ModalOpen(true);
+        }
+      } else {
+        // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        const areaElement = event.currentTarget;
+        const rect = areaElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const isTopHalf = centerY < viewportHeight / 2;
+        const direction = isTopHalf ? 'bottom' : 'top';
+        
+        const popupType = detectPopupType(areaElement);
+        const typeInfo = getPopupTypeInfo(popupType);
+        
+        setTutorialTooltip({
+          title: typeInfo.title,
+          description: typeInfo.description,
+        });
+        
+        setTutorialTooltipPosition({
+          x: centerX,
+          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+        });
+        
+        setTutorialTooltipDirection(direction);
+        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+      }
+      return;
+    }
+
     // areaNumber에 따라 파일명 결정
-    // 1: 6-1, 2: 6-2, 3: 6-3, 4: 6-4, 5: 6-1-img, 6: 6-2-img, 7: 6-3-img
     if (areaNumber === 7) {
-      // 6-3-img 영역은 3D 모델 모달 열기
       setIsPage63DModalOpen(true);
     } else {
       setSelectedPage6Area(areaNumber);
@@ -1080,30 +1425,65 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   /**
    * 2페이지 영역 클릭 핸들러
    */
-  const handlePage2AreaClick = (areaNumber) => {
-    console.log('🔵 [2페이지] 영역 클릭:', areaNumber);
-    console.log('🔵 [2페이지] isPage2ModalJustClosed:', isPage2ModalJustClosed);
-
+  const handlePage2AreaClick = (areaNumber, event) => {
     // 모달이 방금 닫힌 경우 영역 클릭 무시
     if (isPage2ModalJustClosed) {
-      console.log('⏸️ [2페이지] 모달이 방금 닫힘 - 영역 클릭 무시');
       return;
     }
 
+    // 튜토리얼 모드 처리
+    if (isTutorialMode && event?.currentTarget) {
+      const areaId = `page2-area${areaNumber}`;
+      if (tutorialTooltipShown.has(areaId)) {
+        // 두 번째 터치: 팝업 열기
+        setTutorialTooltip(null);
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(areaId);
+          return newSet;
+        });
+        setSelectedPage2Area(areaNumber);
+        setIsPage2ModalOpen(true);
+      } else {
+        // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        const areaElement = event.currentTarget;
+        const rect = areaElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const isTopHalf = centerY < viewportHeight / 2;
+        const direction = isTopHalf ? 'bottom' : 'top';
+        
+        const popupType = detectPopupType(areaElement);
+        const typeInfo = getPopupTypeInfo(popupType);
+        
+        setTutorialTooltip({
+          title: typeInfo.title,
+          description: typeInfo.description,
+        });
+        
+        setTutorialTooltipPosition({
+          x: centerX,
+          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+        });
+        
+        setTutorialTooltipDirection(direction);
+        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+      }
+      return; // 튜토리얼 모드에서는 여기서 종료
+    }
+
+    // 튜토리얼 모드가 아닐 때만 팝업 열기
     setSelectedPage2Area(areaNumber);
     setIsPage2ModalOpen(true);
-    console.log('🔵 [2페이지] 모달 열기 완료');
   };
 
   /**
    * 2페이지 모달 닫기 핸들러
    */
   const closePage2Modal = (event) => {
-    console.log('🔴 [2페이지] 모달 닫기 호출');
-    console.log('🔴 [2페이지] 이벤트:', event);
-    console.log('🔴 [2페이지] 이벤트 타입:', event?.type || 'unknown');
-    console.log('🔴 [2페이지] 이벤트 타겟:', event?.target);
-    console.log('🔴 [2페이지] 이벤트 currentTarget:', event?.currentTarget);
     setIsPage2ModalOpen(false);
     setSelectedPage2Area(null);
     setModalZoomLevel(1);
@@ -1116,20 +1496,58 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   /**
    * 7페이지 영역 클릭 핸들러
    */
-  const handlePage7AreaClick = (areaNumber) => {
+  const handlePage7AreaClick = (areaNumber, event) => {
     // 모달이 방금 닫힌 경우 영역 클릭 무시
     if (isPage7ModalJustClosed) {
       return;
     }
 
+    // 튜토리얼 모드 처리
+    if (isTutorialMode && event?.currentTarget) {
+      const areaId = `page7-area${areaNumber}`;
+      if (tutorialTooltipShown.has(areaId)) {
+        // 두 번째 터치: 팝업 열기
+        setTutorialTooltip(null);
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(areaId);
+          return newSet;
+        });
+        setSelectedPage7Area(areaNumber);
+        setIsPage7ModalOpen(true);
+      } else {
+        // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        const areaElement = event.currentTarget;
+        const rect = areaElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const isTopHalf = centerY < viewportHeight / 2;
+        const direction = isTopHalf ? 'bottom' : 'top';
+        
+        const popupType = detectPopupType(areaElement);
+        const typeInfo = getPopupTypeInfo(popupType);
+        
+        setTutorialTooltip({
+          title: typeInfo.title,
+          description: typeInfo.description,
+        });
+        
+        setTutorialTooltipPosition({
+          x: centerX,
+          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+        });
+        
+        setTutorialTooltipDirection(direction);
+        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+      }
+      return;
+    }
+
     setSelectedPage7Area(areaNumber);
     setIsPage7ModalOpen(true);
-    // 기존 웹사이트 링크 로직 주석 처리
-    // if (areaNumber === 2) {
-    // } else if (areaNumber === 3) {
-    //   // 오른쪽 로고 영역: Yoochang 링크
-    //   window.open('http://www.yoochang.com/', '_blank');
-    // }
   };
 
   /**
@@ -1148,9 +1566,53 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   /**
    * 8페이지 영역 클릭 핸들러
    */
-  const handlePage8AreaClick = (areaNumber) => {
+  const handlePage8AreaClick = (areaNumber, event) => {
     // 모달이 방금 닫힌 경우 영역 클릭 무시
     if (isPage8ModalJustClosed) {
+      return;
+    }
+
+    // 튜토리얼 모드 처리
+    if (isTutorialMode && event?.currentTarget) {
+      const areaId = `page8-area${areaNumber}`;
+      if (tutorialTooltipShown.has(areaId)) {
+        // 두 번째 터치: 팝업 열기
+        setTutorialTooltip(null);
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(areaId);
+          return newSet;
+        });
+        setSelectedPage8Area(areaNumber);
+        setIsPage8ModalOpen(true);
+      } else {
+        // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        const areaElement = event.currentTarget;
+        const rect = areaElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const isTopHalf = centerY < viewportHeight / 2;
+        const direction = isTopHalf ? 'bottom' : 'top';
+        
+        const popupType = detectPopupType(areaElement);
+        const typeInfo = getPopupTypeInfo(popupType);
+        
+        setTutorialTooltip({
+          title: typeInfo.title,
+          description: typeInfo.description,
+        });
+        
+        setTutorialTooltipPosition({
+          x: centerX,
+          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+        });
+        
+        setTutorialTooltipDirection(direction);
+        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+      }
       return;
     }
 
@@ -1174,9 +1636,53 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   /**
    * 9페이지 영역 클릭 핸들러
    */
-  const handlePage9AreaClick = (areaNumber) => {
+  const handlePage9AreaClick = (areaNumber, event) => {
     // 모달이 방금 닫힌 경우 영역 클릭 무시
     if (isPage9ModalJustClosed) {
+      return;
+    }
+
+    // 튜토리얼 모드 처리
+    if (isTutorialMode && event?.currentTarget) {
+      const areaId = `page9-area${areaNumber}`;
+      if (tutorialTooltipShown.has(areaId)) {
+        // 두 번째 터치: 팝업 열기
+        setTutorialTooltip(null);
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(areaId);
+          return newSet;
+        });
+        setSelectedPage9Area(areaNumber);
+        setIsPage9ModalOpen(true);
+      } else {
+        // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        const areaElement = event.currentTarget;
+        const rect = areaElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const isTopHalf = centerY < viewportHeight / 2;
+        const direction = isTopHalf ? 'bottom' : 'top';
+        
+        const popupType = detectPopupType(areaElement);
+        const typeInfo = getPopupTypeInfo(popupType);
+        
+        setTutorialTooltip({
+          title: typeInfo.title,
+          description: typeInfo.description,
+        });
+        
+        setTutorialTooltipPosition({
+          x: centerX,
+          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+        });
+        
+        setTutorialTooltipDirection(direction);
+        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+      }
       return;
     }
 
@@ -1200,9 +1706,53 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   /**
    * 10페이지 영역 클릭 핸들러
    */
-  const handlePage10AreaClick = (areaNumber) => {
+  const handlePage10AreaClick = (areaNumber, event) => {
     // 모달이 방금 닫힌 경우 영역 클릭 무시
     if (isPage10ModalJustClosed) {
+      return;
+    }
+
+    // 튜토리얼 모드 처리
+    if (isTutorialMode && event?.currentTarget) {
+      const areaId = `page10-area${areaNumber}`;
+      if (tutorialTooltipShown.has(areaId)) {
+        // 두 번째 터치: 팝업 열기
+        setTutorialTooltip(null);
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(areaId);
+          return newSet;
+        });
+        setSelectedPage10Area(areaNumber);
+        setIsPage10ModalOpen(true);
+      } else {
+        // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        const areaElement = event.currentTarget;
+        const rect = areaElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const isTopHalf = centerY < viewportHeight / 2;
+        const direction = isTopHalf ? 'bottom' : 'top';
+        
+        const popupType = detectPopupType(areaElement);
+        const typeInfo = getPopupTypeInfo(popupType);
+        
+        setTutorialTooltip({
+          title: typeInfo.title,
+          description: typeInfo.description,
+        });
+        
+        setTutorialTooltipPosition({
+          x: centerX,
+          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+        });
+        
+        setTutorialTooltipDirection(direction);
+        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+      }
       return;
     }
 
@@ -1226,9 +1776,52 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   /**
    * 11페이지 영역 클릭 핸들러
    */
-  const handlePage11AreaClick = () => {
+  const handlePage11AreaClick = (event) => {
     // 모달이 방금 닫힌 경우 영역 클릭 무시
     if (isPage11ModalJustClosed) {
+      return;
+    }
+
+    // 튜토리얼 모드 처리
+    if (isTutorialMode && event?.currentTarget) {
+      const areaId = 'page11-area1';
+      if (tutorialTooltipShown.has(areaId)) {
+        // 두 번째 터치: 팝업 열기
+        setTutorialTooltip(null);
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(areaId);
+          return newSet;
+        });
+        setIsPage11ModalOpen(true);
+      } else {
+        // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        const areaElement = event.currentTarget;
+        const rect = areaElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const isTopHalf = centerY < viewportHeight / 2;
+        const direction = isTopHalf ? 'bottom' : 'top';
+        
+        const popupType = detectPopupType(areaElement);
+        const typeInfo = getPopupTypeInfo(popupType);
+        
+        setTutorialTooltip({
+          title: typeInfo.title,
+          description: typeInfo.description,
+        });
+        
+        setTutorialTooltipPosition({
+          x: centerX,
+          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+        });
+        
+        setTutorialTooltipDirection(direction);
+        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+      }
       return;
     }
 
@@ -1425,43 +2018,24 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
-                            console.log('🟢 [2페이지-1] onTouchStart 발생');
-                            console.log(
-                              '🟢 [2페이지-1] isPage2ModalJustClosed:',
-                              isPage2ModalJustClosed
-                            );
-                            console.log('🟢 [2페이지-1] 이벤트 타겟:', e.target);
-
                             // 모달이 방금 닫힌 경우 터치 무시
                             if (isPage2ModalJustClosed) {
-                              console.log('⏸️ [2페이지-1] 모달이 방금 닫힘 - 터치 무시');
                               e.preventDefault();
                               e.stopPropagation();
                               return;
                             }
-
-                            console.log('🟢 [2페이지-1] stopPropagation 호출');
                             e.stopPropagation();
-                            console.log('🟢 [2페이지-1] handlePage2AreaClick 호출');
-                            handlePage2AreaClick(1);
+                            handlePage2AreaClick(1, e);
                           }}
                           onClick={(e) => {
-                            console.log('🟢 [2페이지-1] onClick 발생');
-                            console.log(
-                              '🟢 [2페이지-1] isPage2ModalJustClosed:',
-                              isPage2ModalJustClosed
-                            );
-
                             // 모달이 방금 닫힌 경우 클릭 무시
                             if (isPage2ModalJustClosed) {
-                              console.log('⏸️ [2페이지-1] 모달이 방금 닫힘 - 클릭 무시');
                               e.preventDefault();
                               e.stopPropagation();
                               return;
                             }
-
                             e.stopPropagation();
-                            handlePage2AreaClick(1);
+                            handlePage2AreaClick(1, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '2-1')}
                         >
@@ -1477,6 +2051,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '17%',
                           }}
                           data-clickable="true"
+                          data-area-id="page2-area2"
                           onTouchStart={(e) => {
                             if (isPage2ModalJustClosed) {
                               e.preventDefault();
@@ -1484,7 +2059,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage2AreaClick(2);
+                            handlePage2AreaClick(2, e);
                           }}
                           onClick={(e) => {
                             if (isPage2ModalJustClosed) {
@@ -1492,7 +2067,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage2AreaClick(2);
+                            e.stopPropagation();
+                            handlePage2AreaClick(2, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '2-2')}
                         >
@@ -1508,6 +2084,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '17%',
                           }}
                           data-clickable="true"
+                          data-area-id="page2-area3"
                           onTouchStart={(e) => {
                             if (isPage2ModalJustClosed) {
                               e.preventDefault();
@@ -1515,7 +2092,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage2AreaClick(3);
+                            handlePage2AreaClick(3, e);
                           }}
                           onClick={(e) => {
                             if (isPage2ModalJustClosed) {
@@ -1523,7 +2100,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage2AreaClick(3);
+                            e.stopPropagation();
+                            handlePage2AreaClick(3, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '2-3')}
                         >
@@ -1539,6 +2117,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '17%',
                           }}
                           data-clickable="true"
+                          data-area-id="page2-area4"
                           onTouchStart={(e) => {
                             if (isPage2ModalJustClosed) {
                               e.preventDefault();
@@ -1546,7 +2125,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage2AreaClick(4);
+                            handlePage2AreaClick(4, e);
                           }}
                           onClick={(e) => {
                             if (isPage2ModalJustClosed) {
@@ -1554,7 +2133,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage2AreaClick(4);
+                            e.stopPropagation();
+                            handlePage2AreaClick(4, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '2-4')}
                         >
@@ -1570,6 +2150,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '16%',
                           }}
                           data-clickable="true"
+                          data-area-id="page2-area5"
                           onTouchStart={(e) => {
                             if (isPage2ModalJustClosed) {
                               e.preventDefault();
@@ -1577,7 +2158,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage2AreaClick(5);
+                            handlePage2AreaClick(5, e);
                           }}
                           onClick={(e) => {
                             if (isPage2ModalJustClosed) {
@@ -1585,7 +2166,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage2AreaClick(5);
+                            e.stopPropagation();
+                            handlePage2AreaClick(5, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '2-5')}
                         >
@@ -1601,6 +2183,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '41%',
                           }}
                           data-clickable="true"
+                          data-area-id="page2-area6"
                           onTouchStart={(e) => {
                             if (isPage2ModalJustClosed) {
                               e.preventDefault();
@@ -1608,7 +2191,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage2AreaClick(6);
+                            handlePage2AreaClick(6, e);
                           }}
                           onClick={(e) => {
                             if (isPage2ModalJustClosed) {
@@ -1616,7 +2199,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage2AreaClick(6);
+                            e.stopPropagation();
+                            handlePage2AreaClick(6, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '2-6')}
                         >
@@ -1659,6 +2243,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             width: '24%',
                             height: '25%',
                           }}
+                          data-area-id="page3-area1"
                           onTouchStart={(e) => {
                             if (isPage3ModalJustClosed) {
                               e.preventDefault();
@@ -1666,7 +2251,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage3AreaClick(1);
+                            handlePage3AreaClick(1, e);
                           }}
                           onClick={(e) => {
                             if (isPage3ModalJustClosed) {
@@ -1674,7 +2259,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage3AreaClick(1);
+                            handlePage3AreaClick(1, e);
                           }}
                         ></div>
 
@@ -1716,15 +2301,17 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage3AreaClick(2);
+                            handlePage3AreaClick(2, e);
                           }}
+                          data-area-id="page3-area2"
                           onClick={(e) => {
                             if (isPage3ModalJustClosed) {
                               e.preventDefault();
                               e.stopPropagation();
                               return;
                             }
-                            handlePage3AreaClick(2);
+                            e.stopPropagation();
+                            handlePage3AreaClick(2, e);
                           }}
                         ></div>
 
@@ -1766,15 +2353,17 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage3AreaClick(3);
+                            handlePage3AreaClick(3, e);
                           }}
+                          data-area-id="page3-area3"
                           onClick={(e) => {
                             if (isPage3ModalJustClosed) {
                               e.preventDefault();
                               e.stopPropagation();
                               return;
                             }
-                            handlePage3AreaClick(3);
+                            e.stopPropagation();
+                            handlePage3AreaClick(3, e);
                           }}
                         ></div>
 
@@ -1816,15 +2405,17 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage3AreaClick(4);
+                            handlePage3AreaClick(4, e);
                           }}
+                          data-area-id="page3-area4"
                           onClick={(e) => {
                             if (isPage3ModalJustClosed) {
                               e.preventDefault();
                               e.stopPropagation();
                               return;
                             }
-                            handlePage3AreaClick(4);
+                            e.stopPropagation();
+                            handlePage3AreaClick(4, e);
                           }}
                         ></div>
 
@@ -1866,15 +2457,17 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage3AreaClick(5);
+                            handlePage3AreaClick(5, e);
                           }}
+                          data-area-id="page3-area5"
                           onClick={(e) => {
                             if (isPage3ModalJustClosed) {
                               e.preventDefault();
                               e.stopPropagation();
                               return;
                             }
-                            handlePage3AreaClick(5);
+                            e.stopPropagation();
+                            handlePage3AreaClick(5, e);
                           }}
                         ></div>
                       </>
@@ -1921,7 +2514,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage4AreaClick(1);
+                            handlePage4AreaClick(1, e);
                           }}
                           onClick={(e) => {
                             if (isPage4ModalJustClosed) {
@@ -1929,7 +2522,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage4AreaClick(1);
+                            handlePage4AreaClick(1, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '4-1')}
                         >
@@ -1945,6 +2538,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '20%',
                           }}
                           data-clickable="true"
+                          data-area-id="page4-area2"
                           onTouchStart={(e) => {
                             if (isPage4ModalJustClosed) {
                               e.preventDefault();
@@ -1952,7 +2546,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage4AreaClick(2);
+                            handlePage4AreaClick(2, e);
                           }}
                           onClick={(e) => {
                             if (isPage4ModalJustClosed) {
@@ -1960,7 +2554,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage4AreaClick(2);
+                            e.stopPropagation();
+                            handlePage4AreaClick(2, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '4-2')}
                         >
@@ -1976,6 +2571,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '19%',
                           }}
                           data-clickable="true"
+                          data-area-id="page4-area3"
                           onTouchStart={(e) => {
                             if (isPage4ModalJustClosed) {
                               e.preventDefault();
@@ -1983,7 +2579,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage4AreaClick(3);
+                            handlePage4AreaClick(3, e);
                           }}
                           onClick={(e) => {
                             if (isPage4ModalJustClosed) {
@@ -1991,7 +2587,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage4AreaClick(3);
+                            e.stopPropagation();
+                            handlePage4AreaClick(3, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '4-1-img')}
                         >
@@ -2027,6 +2624,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '19%',
                           }}
                           data-clickable="true"
+                          data-area-id="page4-area4"
                           onTouchStart={(e) => {
                             if (isPage4ModalJustClosed) {
                               e.preventDefault();
@@ -2034,7 +2632,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage4AreaClick(4);
+                            handlePage4AreaClick(4, e);
                           }}
                           onClick={(e) => {
                             if (isPage4ModalJustClosed) {
@@ -2042,7 +2640,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage4AreaClick(4);
+                            e.stopPropagation();
+                            handlePage4AreaClick(4, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '4-2-img')}
                         >
@@ -2078,6 +2677,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '20%',
                           }}
                           data-clickable="true"
+                          data-area-id="page4-area5"
                           onTouchStart={(e) => {
                             if (isPage4ModalJustClosed) {
                               e.preventDefault();
@@ -2085,7 +2685,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage4AreaClick(5);
+                            handlePage4AreaClick(5, e);
                           }}
                           onClick={(e) => {
                             if (isPage4ModalJustClosed) {
@@ -2093,7 +2693,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage4AreaClick(5);
+                            e.stopPropagation();
+                            handlePage4AreaClick(5, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '4-3-img')}
                         >
@@ -2129,6 +2730,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '20%',
                           }}
                           data-clickable="true"
+                          data-area-id="page4-area6"
                           onTouchStart={(e) => {
                             if (isPage4ModalJustClosed) {
                               e.preventDefault();
@@ -2136,7 +2738,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage4AreaClick(6);
+                            handlePage4AreaClick(6, e);
                           }}
                           onClick={(e) => {
                             if (isPage4ModalJustClosed) {
@@ -2144,7 +2746,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage4AreaClick(6);
+                            e.stopPropagation();
+                            handlePage4AreaClick(6, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '4-4-img')}
                         >
@@ -2186,6 +2789,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '22%',
                           }}
                           data-clickable="true"
+                          data-area-id="page5-area1"
                           onTouchStart={(e) => {
                             if (isPage5ModalJustClosed) {
                               e.preventDefault();
@@ -2193,7 +2797,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage5AreaClick(1);
+                            handlePage5AreaClick(1, e);
                           }}
                           onClick={(e) => {
                             if (isPage5ModalJustClosed) {
@@ -2201,7 +2805,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage5AreaClick(1);
+                            handlePage5AreaClick(1, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '5-1')}
                         >
@@ -2217,6 +2821,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '21%',
                           }}
                           data-clickable="true"
+                          data-area-id="page5-area2"
                           onTouchStart={(e) => {
                             if (isPage5ModalJustClosed) {
                               e.preventDefault();
@@ -2224,7 +2829,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage5AreaClick(2);
+                            handlePage5AreaClick(2, e);
                           }}
                           onClick={(e) => {
                             if (isPage5ModalJustClosed) {
@@ -2232,7 +2837,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage5AreaClick(2);
+                            handlePage5AreaClick(2, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '5-2')}
                         >
@@ -2268,6 +2873,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '19%',
                           }}
                           data-clickable="true"
+                          data-area-id="page5-area3"
                           onTouchStart={(e) => {
                             if (isPage5ModalJustClosed) {
                               e.preventDefault();
@@ -2275,7 +2881,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage5AreaClick(3);
+                            handlePage5AreaClick(3, e);
                           }}
                           onClick={(e) => {
                             if (isPage5ModalJustClosed) {
@@ -2283,7 +2889,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage5AreaClick(3);
+                            handlePage5AreaClick(3, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '5-1-img')}
                         >
@@ -2319,6 +2925,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '19%',
                           }}
                           data-clickable="true"
+                          data-area-id="page5-area4"
                           onTouchStart={(e) => {
                             if (isPage5ModalJustClosed) {
                               e.preventDefault();
@@ -2326,7 +2933,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage5AreaClick(4);
+                            handlePage5AreaClick(4, e);
                           }}
                           onClick={(e) => {
                             if (isPage5ModalJustClosed) {
@@ -2334,7 +2941,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage5AreaClick(4);
+                            handlePage5AreaClick(4, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '5-2-img')}
                         >
@@ -2370,6 +2977,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '18%',
                           }}
                           data-clickable="true"
+                          data-area-id="page5-area5"
                           onTouchStart={(e) => {
                             if (isPage5ModalJustClosed) {
                               e.preventDefault();
@@ -2377,7 +2985,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage5AreaClick(5);
+                            handlePage5AreaClick(5, e);
                           }}
                           onClick={(e) => {
                             if (isPage5ModalJustClosed) {
@@ -2385,7 +2993,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage5AreaClick(5);
+                            handlePage5AreaClick(5, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '5-3-img')}
                         >
@@ -2421,6 +3029,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '18%',
                           }}
                           data-clickable="true"
+                          data-area-id="page5-area6"
                           onTouchStart={(e) => {
                             if (isPage5ModalJustClosed) {
                               e.preventDefault();
@@ -2428,7 +3037,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage5AreaClick(6);
+                            handlePage5AreaClick(6, e);
                           }}
                           onClick={(e) => {
                             if (isPage5ModalJustClosed) {
@@ -2436,7 +3045,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage5AreaClick(6);
+                            handlePage5AreaClick(6, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '5-4-img')}
                         >
@@ -2478,6 +3087,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '9%',
                           }}
                           data-clickable="true"
+                          data-area-id="page6-area1"
                           onTouchStart={(e) => {
                             if (isPage6ModalJustClosed) {
                               e.preventDefault();
@@ -2485,7 +3095,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage6AreaClick(1);
+                            handlePage6AreaClick(1, e);
                           }}
                           onClick={(e) => {
                             if (isPage6ModalJustClosed) {
@@ -2493,7 +3103,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage6AreaClick(1);
+                            handlePage6AreaClick(1, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '6-1')}
                         >
@@ -2509,6 +3119,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '19%',
                           }}
                           data-clickable="true"
+                          data-area-id="page6-area2"
                           onTouchStart={(e) => {
                             if (isPage6ModalJustClosed) {
                               e.preventDefault();
@@ -2516,7 +3127,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage6AreaClick(2);
+                            handlePage6AreaClick(2, e);
                           }}
                           onClick={(e) => {
                             if (isPage6ModalJustClosed) {
@@ -2524,7 +3135,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage6AreaClick(2);
+                            handlePage6AreaClick(2, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '6-2')}
                         >
@@ -2540,6 +3151,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '19%',
                           }}
                           data-clickable="true"
+                          data-area-id="page6-area3"
                           onTouchStart={(e) => {
                             if (isPage6ModalJustClosed) {
                               e.preventDefault();
@@ -2547,7 +3159,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage6AreaClick(3);
+                            handlePage6AreaClick(3, e);
                           }}
                           onClick={(e) => {
                             if (isPage6ModalJustClosed) {
@@ -2555,7 +3167,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage6AreaClick(3);
+                            handlePage6AreaClick(3, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '6-3')}
                         >
@@ -2571,6 +3183,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '19%',
                           }}
                           data-clickable="true"
+                          data-area-id="page6-area4"
                           onTouchStart={(e) => {
                             if (isPage6ModalJustClosed) {
                               e.preventDefault();
@@ -2578,7 +3191,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage6AreaClick(4);
+                            handlePage6AreaClick(4, e);
                           }}
                           onClick={(e) => {
                             if (isPage6ModalJustClosed) {
@@ -2586,7 +3199,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage6AreaClick(4);
+                            handlePage6AreaClick(4, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '6-4')}
                         >
@@ -2602,6 +3215,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '19%',
                           }}
                           data-clickable="true"
+                          data-area-id="page6-area5"
                           onTouchStart={(e) => {
                             if (isPage6ModalJustClosed) {
                               e.preventDefault();
@@ -2609,7 +3223,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage6AreaClick(5);
+                            handlePage6AreaClick(5, e);
                           }}
                           onClick={(e) => {
                             if (isPage6ModalJustClosed) {
@@ -2617,7 +3231,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage6AreaClick(5);
+                            handlePage6AreaClick(5, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '6-1-img')}
                         >
@@ -2653,6 +3267,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '19%',
                           }}
                           data-clickable="true"
+                          data-area-id="page6-area6"
                           onTouchStart={(e) => {
                             if (isPage6ModalJustClosed) {
                               e.preventDefault();
@@ -2660,7 +3275,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage6AreaClick(6);
+                            handlePage6AreaClick(6, e);
                           }}
                           onClick={(e) => {
                             if (isPage6ModalJustClosed) {
@@ -2668,7 +3283,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage6AreaClick(6);
+                            handlePage6AreaClick(6, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '6-2-img')}
                         >
@@ -2704,6 +3319,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '19%',
                           }}
                           data-clickable="true"
+                          data-area-id="page6-area7"
                           onTouchStart={(e) => {
                             if (isPage6ModalJustClosed) {
                               e.preventDefault();
@@ -2711,7 +3327,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage6AreaClick(7);
+                            handlePage6AreaClick(7, e);
                           }}
                           onClick={(e) => {
                             if (isPage6ModalJustClosed) {
@@ -2719,7 +3335,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage6AreaClick(7);
+                            handlePage6AreaClick(7, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '6-3-img')}
                         >
@@ -2761,6 +3377,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '9%',
                           }}
                           data-clickable="true"
+                          data-area-id="page7-area1"
                           onTouchStart={(e) => {
                             if (isPage7ModalJustClosed) {
                               e.preventDefault();
@@ -2768,7 +3385,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage7AreaClick(1);
+                            handlePage7AreaClick(1, e);
                           }}
                           onClick={(e) => {
                             if (isPage7ModalJustClosed) {
@@ -2776,7 +3393,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage7AreaClick(1);
+                            handlePage7AreaClick(1, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '7-1')}
                         >
@@ -2792,6 +3409,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '19%',
                           }}
                           data-clickable="true"
+                          data-area-id="page7-area2"
                           onTouchStart={(e) => {
                             if (isPage7ModalJustClosed) {
                               e.preventDefault();
@@ -2799,7 +3417,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage7AreaClick(2);
+                            handlePage7AreaClick(2, e);
                           }}
                           onClick={(e) => {
                             if (isPage7ModalJustClosed) {
@@ -2807,7 +3425,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage7AreaClick(2);
+                            handlePage7AreaClick(2, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '7-2')}
                         >
@@ -2823,6 +3441,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '19%',
                           }}
                           data-clickable="true"
+                          data-area-id="page7-area3"
                           onTouchStart={(e) => {
                             if (isPage7ModalJustClosed) {
                               e.preventDefault();
@@ -2830,7 +3449,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage7AreaClick(3);
+                            handlePage7AreaClick(3, e);
                           }}
                           onClick={(e) => {
                             if (isPage7ModalJustClosed) {
@@ -2838,7 +3457,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage7AreaClick(3);
+                            handlePage7AreaClick(3, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '7-3')}
                         >
@@ -2854,6 +3473,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '19%',
                           }}
                           data-clickable="true"
+                          data-area-id="page7-area4"
                           onTouchStart={(e) => {
                             if (isPage7ModalJustClosed) {
                               e.preventDefault();
@@ -2861,7 +3481,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage7AreaClick(4);
+                            handlePage7AreaClick(4, e);
                           }}
                           onClick={(e) => {
                             if (isPage7ModalJustClosed) {
@@ -2869,7 +3489,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage7AreaClick(4);
+                            handlePage7AreaClick(4, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '7-4')}
                         >
@@ -2885,6 +3505,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '19%',
                           }}
                           data-clickable="true"
+                          data-area-id="page7-area5"
                           onTouchStart={(e) => {
                             if (isPage7ModalJustClosed) {
                               e.preventDefault();
@@ -2892,7 +3513,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage7AreaClick(5);
+                            handlePage7AreaClick(5, e);
                           }}
                           onClick={(e) => {
                             if (isPage7ModalJustClosed) {
@@ -2900,7 +3521,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage7AreaClick(5);
+                            handlePage7AreaClick(5, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '7-1-img')}
                         >
@@ -2936,6 +3557,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '19%',
                           }}
                           data-clickable="true"
+                          data-area-id="page7-area6"
                           onTouchStart={(e) => {
                             if (isPage7ModalJustClosed) {
                               e.preventDefault();
@@ -2943,7 +3565,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage7AreaClick(6);
+                            handlePage7AreaClick(6, e);
                           }}
                           onClick={(e) => {
                             if (isPage7ModalJustClosed) {
@@ -2951,7 +3573,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage7AreaClick(6);
+                            handlePage7AreaClick(6, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '7-2-img')}
                         >
@@ -2987,6 +3609,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '19%',
                           }}
                           data-clickable="true"
+                          data-area-id="page7-area7"
                           onTouchStart={(e) => {
                             if (isPage7ModalJustClosed) {
                               e.preventDefault();
@@ -2994,7 +3617,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage7AreaClick(7);
+                            handlePage7AreaClick(7, e);
                           }}
                           onClick={(e) => {
                             if (isPage7ModalJustClosed) {
@@ -3002,7 +3625,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage7AreaClick(7);
+                            handlePage7AreaClick(7, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '7-3-img')}
                         >
@@ -3044,6 +3667,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '21%',
                           }}
                           data-clickable="true"
+                          data-area-id="page8-area1"
                           onTouchStart={(e) => {
                             if (isPage8ModalJustClosed) {
                               e.preventDefault();
@@ -3051,7 +3675,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage8AreaClick(1);
+                            handlePage8AreaClick(1, e);
                           }}
                           onClick={(e) => {
                             if (isPage8ModalJustClosed) {
@@ -3059,7 +3683,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage8AreaClick(1);
+                            handlePage8AreaClick(1, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '8-1')}
                         >
@@ -3075,6 +3699,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '21%',
                           }}
                           data-clickable="true"
+                          data-area-id="page8-area2"
                           onTouchStart={(e) => {
                             if (isPage8ModalJustClosed) {
                               e.preventDefault();
@@ -3082,7 +3707,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage8AreaClick(2);
+                            handlePage8AreaClick(2, e);
                           }}
                           onClick={(e) => {
                             if (isPage8ModalJustClosed) {
@@ -3090,7 +3715,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage8AreaClick(2);
+                            handlePage8AreaClick(2, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '8-2')}
                         >
@@ -3106,6 +3731,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '21%',
                           }}
                           data-clickable="true"
+                          data-area-id="page8-area3"
                           onTouchStart={(e) => {
                             if (isPage8ModalJustClosed) {
                               e.preventDefault();
@@ -3113,7 +3739,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage8AreaClick(3);
+                            handlePage8AreaClick(3, e);
                           }}
                           onClick={(e) => {
                             if (isPage8ModalJustClosed) {
@@ -3121,7 +3747,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage8AreaClick(3);
+                            handlePage8AreaClick(3, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '8-3')}
                         >
@@ -3137,6 +3763,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '35%',
                           }}
                           data-clickable="true"
+                          data-area-id="page8-area4"
                           onTouchStart={(e) => {
                             if (isPage8ModalJustClosed) {
                               e.preventDefault();
@@ -3144,7 +3771,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage8AreaClick(4);
+                            handlePage8AreaClick(4, e);
                           }}
                           onClick={(e) => {
                             if (isPage8ModalJustClosed) {
@@ -3152,7 +3779,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage8AreaClick(4);
+                            handlePage8AreaClick(4, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '8-1-img')}
                         >
@@ -3194,6 +3821,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '10%',
                           }}
                           data-clickable="true"
+                          data-area-id="page9-area1"
                           onTouchStart={(e) => {
                             if (isPage9ModalJustClosed) {
                               e.preventDefault();
@@ -3201,7 +3829,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage9AreaClick(1);
+                            handlePage9AreaClick(1, e);
                           }}
                           onClick={(e) => {
                             if (isPage9ModalJustClosed) {
@@ -3209,7 +3837,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage9AreaClick(1);
+                            handlePage9AreaClick(1, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '9-1')}
                         >
@@ -3225,6 +3853,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '26%',
                           }}
                           data-clickable="true"
+                          data-area-id="page9-area2"
                           onTouchStart={(e) => {
                             if (isPage9ModalJustClosed) {
                               e.preventDefault();
@@ -3232,7 +3861,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage9AreaClick(2);
+                            handlePage9AreaClick(2, e);
                           }}
                           onClick={(e) => {
                             if (isPage9ModalJustClosed) {
@@ -3240,7 +3869,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage9AreaClick(2);
+                            handlePage9AreaClick(2, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '9-2')}
                         >
@@ -3256,6 +3885,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '18%',
                           }}
                           data-clickable="true"
+                          data-area-id="page9-area3"
                           onTouchStart={(e) => {
                             if (isPage9ModalJustClosed) {
                               e.preventDefault();
@@ -3263,7 +3893,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage9AreaClick(3);
+                            handlePage9AreaClick(3, e);
                           }}
                           onClick={(e) => {
                             if (isPage9ModalJustClosed) {
@@ -3271,7 +3901,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage9AreaClick(3);
+                            handlePage9AreaClick(3, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '9-3')}
                         >
@@ -3287,6 +3917,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '21%',
                           }}
                           data-clickable="true"
+                          data-area-id="page9-area4"
                           onTouchStart={(e) => {
                             if (isPage9ModalJustClosed) {
                               e.preventDefault();
@@ -3294,7 +3925,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage9AreaClick(4);
+                            handlePage9AreaClick(4, e);
                           }}
                           onClick={(e) => {
                             if (isPage9ModalJustClosed) {
@@ -3302,7 +3933,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage9AreaClick(4);
+                            handlePage9AreaClick(4, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '9-4')}
                         >
@@ -3344,6 +3975,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '10%',
                           }}
                           data-clickable="true"
+                          data-area-id="page10-area1"
                           onTouchStart={(e) => {
                             if (isPage10ModalJustClosed) {
                               e.preventDefault();
@@ -3351,7 +3983,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage10AreaClick(1);
+                            handlePage10AreaClick(1, e);
                           }}
                           onClick={(e) => {
                             if (isPage10ModalJustClosed) {
@@ -3359,7 +3991,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage10AreaClick(1);
+                            handlePage10AreaClick(1, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '10-1')}
                         >
@@ -3375,6 +4007,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '17%',
                           }}
                           data-clickable="true"
+                          data-area-id="page10-area2"
                           onTouchStart={(e) => {
                             if (isPage10ModalJustClosed) {
                               e.preventDefault();
@@ -3382,7 +4015,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage10AreaClick(2);
+                            handlePage10AreaClick(2, e);
                           }}
                           onClick={(e) => {
                             if (isPage10ModalJustClosed) {
@@ -3390,7 +4023,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage10AreaClick(2);
+                            handlePage10AreaClick(2, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '10-2')}
                         >
@@ -3406,6 +4039,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '22%',
                           }}
                           data-clickable="true"
+                          data-area-id="page10-area3"
                           onTouchStart={(e) => {
                             if (isPage10ModalJustClosed) {
                               e.preventDefault();
@@ -3413,7 +4047,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage10AreaClick(3);
+                            handlePage10AreaClick(3, e);
                           }}
                           onClick={(e) => {
                             if (isPage10ModalJustClosed) {
@@ -3421,7 +4055,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage10AreaClick(3);
+                            handlePage10AreaClick(3, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '10-1-img')}
                         >
@@ -3457,6 +4091,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '22%',
                           }}
                           data-clickable="true"
+                          data-area-id="page10-area4"
                           onTouchStart={(e) => {
                             if (isPage10ModalJustClosed) {
                               e.preventDefault();
@@ -3464,7 +4099,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage10AreaClick(4);
+                            handlePage10AreaClick(4, e);
                           }}
                           onClick={(e) => {
                             if (isPage10ModalJustClosed) {
@@ -3472,7 +4107,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage10AreaClick(4);
+                            handlePage10AreaClick(4, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '10-2-img')}
                         >
@@ -3508,6 +4143,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '22%',
                           }}
                           data-clickable="true"
+                          data-area-id="page10-area5"
                           onTouchStart={(e) => {
                             if (isPage10ModalJustClosed) {
                               e.preventDefault();
@@ -3515,7 +4151,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage10AreaClick(5);
+                            handlePage10AreaClick(5, e);
                           }}
                           onClick={(e) => {
                             if (isPage10ModalJustClosed) {
@@ -3523,7 +4159,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage10AreaClick(5);
+                            handlePage10AreaClick(5, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '10-3-img')}
                         >
@@ -3559,6 +4195,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '22%',
                           }}
                           data-clickable="true"
+                          data-area-id="page10-area6"
                           onTouchStart={(e) => {
                             if (isPage10ModalJustClosed) {
                               e.preventDefault();
@@ -3566,7 +4203,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage10AreaClick(6);
+                            handlePage10AreaClick(6, e);
                           }}
                           onClick={(e) => {
                             if (isPage10ModalJustClosed) {
@@ -3574,7 +4211,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage10AreaClick(6);
+                            handlePage10AreaClick(6, e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '10-4-img')}
                         >
@@ -3616,6 +4253,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             height: '30%',
                           }}
                           data-clickable="true"
+                          data-area-id="page11-area1"
                           onTouchStart={(e) => {
                             if (isPage11ModalJustClosed) {
                               e.preventDefault();
@@ -3623,7 +4261,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               return;
                             }
                             e.stopPropagation();
-                            handlePage11AreaClick();
+                            handlePage11AreaClick(e);
                           }}
                           onClick={(e) => {
                             if (isPage11ModalJustClosed) {
@@ -3631,7 +4269,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            handlePage11AreaClick();
+                            handlePage11AreaClick(e);
                           }}
                           title={t('popupWithNumber').replace('{number}', '11-1')}
                         >
@@ -3728,6 +4366,33 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 </svg>
               </button>
 
+              {/* 튜토리얼 모드 버튼 */}
+              <button
+                onClick={() => {
+                  const newMode = !isTutorialMode;
+                  setIsTutorialMode(newMode);
+                  if (!newMode) {
+                    setTutorialTooltip(null);
+                    setTutorialTooltipShown(new Set());
+                  }
+                }}
+                className={`w-10 h-10 flex items-center justify-center rounded transition-colors duration-300 cursor-pointer ${
+                  isTutorialMode
+                    ? 'bg-blue-600 text-white hover:bg-blue-700'
+                    : 'text-white hover:text-gray-300 hover:bg-gray-700'
+                }`}
+                title={isTutorialMode ? t('tooltipTutorialTitle') || '튜토리얼 모드 종료' : t('tooltipTutorialTitle') || '튜토리얼 모드 시작'}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </button>
+
               {/* 언어 선택 버튼 */}
               <div className="relative" ref={languageDropdownRef}>
                 <button
@@ -3771,16 +4436,10 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         <div
           className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
           onClick={(e) => {
-            console.log('🎭 3페이지 모달 배경 클릭됨');
-            console.log('🎭 이벤트 타겟:', e.target);
-            console.log('🎭 이벤트 currentTarget:', e.currentTarget);
-            console.log('🎭 타겟과 currentTarget이 같은가?', e.target === e.currentTarget);
             // 배경 클릭 시에만 모달 닫기 (모달 내용 클릭 시에는 닫지 않음)
             if (e.target === e.currentTarget) {
-              console.log('🎭 배경 클릭으로 인한 모달 닫기');
               closeModal();
             } else {
-              console.log('🎭 모달 내용 클릭 - 모달 닫지 않음');
             }
           }}
         >
@@ -3824,9 +4483,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     zIndex: 10,
                   }}
                   onClick={(e) => {
-                    console.log('🎯 4번째 영역 클릭됨 - 이벤트 전파 방지');
-                    e.stopPropagation(); // 이벤트 전파 방지
-                    console.log('🎯 4번째 영역 - openImageModal 호출');
+                    e.stopPropagation();
                     openImageModal('3-4-1');
                   }}
                   title="3-4-1, 3-4-2 이미지 보기"
@@ -3845,9 +4502,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     zIndex: 10,
                   }}
                   onClick={(e) => {
-                    console.log('🎯 6번째 영역 클릭됨 - 이벤트 전파 방지');
-                    e.stopPropagation(); // 이벤트 전파 방지
-                    console.log('🎯 6번째 영역 - openImageModal 호출');
+                    e.stopPropagation();
                     openImageModal('3-6-1');
                   }}
                   title="3-6-1 이미지 보기"
@@ -3913,9 +4568,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     zIndex: 1,
                   }}
                   onClick={(e) => {
-                    console.log('🚀 5페이지로 이동하는 영역 클릭됨 (1번 영역)');
-                    console.log('🚀 이벤트 타겟:', e.target);
-                    console.log('🚀 이벤트 currentTarget:', e.currentTarget);
                     handleGoToPage5();
                   }}
                   title="5페이지로 이동"
@@ -4855,46 +5507,30 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         <div
           className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
           onClick={(e) => {
-            console.log('🟡 [2페이지] 모달 배경 onClick 발생');
-            console.log('🟡 [2페이지] isPage2ModalJustOpened:', isPage2ModalJustOpened);
-            console.log('🟡 [2페이지] 이벤트 타겟:', e.target);
-            console.log('🟡 [2페이지] 이벤트 currentTarget:', e.currentTarget);
-            console.log('🟡 [2페이지] 타겟 === currentTarget?', e.target === e.currentTarget);
 
             // 모달이 방금 열린 경우 배경 클릭 무시
             if (isPage2ModalJustOpened) {
-              console.log('⏸️ [2페이지] 모달이 방금 열림 - 배경 클릭 무시');
               return;
             }
 
             if (e.target === e.currentTarget) {
-              console.log('🟡 [2페이지] 배경 클릭으로 모달 닫기');
               closePage2Modal(e);
             } else {
-              console.log('🟡 [2페이지] 모달 내용 클릭 - 닫지 않음');
             }
           }}
           onTouchStart={(e) => {
-            console.log('🟠 [2페이지] 모달 배경 onTouchStart 발생');
-            console.log('🟠 [2페이지] isPage2ModalJustOpened:', isPage2ModalJustOpened);
-            console.log('🟠 [2페이지] 이벤트 타겟:', e.target);
-            console.log('🟠 [2페이지] 이벤트 currentTarget:', e.currentTarget);
-            console.log('🟠 [2페이지] 타겟 === currentTarget?', e.target === e.currentTarget);
 
             // 모달이 방금 열린 경우 배경 터치 무시
             if (isPage2ModalJustOpened) {
-              console.log('⏸️ [2페이지] 모달이 방금 열림 - 배경 터치 무시');
               e.stopPropagation();
               return;
             }
 
             if (e.target === e.currentTarget) {
-              console.log('🟠 [2페이지] 배경 터치로 모달 닫기');
               e.stopPropagation();
               // preventDefault 제거 (passive event listener 경고 방지)
               closePage2Modal(e);
             } else {
-              console.log('🟠 [2페이지] 모달 내용 터치 - 닫지 않음');
             }
           }}
           style={{ touchAction: 'manipulation' }}
@@ -6453,8 +7089,81 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         </div>
       )}
 
+      {/* 튜토리얼 툴팁 */}
+      {isTutorialMode && tutorialTooltip && (() => {
+        const transform = tutorialTooltipDirection === 'top' 
+          ? 'translate(-50%, -100%)' 
+          : 'translate(-50%, 0)';
+
+        return (
+          <div
+            className="fixed z-[9999] pointer-events-none"
+            style={{
+              left: `${tutorialTooltipPosition.x}px`,
+              top: `${tutorialTooltipPosition.y}px`,
+              transform: transform,
+            }}
+          >
+            {/* 상단 방향 */}
+            {tutorialTooltipDirection === 'top' && (
+              <>
+                <div className="bg-blue-600 text-white rounded-lg shadow-2xl p-4 max-w-xs min-w-[280px] mb-2">
+                  <div className="flex items-start gap-2">
+                    <div className="flex-shrink-0 mt-0.5">
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-lg mb-2">{tutorialTooltip.title}</h3>
+                      <p className="text-sm leading-relaxed">{tutorialTooltip.description}</p>
+                      <p className="text-xs mt-2 opacity-90">한 번 더 터치하면 팝업이 열립니다</p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-blue-600 mx-auto"
+                  style={{ marginLeft: '50%', transform: 'translateX(-50%)' }}
+                />
+              </>
+            )}
+
+            {/* 하단 방향 */}
+            {tutorialTooltipDirection === 'bottom' && (
+              <>
+                <div
+                  className="w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-blue-600 mx-auto mb-2"
+                  style={{ marginLeft: '50%', transform: 'translateX(-50%)' }}
+                />
+                <div className="bg-blue-600 text-white rounded-lg shadow-2xl p-4 max-w-xs min-w-[280px]">
+                  <div className="flex items-start gap-2">
+                    <div className="flex-shrink-0 mt-0.5">
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-lg mb-2">{tutorialTooltip.title}</h3>
+                      <p className="text-sm leading-relaxed">{tutorialTooltip.description}</p>
+                      <p className="text-xs mt-2 opacity-90">한 번 더 터치하면 팝업이 열립니다</p>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        );
+      })()}
+
       {/* Dialogflow 챗봇 플로팅 버튼 */}
-      <Chatbot language={currentLanguage} />
       <Chatbot language={currentLanguage} />
     </div>
   );

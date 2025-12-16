@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X, Bot, Send } from 'lucide-react';
 import { useChatbot } from '../hooks/useChatbot';
 import { getTheme } from '../config/chatbotTheme';
+import { useRouteInfo } from '../hooks/useRouteInfo';
 
 const TRANSLATIONS = {
   ko: {
@@ -10,7 +10,7 @@ const TRANSLATIONS = {
     chatbot_title: 'Friender 챗봇',
     chatbot_subtitle: '무엇이든 물어보세요!',
     chatbot_welcome: '안녕하세요! Friender에 오신 것을 환영합니다. 궁금한 점이 있으신가요?',
-    
+
     chatbot_home_title: 'Friender 도우미',
     chatbot_home_subtitle: '회사 소개 및 일반 문의',
     chatbot_home_welcome: '안녕하세요! Friender에 대해 무엇이든 물어보세요.',
@@ -34,7 +34,7 @@ const TRANSLATIONS = {
     chatbot_title: 'Friender Chatbot',
     chatbot_subtitle: 'Ask me anything!',
     chatbot_welcome: 'Hello! Welcome to Friender. How can I help you today?',
-    
+
     chatbot_home_title: 'Friender Assistant',
     chatbot_home_subtitle: 'General Inquiries',
     chatbot_home_welcome: 'Hello! Ask me anything about Friender.',
@@ -43,7 +43,7 @@ const TRANSLATIONS = {
 
     chatbot_story_title: 'Friender Story',
     chatbot_story_subtitle: 'Our Journey',
-    chatbot_story_welcome: 'Ask about Friender\'s growth story and vision!',
+    chatbot_story_welcome: "Ask about Friender's growth story and vision!",
 
     chatbot_dreamPath_title: 'DreamPath Guide',
     chatbot_dreamPath_subtitle: 'Career Path Assistant',
@@ -51,19 +51,20 @@ const TRANSLATIONS = {
 
     chatbot_innoWorks_title: 'InnoWorks Info',
     chatbot_innoWorks_subtitle: 'Innovation & Solutions',
-    chatbot_innoWorks_welcome: 'I can explain Friender\'s technology and InnoWorks projects.',
+    chatbot_innoWorks_welcome: "I can explain Friender's technology and InnoWorks projects.",
   },
   ja: {
     chatbot_placeholder: 'メッセージを入力してください...',
     chatbot_title: 'Friender チャットボット',
     chatbot_subtitle: '何でも聞いてください！',
     chatbot_welcome: 'こんにちは！Frienderへようこそ。ご用件をお聞かせください。',
-    
+
     chatbot_home_title: 'Friender アシスタント',
     chatbot_home_subtitle: '会社紹介と一般案内',
     chatbot_home_welcome: 'Frienderについて何でもお尋ねください。',
     chatbot_home_response_default: 'すみません、理解できませんでした。もう一度お願いします。',
-    chatbot_home_response_error: '申し訳ありません。エラーが発生しました。しばらくしてからお試しください。',
+    chatbot_home_response_error:
+      '申し訳ありません。エラーが発生しました。しばらくしてからお試しください。',
 
     chatbot_story_title: 'Friender ストーリー',
     chatbot_story_subtitle: '私たちの歩み',
@@ -82,7 +83,7 @@ const TRANSLATIONS = {
     chatbot_title: 'Chatbot de Friender',
     chatbot_subtitle: 'Pregunta lo que quieras!',
     chatbot_welcome: 'Hola! Bienvenido a Friender. Como puedo ayudarte hoy?',
-    
+
     chatbot_home_title: 'Asistente de Friender',
     chatbot_home_subtitle: 'Consultas generales',
     chatbot_home_welcome: 'Hola! Pregunta lo que quieras sobre Friender.',
@@ -99,14 +100,15 @@ const TRANSLATIONS = {
 
     chatbot_innoWorks_title: 'Info de InnoWorks',
     chatbot_innoWorks_subtitle: 'Innovacion y soluciones',
-    chatbot_innoWorks_welcome: 'Puedo explicarte la tecnologia de Friender y los proyectos InnoWorks.',
+    chatbot_innoWorks_welcome:
+      'Puedo explicarte la tecnologia de Friender y los proyectos InnoWorks.',
   },
   zh: {
     chatbot_placeholder: '请输入消息...',
     chatbot_title: 'Friender 聊天机器人',
     chatbot_subtitle: '有什么都可以问！',
     chatbot_welcome: '你好！欢迎来到 Friender。我能帮你做什么？',
-    
+
     chatbot_home_title: 'Friender 助理',
     chatbot_home_subtitle: '公司介绍与常见咨询',
     chatbot_home_welcome: '关于 Friender 有任何问题都可以问我。',
@@ -124,41 +126,20 @@ const TRANSLATIONS = {
     chatbot_innoWorks_title: 'InnoWorks 介绍',
     chatbot_innoWorks_subtitle: '创新技术与解决方案',
     chatbot_innoWorks_welcome: '我可以介绍 Friender 的技术力和 InnoWorks 项目。',
-  }
+  },
 };
 
 const Chatbot = () => {
   const { isChatbotOpen, closeChatbot, openChatbot } = useChatbot();
-  const location = useLocation();
-  const { pathname } = location;
+  const { pageType, language: currentLang } = useRouteInfo();
 
   const [inputMessage, setInputMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
   const messagesContainerRef = useRef(null);
 
-  // URL에서 타입과 언어 자동 추출
-  const { activeChatbotType, currentLang } = useMemo(() => {
-    let type = 'home';
-    let lang = 'ko';
-
-    const segments = pathname.split('/').filter(Boolean);
-    
-    // segments[0]이 타입, segments[1]이 언어 (예: /dreampath/en)
-    if (segments.length > 0) {
-      const first = segments[0].toLowerCase();
-      if (first === 'dreampath') type = 'dreamPath';
-      else if (first === 'story') type = 'story';
-      else if (first === 'innoworks') type = 'innoWorks';
-      
-      // 언어 추출
-      if (segments.length >= 2) {
-        lang = segments[1];
-      }
-    }
-
-    return { activeChatbotType: type, currentLang: lang };
-  }, [pathname]);
+  // 페이지 타입을 챗봇 타입으로 매핑
+  const activeChatbotType = pageType === 'dreamPath' ? 'dreamPath' : pageType;
 
   // 번역 헬퍼
   const t = (key) => {
@@ -223,9 +204,9 @@ const Chatbot = () => {
 
     try {
       const apiUrl = import.meta.env.VITE_CHATBOT_API_URL;
-      
+
       let responseData = { message: '' };
-      
+
       if (apiUrl) {
         // 실제 API 호출
         const payload = {
@@ -241,14 +222,16 @@ const Chatbot = () => {
           },
           body: JSON.stringify(payload),
         });
-        
+
         if (!res.ok) throw new Error('Network response was not ok');
         responseData = await res.json();
       } else {
         // Fallback for dev without env
         console.warn('VITE_CHATBOT_API_URL is missing');
-        await new Promise(r => setTimeout(r, 1000));
-        responseData = { message: `${t('chatbot_' + activeChatbotType + '_response_default')} (Demo)` };
+        await new Promise((r) => setTimeout(r, 1000));
+        responseData = {
+          message: `${t('chatbot_' + activeChatbotType + '_response_default')} (Demo)`,
+        };
       }
 
       const replyText =
@@ -262,7 +245,6 @@ const Chatbot = () => {
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, botMessage]);
-
     } catch (error) {
       console.error('Chatbot API error:', error);
       const errorMessage = {
@@ -291,8 +273,8 @@ const Chatbot = () => {
           onClick={handleToggle}
           style={{ backgroundColor: theme.primary }}
           className="w-14 h-14 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2"
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = theme.primaryHover}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = theme.primary}
+          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = theme.primaryHover)}
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = theme.primary)}
           aria-label="챗봇 열기"
         >
           <MessageCircle size={24} />
@@ -302,9 +284,11 @@ const Chatbot = () => {
       {/* 챗봇 창 */}
       {isChatbotOpen && (
         <div className="bg-white rounded-lg shadow-2xl w-96 h-[600px] flex flex-col border border-gray-200 animate-in slide-in-from-bottom-10 fade-in duration-300">
-          
           {/* 헤더 */}
-          <div style={{ backgroundColor: theme.primary }} className="text-white p-4 rounded-t-lg flex items-center justify-between shadow-md">
+          <div
+            style={{ backgroundColor: theme.primary }}
+            className="text-white p-4 rounded-t-lg flex items-center justify-between shadow-md"
+          >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
                 <Bot size={20} />
@@ -332,7 +316,11 @@ const Chatbot = () => {
           >
             {messages.length === 0 && (
               <div className="text-center text-gray-500 px-6">
-                <Bot size={48} style={{ color: theme.primary }} className="mx-auto mb-3 opacity-50" />
+                <Bot
+                  size={48}
+                  style={{ color: theme.primary }}
+                  className="mx-auto mb-3 opacity-50"
+                />
                 <p className="text-sm leading-relaxed">{getWelcomeMessage()}</p>
               </div>
             )}
@@ -351,9 +339,11 @@ const Chatbot = () => {
                   style={message.sender === 'user' ? { backgroundColor: theme.primary } : {}}
                 >
                   <p className="text-sm whitespace-pre-wrap leading-relaxed">{message.text}</p>
-                  <p className={`text-[10px] mt-1 text-right ${
-                    message.sender === 'user' ? 'text-white/70' : 'text-gray-400'
-                  }`}>
+                  <p
+                    className={`text-[10px] mt-1 text-right ${
+                      message.sender === 'user' ? 'text-white/70' : 'text-gray-400'
+                    }`}
+                  >
                     {formatTime(message.timestamp)}
                   </p>
                 </div>
@@ -388,10 +378,18 @@ const Chatbot = () => {
               <button
                 type="submit"
                 disabled={!inputMessage.trim() || isTyping}
-                style={{ backgroundColor: !inputMessage.trim() || isTyping ? undefined : theme.primary }}
+                style={{
+                  backgroundColor: !inputMessage.trim() || isTyping ? undefined : theme.primary,
+                }}
                 className="w-10 h-10 flex items-center justify-center text-white rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-400 shadow-sm"
-                onMouseEnter={(e) => { if (!e.currentTarget.disabled) e.currentTarget.style.backgroundColor = theme.primaryHover; }}
-                onMouseLeave={(e) => { if (!e.currentTarget.disabled) e.currentTarget.style.backgroundColor = theme.primary; }}
+                onMouseEnter={(e) => {
+                  if (!e.currentTarget.disabled)
+                    e.currentTarget.style.backgroundColor = theme.primaryHover;
+                }}
+                onMouseLeave={(e) => {
+                  if (!e.currentTarget.disabled)
+                    e.currentTarget.style.backgroundColor = theme.primary;
+                }}
               >
                 <Send size={18} />
               </button>

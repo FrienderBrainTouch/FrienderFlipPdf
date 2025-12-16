@@ -3,11 +3,7 @@ import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-
 import { detectBrowserLanguage, getLanguagePath } from './utils/language';
 
 // Lazy loading - 각 페이지를 필요할 때만 불러옴
-const FrienderPageKo = lazy(() => import('./components/FrienderPage-ko'));
-const FrienderPageEn = lazy(() => import('./components/FrienderPage-en'));
-const FrienderPageJa = lazy(() => import('./components/FrienderPage-ja'));
-const FrienderPageZh = lazy(() => import('./components/FrienderPage-zh'));
-const FrienderPageEs = lazy(() => import('./components/FrienderPage-es'));
+const FrienderPageWithLanguage = lazy(() => import('./components/FrienderPageWithLanguage'));
 const DreamPathPage = lazy(() => import('./components/dreampath/DreamPathPage'));
 const StoryPage = lazy(() => import('./components/story/StoryPage'));
 const InnoWorksPage = lazy(() => import('./components/innoworks/InnoWorksPage'));
@@ -54,12 +50,8 @@ function App() {
       <Suspense fallback={<LoadingSpinner />}>
         <Routes>
           {/* 다국어 PC 페이지 */}
-          <Route path="/" element={<FrienderPageKo />} />
-          <Route path="/ko" element={<FrienderPageKo />} />
-          <Route path="/en" element={<FrienderPageEn />} />
-          <Route path="/ja" element={<FrienderPageJa />} />
-          <Route path="/zh" element={<FrienderPageZh />} />
-          <Route path="/es" element={<FrienderPageEs />} />
+          <Route path="/" element={<FrienderPageWithLanguage />} />
+          <Route path="/:language" element={<FrienderPageWithLanguage />} />
 
           {/* DreamPath / Story / InnoWorks 언어별 라우트 유지 */}
           <Route path="/dreampath/:language" element={<DreamPathPage />} />

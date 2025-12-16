@@ -4,7 +4,14 @@ import HTMLFlipBook from 'react-pageflip';
 import FrienderPageMobile from './FrienderPage-mobile';
 import Frender3DModel from './Frender3DModel';
 import Chatbot from './Chatbot';
-import { getLanguageList, getLanguageFromPath, getLanguagePath, getPagePath, getPopupPath, getPdfPath, getFrontGifPath } from '../utils/language';
+import {
+  getLanguageList,
+  getLanguageFromPath,
+  getLanguagePath,
+  getPagePath,
+  getPopupPath,
+  getPdfPath,
+} from '../utils/language';
 import { getTranslation } from '../utils/translations';
 
 const getDroneVideoPlaylist = (t) => [
@@ -60,16 +67,20 @@ const getYouTubeVideoId = (url) => {
 
 const getYouTubeEmbedUrl = (url) => {
   const videoId = getYouTubeVideoId(url);
-  return videoId ? `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1` : '';
+  return videoId
+    ? `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1`
+    : '';
 };
 
 const getPage6MediaOverrides = (t) => ({
   5: {
     src: '/FrienderFile/VideoFile/WorldGIF.gif',
     alt: t('worldGifAnimation'),
+    alt: t('worldGifAnimation'),
   },
   6: {
     src: '/FrienderFile/VideoFile/FrinederGIF1.gif',
+    alt: t('frienderGifAnimation'),
     alt: t('frienderGifAnimation'),
   },
 });
@@ -78,13 +89,16 @@ const getPage7MediaOverrides = (t) => ({
   5: {
     src: '/FrienderFile/VideoFile/AIStory.gif',
     alt: t('aiStoryGifAnimation'),
+    alt: t('aiStoryGifAnimation'),
   },
   6: {
     src: '/FrienderFile/VideoFile/DreampathAI.gif',
     alt: t('dreampathAiGifAnimation'),
+    alt: t('dreampathAiGifAnimation'),
   },
   7: {
     src: '/FrienderFile/VideoFile/InnoWorks.gif',
+    alt: t('innoWorksGifAnimation'),
     alt: t('innoWorksGifAnimation'),
   },
 });
@@ -97,255 +111,32 @@ const NAVER_MAP_COORDINATES = {
 const NAVER_MAP_QUERY = encodeURIComponent(NAVER_MAP_ADDRESS);
 const NAVER_MAP_EMBED_URL = `https://map.naver.com/p/search/${NAVER_MAP_QUERY}?c=${NAVER_MAP_COORDINATES.lng},${NAVER_MAP_COORDINATES.lat},21,0,0,0,dh`;
 const NAVER_MAP_SHARE_URL = `https://map.naver.com/p/search/${NAVER_MAP_QUERY}?c=${NAVER_MAP_COORDINATES.lng},${NAVER_MAP_COORDINATES.lat},21,0,0,0,dh`;
-
-// 튜토리얼 설명 데이터 구조
-const getTutorialInfo = (t) => ({
-  // 2페이지
-  'page2-area1': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page2-area2': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page2-area3': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page2-area4': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page2-area5': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page2-area6': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  // 3페이지
-  'page3-area1': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page3-area2': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page3-area3': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page3-area4': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page3-area5': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  // 4페이지
-  'page4-area1': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page4-area2': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page4-area3': {
-    title: '영상 목록 팝업',
-    description: '클릭 시 관련 영상 목록을 확인할 수 있습니다. 다양한 영상 콘텐츠를 탐색하고 시청하세요.'
-  },
-  'page4-area4': {
-    title: '이미지 팝업',
-    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
-  },
-  'page4-area5': {
-    title: '이미지 팝업',
-    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
-  },
-  'page4-area6': {
-    title: '이미지 팝업',
-    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
-  },
-  // 5페이지
-  'page5-area1': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page5-area2': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page5-area3': {
-    title: '이미지 팝업',
-    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
-  },
-  'page5-area4': {
-    title: '이미지 팝업',
-    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
-  },
-  'page5-area5': {
-    title: '이미지 팝업',
-    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
-  },
-  'page5-area6': {
-    title: '이미지 팝업',
-    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
-  },
-  // 6페이지
-  'page6-area1': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page6-area2': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page6-area3': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page6-area4': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page6-area5': {
-    title: '이미지 팝업',
-    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
-  },
-  'page6-area6': {
-    title: '이미지 팝업',
-    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
-  },
-  'page6-area7': {
-    title: '3D 모델링 팝업',
-    description: '클릭 시 3D 모델을 확인할 수 있습니다. 다양한 각도에서 회전하고 확대하여 상세히 살펴보세요.'
-  },
-  // 7페이지
-  'page7-area1': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page7-area2': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page7-area3': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page7-area4': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page7-area5': {
-    title: '이미지 팝업',
-    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
-  },
-  'page7-area6': {
-    title: '이미지 팝업',
-    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
-  },
-  'page7-area7': {
-    title: '이미지 팝업',
-    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
-  },
-  // 8페이지
-  'page8-area1': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page8-area2': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page8-area3': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page8-area4': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  // 9페이지
-  'page9-area1': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page9-area2': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page9-area3': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page9-area4': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  // 10페이지
-  'page10-area1': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page10-area2': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page10-area3': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  },
-  'page10-area4': {
-    title: '이미지 팝업',
-    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
-  },
-  'page10-area5': {
-    title: '이미지 팝업',
-    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
-  },
-  'page10-area6': {
-    title: '이미지 팝업',
-    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
-  },
-  // 11페이지
-  'page11-area1': {
-    title: '상세 정보 팝업',
-    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
-  }
-});
-
 function FrienderPage({ onBack = null, language: propLanguage }) {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   // 현재 언어 감지
   const currentLanguage = propLanguage || getLanguageFromPath(location.pathname);
   const languageList = getLanguageList();
-  
+
   // 번역 함수
   const t = (key) => getTranslation(currentLanguage, key);
-  
+
   // 언어 선택 드롭다운 상태
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = React.useState(false);
   const languageDropdownRef = React.useRef(null);
-  
+
   // 화면 크기 상태 관리
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1025);
   const [isSmallScreen, setIsSmallScreen] = React.useState(window.innerWidth <= 1450);
-  
+
   // 언어 변경 핸들러
   const handleLanguageChange = (langCode) => {
     const targetPath = getLanguagePath(langCode);
     navigate(targetPath);
     setIsLanguageDropdownOpen(false);
   };
-  
+
   // 외부 클릭 시 드롭다운 닫기
   React.useEffect(() => {
     const handleClickOutside = (event) => {
@@ -353,61 +144,60 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
         setIsLanguageDropdownOpen(false);
       }
     };
-    
+
     if (isLanguageDropdownOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
-    
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isLanguageDropdownOpen]);
-  
+
   // 원본 이미지 비율 계산 (2480:3507)
   const originalAspectRatio = 2382 / 3369; // 약 0.707
-  
+
   // 플립북 크기 계산 함수
   const calculateFlipBookSize = () => {
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
-    
+
     // 화면의 40% 너비를 기준으로 하되, 최소 400px, 최대 600px
     const targetWidth = Math.max(400, Math.min(800, screenWidth * 0.4));
-    
+
     // 원본 비율을 유지하여 높이 계산
     const targetHeight = targetWidth / originalAspectRatio;
-    
+
     // 화면 높이의 80%를 넘지 않도록 제한
     const maxHeight = screenHeight * 0.8;
     if (targetHeight > maxHeight) {
       const adjustedWidth = maxHeight * originalAspectRatio;
       return {
         width: Math.max(350, adjustedWidth),
-        height: maxHeight
+        height: maxHeight,
       };
     }
-    
+
     return {
       width: targetWidth,
-      height: targetHeight
+      height: targetHeight,
     };
   };
-  
+
   const [flipBookSize, setFlipBookSize] = React.useState(calculateFlipBookSize());
-  
+
   // 플립북 참조
   const flipBookRef = React.useRef(null);
-  
+
   // 현재 페이지 상태 관리
   const [currentPage, setCurrentPage] = React.useState(0);
   const [isCoverPage, setIsCoverPage] = React.useState(true);
   const [isFirstPage, setIsFirstPage] = React.useState(true);
   const [isLastPage, setIsLastPage] = React.useState(false);
-  
-  
+
   // 마우스 이벤트 활성화 상태 관리
   const [mouseEventsEnabled, setMouseEventsEnabled] = React.useState(false);
-  
+
   // front.gif 표시 상태 관리
   const [showFrontGif, setShowFrontGif] = React.useState(false);
   const [showSvgBackground, setShowSvgBackground] = React.useState(false);
@@ -415,64 +205,64 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
   // 3페이지 모달 상태 관리
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedArea, setSelectedArea] = React.useState(null);
-  
+
   // 3페이지 이미지 모달 상태 관리
   const [isImageModalOpen, setIsImageModalOpen] = React.useState(false);
   const [selectedImageType, setSelectedImageType] = React.useState(null); // '3-4-1', '3-4-2', '3-6-1'
-  
+
   // 추가 4개 영역 모달 상태 관리
   const [isAdditionalModalOpen, setIsAdditionalModalOpen] = React.useState(false);
   const [selectedAdditionalArea, setSelectedAdditionalArea] = React.useState(null);
-  
+
   // 4페이지 모달 상태 관리
   const [isPage4ModalOpen, setIsPage4ModalOpen] = React.useState(false);
   const [selectedPage4Area, setSelectedPage4Area] = React.useState(null);
-  
+
   // 4페이지 영역 2번 전용 모달 상태 관리 (테스트용)
   const [isPage4Area2ModalOpen, setIsPage4Area2ModalOpen] = React.useState(false);
-  
+
   // 5페이지 모달 상태 관리
   const [isPage5ModalOpen, setIsPage5ModalOpen] = React.useState(false);
   const [selectedPage5Area, setSelectedPage5Area] = React.useState(null);
-  
+
   const [isPage53DModalOpen, setIsPage53DModalOpen] = React.useState(false);
   const [selectedPart, setSelectedPart] = React.useState(1); // 선택된 파트 (1-4)
   const [currentPartModel, setCurrentPartModel] = React.useState(null); // 현재 표시할 파트 모델
   const [isPage53DModelLoading, setIsPage53DModelLoading] = React.useState(false); // 5페이지 3D 모델 로딩 상태
   const [modalKey, setModalKey] = React.useState(0); // 모달 새로고침을 위한 키
-  
+
   const [isPage5ExteriorModalOpen, setIsPage5ExteriorModalOpen] = React.useState(false);
   const [selectedExteriorType, setSelectedExteriorType] = React.useState(null); // 선택된 외장재 타입 (3-6)
-  
+
   // 6페이지 모달 상태 관리
   const [isPage6ModalOpen, setIsPage6ModalOpen] = React.useState(false);
   const [selectedPage6Area, setSelectedPage6Area] = React.useState(null);
   const [hoveredArea6, setHoveredArea6] = React.useState(null);
   const [isPage63DModalOpen, setIsPage63DModalOpen] = React.useState(false);
-  
+
   // 2페이지 팝업 모달 상태 관리
   const [isPage2ModalOpen, setIsPage2ModalOpen] = React.useState(false);
   const [selectedPage2Area, setSelectedPage2Area] = React.useState(null);
-  
+
   // 8페이지 모달 상태 관리
   const [isPage8ModalOpen, setIsPage8ModalOpen] = React.useState(false);
   const [selectedPage8Area, setSelectedPage8Area] = React.useState(null);
-  
+
   // 9페이지 모달 상태 관리
   const [isPage9ModalOpen, setIsPage9ModalOpen] = React.useState(false);
   const [selectedPage9Area, setSelectedPage9Area] = React.useState(null);
-  
+
   // 10페이지 모달 상태 관리
   const [isPage10ModalOpen, setIsPage10ModalOpen] = React.useState(false);
   const [selectedPage10Area, setSelectedPage10Area] = React.useState(null);
-  
+
   // 11페이지 모달 상태 관리
   const [isPage11ModalOpen, setIsPage11ModalOpen] = React.useState(false);
-  
+
   // 3페이지 팝업 모달 상태 관리
   const [isPage3ModalOpen, setIsPage3ModalOpen] = React.useState(false);
   const [selectedPage3Area, setSelectedPage3Area] = React.useState(null);
-  
+
   // 각 페이지별 호버 상태 관리
   const [hoveredArea2, setHoveredArea2] = React.useState(null);
   const [hoveredArea3, setHoveredArea3] = React.useState(null);
@@ -483,30 +273,25 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
   const [hoveredArea9, setHoveredArea9] = React.useState(null);
   const [hoveredArea10, setHoveredArea10] = React.useState(null);
   const [hoveredArea11, setHoveredArea11] = React.useState(null);
-  
+
   // 3페이지 모달 내 추가 영역 호버 상태 관리
   const [hoveredModalArea, setHoveredModalArea] = React.useState(null);
-  
+
   // 추가 영역 이미지 모달 상태 관리
   const [isAdditionalImageModalOpen, setIsAdditionalImageModalOpen] = React.useState(false);
   const [selectedAdditionalImageType, setSelectedAdditionalImageType] = React.useState(null);
-  
+
   // 새로운 영역 모달 상태 관리
   const [isNewAreaModalOpen, setIsNewAreaModalOpen] = React.useState(false);
-  
+
   // 새로운 영역 모달창 확대/축소 상태 관리
   const [newAreaModalZoomLevel, setNewAreaModalZoomLevel] = React.useState(1);
   const [isNewAreaModalZoomed, setIsNewAreaModalZoomed] = React.useState(false);
-  
+
   // 새로운 영역 모달창 드래그 상태
   const [newAreaModalDragOffset, setNewAreaModalDragOffset] = React.useState({ x: 0, y: 0 });
   const [isNewAreaModalDragging, setIsNewAreaModalDragging] = React.useState(false);
   const newAreaModalDragStartRef = React.useRef({ x: 0, y: 0 });
-  
-  // 튜토리얼 모드 상태 관리
-  const [isTutorialMode, setIsTutorialMode] = React.useState(false);
-  const [tutorialTooltip, setTutorialTooltip] = React.useState(null);
-  const [tutorialTooltipPosition, setTutorialTooltipPosition] = React.useState({ x: 0, y: 0 });
 
   // 7페이지 영상 상태 관리
   const [playingVideo, setPlayingVideo] = React.useState(null);
@@ -517,48 +302,50 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
   const [logoOpacity, setLogoOpacity] = React.useState(0);
   const [whiteScreenVisible, setWhiteScreenVisible] = React.useState(true);
   const [mainScreenVisible, setMainScreenVisible] = React.useState(false);
-  
+
   // 확대/축소 상태 관리
   const [zoomLevel, setZoomLevel] = React.useState(1);
   const [isZoomed, setIsZoomed] = React.useState(false);
-  
+
   // 미니맵 상태 관리
   const [showMinimap, setShowMinimap] = React.useState(false);
-  
+
   // 드래그 상태 관리
   const [isDragging, setIsDragging] = React.useState(false);
   const [dragOffset, setDragOffset] = React.useState({ x: 0, y: 0 });
-  
+
   // 드래그 시작점을 ref로 관리 (무한 루프 방지)
   const dragStartRef = React.useRef({ x: 0, y: 0 });
-  
+
   // 플립북 컨테이너 참조
   const flipBookContainerRef = React.useRef(null);
-  
+
   // 모달창 확대/축소 상태 관리
   const [modalZoomLevel, setModalZoomLevel] = React.useState(1);
   const [isModalZoomed, setIsModalZoomed] = React.useState(false);
-  
+
   // 모달창 드래그 상태
   const [modalDragOffset, setModalDragOffset] = React.useState({ x: 0, y: 0 });
   const [isModalDragging, setIsModalDragging] = React.useState(false);
   const modalDragStartRef = React.useRef({ x: 0, y: 0 });
-  
 
   // SVG 페이지 데이터 (언어별 경로 적용)
-  const pageData = React.useMemo(() => [
-    { id: 1, svg: getPagePath(currentLanguage, 1), isCover: true },
-    { id: 2, svg: getPagePath(currentLanguage, 2) },
-    { id: 3, svg: getPagePath(currentLanguage, 3) },
-    { id: 4, svg: getPagePath(currentLanguage, 4) },
-    { id: 5, svg: getPagePath(currentLanguage, 5) },
-    { id: 6, svg: getPagePath(currentLanguage, 6) },
-    { id: 7, svg: getPagePath(currentLanguage, 7) },
-    { id: 8, svg: getPagePath(currentLanguage, 8) },
-    { id: 9, svg: getPagePath(currentLanguage, 9) },
-    { id: 10, svg: getPagePath(currentLanguage, 10) },
-    { id: 11, svg: getPagePath(currentLanguage, 11) }
-  ], [currentLanguage]);
+  const pageData = React.useMemo(
+    () => [
+      { id: 1, svg: getPagePath(currentLanguage, 1), isCover: true },
+      { id: 2, svg: getPagePath(currentLanguage, 2) },
+      { id: 3, svg: getPagePath(currentLanguage, 3) },
+      { id: 4, svg: getPagePath(currentLanguage, 4) },
+      { id: 5, svg: getPagePath(currentLanguage, 5) },
+      { id: 6, svg: getPagePath(currentLanguage, 6) },
+      { id: 7, svg: getPagePath(currentLanguage, 7) },
+      { id: 8, svg: getPagePath(currentLanguage, 8) },
+      { id: 9, svg: getPagePath(currentLanguage, 9) },
+      { id: 10, svg: getPagePath(currentLanguage, 10) },
+      { id: 11, svg: getPagePath(currentLanguage, 11) },
+    ],
+    [currentLanguage]
+  );
 
   // 화면 크기 변경 감지
   React.useEffect(() => {
@@ -580,43 +367,43 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     if (logoOpacity === 1) {
       // 로고 애니메이션이 완료되면 0.5초 후 2단계 시작
       setTimeout(() => {
-    console.log('2단계 애니메이션 시작');
-    setWhiteScreenVisible(false);
-    
-    // 전환 완료 후 본 화면 표시
-    setTimeout(() => {
-      setMainScreenVisible(true);
-      // 인트로 완료 후 1초 뒤에 GIF 시작
-      setTimeout(() => {
-        setShowFrontGif(true);
-      }, 1000);
-    }, 500);
+        console.log('2단계 애니메이션 시작');
+        setWhiteScreenVisible(false);
+
+        // 전환 완료 후 본 화면 표시
+        setTimeout(() => {
+          setMainScreenVisible(true);
+          // 인트로 완료 후 1초 뒤에 GIF 시작
+          setTimeout(() => {
+            setShowFrontGif(true);
+          }, 1000);
+        }, 500);
       }, 500);
     }
   }, [logoOpacity]);
 
   // 인트로 화면 애니메이션 시퀀스
   React.useEffect(() => {
-  // 로고 애니메이션 시작
-  const logoAnimation = () => {
-    const startTime = performance.now();
-    const duration = 1000; // 1초
+    // 로고 애니메이션 시작
+    const logoAnimation = () => {
+      const startTime = performance.now();
+      const duration = 1000; // 1초
 
-    const animate = (currentTime) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      
-      // ease-out 효과 적용
-      const easeOut = 1 - Math.pow(1 - progress, 3);
-      setLogoOpacity(easeOut);
+      const animate = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
 
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
+        // ease-out 효과 적용
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        setLogoOpacity(easeOut);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+
+      requestAnimationFrame(animate);
     };
-
-    requestAnimationFrame(animate);
-  };
 
     // 로고 애니메이션 시작
     setTimeout(() => {
@@ -644,25 +431,24 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     }
   }, [showFrontGif]);
 
-
   // 페이지 변경 이벤트 핸들러
   const handlePageFlip = (e) => {
     const newPage = e.data;
     setCurrentPage(newPage);
-    
+
     // 첫 페이지(0) 또는 마지막 페이지(10)인지 확인
     const firstPage = newPage === 0;
     const lastPage = newPage === pageData.length - 1;
     setIsFirstPage(firstPage);
     setIsLastPage(lastPage);
     setIsCoverPage(firstPage || lastPage);
-    
+
     // 첫 페이지(표지)로 돌아올 때 front.gif 초기화
     if (firstPage) {
       setShowFrontGif(true);
       setShowSvgBackground(false);
     }
-    
+
     // 페이지 변경 시 확대/축소 상태 리셋
     setZoomLevel(1);
     setIsZoomed(false);
@@ -694,7 +480,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
         const animate = (currentTime) => {
           const elapsed = currentTime - startTime;
           const progress = Math.min(elapsed / duration, 1);
-          
+
           const easeOut = 1 - Math.pow(1 - progress, 3);
           setLogoOpacity(easeOut);
 
@@ -739,6 +525,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     const link = document.createElement('a');
     link.href = pdfPath;
     link.download = pdfFilenameMap[currentLanguage] || pdfFilenameMap['ko'];
+    link.href = pdfPath;
+    link.download = pdfFilenameMap[currentLanguage] || pdfFilenameMap['ko'];
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -751,6 +539,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     if (navigator.share) {
       navigator
         .share({
+          title: 'Friender',
+          text: '프랜더 Friender 카탈로그에 대한 설명',
           title: 'Friender',
           text: '프랜더 Friender 카탈로그에 대한 설명',
           url: window.location.href,
@@ -768,6 +558,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
    */
   const handleTocClick = () => {
     if (flipBookRef.current) {
+      flipBookRef.current.pageFlip().turnToPage(0); // 1페이지로 이동
       flipBookRef.current.pageFlip().turnToPage(0); // 1페이지로 이동
     }
   };
@@ -840,12 +631,13 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
   const handleModalDragStart = (e) => {
     // 클릭 가능한 영역인지 확인 (버튼, 클릭 가능한 요소 등)
     const target = e.target;
-    const isClickableArea = target.closest('button') || 
-                            target.closest('[data-clickable="true"]') || 
-                            target.closest('[onclick]') ||
-                            target.closest('.cursor-pointer') ||
-                            target.hasAttribute('onClick');
-    
+    const isClickableArea =
+      target.closest('button') ||
+      target.closest('[data-clickable="true"]') ||
+      target.closest('[onclick]') ||
+      target.closest('.cursor-pointer') ||
+      target.hasAttribute('onClick');
+
     if (!isClickableArea) {
       setIsModalDragging(true);
       modalDragStartRef.current = { x: e.clientX, y: e.clientY };
@@ -857,26 +649,26 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     if (isModalDragging) {
       const deltaX = e.clientX - modalDragStartRef.current.x;
       const deltaY = e.clientY - modalDragStartRef.current.y;
-      
+
       // 드래그 감도 조정 (더 부드럽게)
       const sensitivity = 1.0;
-      
-      setModalDragOffset(prev => {
+
+      setModalDragOffset((prev) => {
         const newOffset = {
-          x: prev.x + (deltaX * sensitivity),
-          y: prev.y + (deltaY * sensitivity)
+          x: prev.x + deltaX * sensitivity,
+          y: prev.y + deltaY * sensitivity,
         };
-        
+
         // 화면 경계 내에서만 드래그 허용
         const maxX = window.innerWidth * 0.3;
         const maxY = window.innerHeight * 0.3;
-        
+
         newOffset.x = Math.max(-maxX, Math.min(maxX, newOffset.x));
         newOffset.y = Math.max(-maxY, Math.min(maxY, newOffset.y));
-        
+
         return newOffset;
       });
-      
+
       modalDragStartRef.current = { x: e.clientX, y: e.clientY };
       e.preventDefault();
     }
@@ -898,12 +690,13 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     if (isZoomed) {
       // 영역 클릭 요소인지 확인 (클릭 가능한 영역이 아닌 경우에만 드래그 시작)
       const target = e.target;
-      const isClickableArea = target.closest('[data-clickable="true"]') || 
-                              target.closest('button') || 
-                              target.closest('[onclick]') ||
-                              target.closest('.cursor-pointer') ||
-                              target.hasAttribute('onClick');
-      
+      const isClickableArea =
+        target.closest('[data-clickable="true"]') ||
+        target.closest('button') ||
+        target.closest('[onclick]') ||
+        target.closest('.cursor-pointer') ||
+        target.hasAttribute('onClick');
+
       if (!isClickableArea) {
         setIsDragging(true);
         dragStartRef.current = { x: e.clientX, y: e.clientY };
@@ -919,15 +712,15 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     if (isDragging && isZoomed) {
       const deltaX = e.clientX - dragStartRef.current.x;
       const deltaY = e.clientY - dragStartRef.current.y;
-      
+
       // 드래그 감도 조정 (더 부드럽게)
       const sensitivity = 1.0;
-      
-      setDragOffset(prev => ({
-        x: prev.x + (deltaX * sensitivity),
-        y: prev.y + (deltaY * sensitivity)
+
+      setDragOffset((prev) => ({
+        x: prev.x + deltaX * sensitivity,
+        y: prev.y + deltaY * sensitivity,
       }));
-      
+
       dragStartRef.current = { x: e.clientX, y: e.clientY };
       e.preventDefault();
     }
@@ -947,12 +740,13 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     if (isZoomed && e.touches.length === 1) {
       // 영역 클릭 요소인지 확인 (클릭 가능한 영역이 아닌 경우에만 드래그 시작)
       const target = e.target;
-      const isClickableArea = target.closest('[data-clickable="true"]') || 
-                              target.closest('button') || 
-                              target.closest('[onclick]') ||
-                              target.closest('.cursor-pointer') ||
-                              target.hasAttribute('onClick');
-      
+      const isClickableArea =
+        target.closest('[data-clickable="true"]') ||
+        target.closest('button') ||
+        target.closest('[onclick]') ||
+        target.closest('.cursor-pointer') ||
+        target.hasAttribute('onClick');
+
       if (!isClickableArea) {
         setIsDragging(true);
         dragStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
@@ -967,15 +761,15 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     if (isDragging && isZoomed && e.touches.length === 1) {
       const deltaX = e.touches[0].clientX - dragStartRef.current.x;
       const deltaY = e.touches[0].clientY - dragStartRef.current.y;
-      
+
       // 드래그 감도 조정 (더 부드럽게)
       const sensitivity = 1.0;
-      
-      setDragOffset(prev => ({
-        x: prev.x + (deltaX * sensitivity),
-        y: prev.y + (deltaY * sensitivity)
+
+      setDragOffset((prev) => ({
+        x: prev.x + deltaX * sensitivity,
+        y: prev.y + deltaY * sensitivity,
       }));
-      
+
       dragStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     }
   };
@@ -995,14 +789,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
       if (isDragging && isZoomed && e.touches.length === 1) {
         const deltaX = e.touches[0].clientX - dragStartRef.current.x;
         const deltaY = e.touches[0].clientY - dragStartRef.current.y;
-        
+
         const sensitivity = 1.0;
-        
-        setDragOffset(prev => ({
-          x: prev.x + (deltaX * sensitivity),
-          y: prev.y + (deltaY * sensitivity)
+
+        setDragOffset((prev) => ({
+          x: prev.x + deltaX * sensitivity,
+          y: prev.y + deltaY * sensitivity,
         }));
-        
+
         dragStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
         e.preventDefault();
       }
@@ -1016,14 +810,13 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     };
   }, [isDragging, isZoomed]); // dragStart 제거
 
-
   /**
    * 터치 영역 마우스 다운 핸들러
    */
   const handleTouchAreaMouseDown = (direction) => {
     setMouseEventsEnabled(true);
     console.log('useMouseEvents 상태: 활성화됨');
-    
+
     // 즉시 페이지 이동도 실행
     if (direction === 'left') {
       goToPreviousPage();
@@ -1049,7 +842,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
   const handleTouchAreaTouchStart = (direction) => {
     setMouseEventsEnabled(true);
     console.log('useMouseEvents 상태: 활성화됨 (터치)');
-    
+
     // 즉시 페이지 이동도 실행
     if (direction === 'left') {
       goToPreviousPage();
@@ -1124,7 +917,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
    * 새로운 영역 모달창 확대
    */
   const handleNewAreaModalZoomIn = () => {
-    setNewAreaModalZoomLevel(prev => Math.min(prev + 0.2, 3));
+    setNewAreaModalZoomLevel((prev) => Math.min(prev + 0.2, 3));
     setIsNewAreaModalZoomed(true);
   };
 
@@ -1132,7 +925,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
    * 새로운 영역 모달창 축소
    */
   const handleNewAreaModalZoomOut = () => {
-    setNewAreaModalZoomLevel(prev => Math.max(prev - 0.2, 0.5));
+    setNewAreaModalZoomLevel((prev) => Math.max(prev - 0.2, 0.5));
     if (newAreaModalZoomLevel <= 0.6) {
       setIsNewAreaModalZoomed(false);
     }
@@ -1160,7 +953,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     setIsNewAreaModalDragging(true);
     newAreaModalDragStartRef.current = {
       x: e.clientX - newAreaModalDragOffset.x,
-      y: e.clientY - newAreaModalDragOffset.y
+      y: e.clientY - newAreaModalDragOffset.y,
     };
   };
 
@@ -1171,7 +964,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     if (!isNewAreaModalDragging) return;
     setNewAreaModalDragOffset({
       x: e.clientX - newAreaModalDragStartRef.current.x,
-      y: e.clientY - newAreaModalDragStartRef.current.y
+      y: e.clientY - newAreaModalDragStartRef.current.y,
     });
   };
 
@@ -1192,7 +985,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     setModalDragOffset({ x: 0, y: 0 });
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
-    
+
     setSelectedPage3Area(areaNumber);
     setIsPage3ModalOpen(true);
   };
@@ -1211,7 +1004,6 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
   };
-
 
   /**
    * 모달 닫기 핸들러
@@ -1239,7 +1031,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     setModalDragOffset({ x: 0, y: 0 });
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
-    
+
     setSelectedAdditionalImageType(imageType);
     setIsAdditionalImageModalOpen(true);
   };
@@ -1270,7 +1062,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     setModalDragOffset({ x: 0, y: 0 });
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
-    
+
     setSelectedImageType(imageType);
     setIsImageModalOpen(true);
   };
@@ -1316,7 +1108,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     setModalDragOffset({ x: 0, y: 0 });
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
-    
+
     setSelectedPage4Area(areaNumber);
     setIsPage4ModalOpen(true);
   };
@@ -1350,7 +1142,6 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     setIsPage4Area2ModalOpen(false);
   };
 
-
   /**
    * 5페이지 영역 클릭 핸들러
    */
@@ -1361,12 +1152,12 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     setModalDragOffset({ x: 0, y: 0 });
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
-    
+
     // 5페이지는 6개 영역 (5-1, 5-2, 5-1-img, 5-2-img, 5-3-img, 5-4-img)
     // 모든 영역이 팝업 모달로 변경
     setSelectedPage5Area(areaNumber);
     setIsPage5ModalOpen(true);
-    
+
     // 기존 3D 모델 및 외장재 모달 관련 코드는 주석 처리
     // if (areaNumber === 1) {
     //   // 첫 번째 영역 - 3D 모델 모달 열기
@@ -1414,9 +1205,9 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     console.log(`Part ${partNumber} clicked`);
     setSelectedPart(partNumber);
     setIsPage53DModelLoading(true); // 파트 변경 시 로딩 상태 시작
-    
+
     // 모달 새로고침을 위한 키 증가
-    setModalKey(prev => prev + 1);
+    setModalKey((prev) => prev + 1);
   };
 
   /**
@@ -1429,7 +1220,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     setModalDragOffset({ x: 0, y: 0 });
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
-    
+
     // areaNumber에 따라 파일명 결정
     // 1: 6-1, 2: 6-2, 3: 6-3, 4: 6-4, 5: 6-1-img, 6: 6-2-img, 7: 6-3-img
     if (areaNumber === 7) {
@@ -1473,7 +1264,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     setModalDragOffset({ x: 0, y: 0 });
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
-    
+
     setSelectedPage2Area(areaNumber);
     setIsPage2ModalOpen(true);
   };
@@ -1511,11 +1302,11 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     setModalDragOffset({ x: 0, y: 0 });
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
-    
+
     // 7페이지는 7개 영역 (7-1, 7-2, 7-3, 7-4, 7-1-img, 7-2-img, 7-3-img)
     setSelectedPage7Area(areaNumber);
     setIsPage7ModalOpen(true);
-    
+
     // 기존 웹사이트 링크와 영상 관련 코드는 주석 처리
     // if (areaNumber === 2) {
     //   // 왼쪽 로고 영역: Isover 링크
@@ -1556,7 +1347,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     setModalDragOffset({ x: 0, y: 0 });
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
-    
+
     setSelectedPage8Area(areaNumber);
     setIsPage8ModalOpen(true);
   };
@@ -1586,7 +1377,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     setModalDragOffset({ x: 0, y: 0 });
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
-    
+
     setSelectedPage9Area(areaNumber);
     setIsPage9ModalOpen(true);
   };
@@ -1616,7 +1407,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     setModalDragOffset({ x: 0, y: 0 });
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
-    
+
     setSelectedPage10Area(areaNumber);
     setIsPage10ModalOpen(true);
   };
@@ -1646,7 +1437,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     setModalDragOffset({ x: 0, y: 0 });
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
-    
+
     setIsPage11ModalOpen(true);
   };
 
@@ -1668,50 +1459,11 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     window.open(NAVER_MAP_SHARE_URL, '_blank', 'noopener,noreferrer');
   }, []);
 
-
   /**
    * 영상 닫기 핸들러
    */
   const closeVideo = () => {
     setShowVideo(false);
-  };
-
-  /**
-   * 튜토리얼 모드 토글
-   */
-  const toggleTutorialMode = () => {
-    setIsTutorialMode(!isTutorialMode);
-    if (isTutorialMode) {
-      setTutorialTooltip(null);
-    }
-  };
-
-  /**
-   * 튜토리얼 툴팁 표시 핸들러
-   */
-  const handleTutorialHover = (areaKey, event) => {
-    if (!isTutorialMode) return;
-    
-    const tutorialInfo = getTutorialInfo(t);
-    const info = tutorialInfo[areaKey];
-    
-    if (info) {
-      const rect = event.currentTarget.getBoundingClientRect();
-      setTutorialTooltip(info);
-      setTutorialTooltipPosition({
-        x: rect.left + rect.width / 2,
-        y: rect.top - 10
-      });
-    }
-  };
-
-  /**
-   * 튜토리얼 툴팁 숨기기 핸들러
-   */
-  const handleTutorialLeave = () => {
-    if (isTutorialMode) {
-      setTutorialTooltip(null);
-    }
   };
 
   /**
@@ -1750,14 +1502,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
     <div className="w-full h-screen overflow-hidden relative">
       {/* 인트로 화면 (흰 화면 + 로고) */}
       {showIntro && (
-        <div 
+        <div
           className={`fixed inset-0 bg-white z-50 transition-transform duration-500 ease-out ${
             whiteScreenVisible ? 'translate-y-0' : '-translate-y-full'
           }`}
         >
           {/* Friender 로고 */}
           <div className="w-full h-full flex flex-col items-center justify-center">
-            <img 
+            <img
               src="/FrienderFile/Interactive/Friender-Logo-L.png"
               alt="Friender Logo"
               className="max-w-full max-h-full object-contain"
@@ -1770,501 +1522,616 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
       {/* 본 화면 */}
       {mainScreenVisible && (
         <div className="w-full h-screen overflow-hidden bg-white flex">
-      {/* 왼쪽 위 로고 (홈 버튼) */}
-      <div className="flex-shrink-0 w-[10%] max-w-[200px] pt-6 pl-4">
-        <button onClick={handleHomeClick} className="cursor-pointer flex items-start w-full">
-          <img
-            src="/FrienderFile/Interactive/Friender-Logo-L.png"
-            alt="Friender Logo"
-            className="w-full h-auto"
-          />
-        </button>
-        
-        {/* 미니맵 */}
-        {showMinimap && (
-          <div className="mt-4 w-full relative z-[9999]">
-            <div className="bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-lg border border-gray-200">
-              <div className="text-xs text-gray-600 mb-1 text-center">현재 보기</div>
-              <div className="relative w-full h-24 bg-gray-100 rounded overflow-hidden">
-                {/* 표지 페이지인 경우 단일 페이지 표시 */}
-                {isCoverPage ? (
-                  <div 
-                    className="w-full h-full bg-cover bg-center bg-no-repeat opacity-30"
-                    style={{
-                      backgroundImage: `url(${getPagePath(currentLanguage, 1)})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center'
-                    }}
-                  />
-                ) : (
-                  /* 일반 페이지인 경우 양쪽 페이지 표시 */
-                  <div className="flex w-full h-full">
-                    {/* 왼쪽 페이지 */}
-                    <div 
-                      className="w-1/2 h-full bg-cover bg-center bg-no-repeat opacity-30"
+          {/* 왼쪽 위 로고 (홈 버튼) */}
+          <div className="flex-shrink-0 w-[10%] max-w-[200px] pt-6 pl-4">
+            <button onClick={handleHomeClick} className="cursor-pointer flex items-start w-full">
+              <img
+                src="/FrienderFile/Interactive/Friender-Logo-L.png"
+                alt="Friender Logo"
+                className="w-full h-auto"
+              />
+            </button>
+
+            {/* 미니맵 */}
+            {showMinimap && (
+              <div className="mt-4 w-full relative z-[9999]">
+                <div className="bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-lg border border-gray-200">
+                  <div className="text-xs text-gray-600 mb-1 text-center">현재 보기</div>
+                  <div className="relative w-full h-24 bg-gray-100 rounded overflow-hidden">
+                    {/* 표지 페이지인 경우 단일 페이지 표시 */}
+                    {isCoverPage ? (
+                      <div
+                        className="w-full h-full bg-cover bg-center bg-no-repeat opacity-30"
+                        style={{
+                          backgroundImage: `url(${getPagePath(currentLanguage, 1)})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }}
+                      />
+                    ) : (
+                      /* 일반 페이지인 경우 양쪽 페이지 표시 */
+                      <div className="flex w-full h-full">
+                        {/* 왼쪽 페이지 */}
+                        <div
+                          className="w-1/2 h-full bg-cover bg-center bg-no-repeat opacity-30"
+                          style={{
+                            backgroundImage: `url(${pageData[currentPage]?.svg})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'right center',
+                          }}
+                        />
+                        {/* 오른쪽 페이지 */}
+                        <div
+                          className="w-1/2 h-full bg-cover bg-center bg-no-repeat opacity-30"
+                          style={{
+                            backgroundImage: `url(${
+                              pageData[currentPage + 1]?.svg || pageData[currentPage]?.svg
+                            })`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'left center',
+                          }}
+                        />
+                      </div>
+                    )}
+
+                    {/* 현재 뷰포트 표시 */}
+                    <div
+                      className="absolute border-2 border-red-500 bg-red-500/20 transition-all duration-200"
                       style={{
-                        backgroundImage: `url(${pageData[currentPage]?.svg})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'right center'
-                      }}
-                    />
-                    {/* 오른쪽 페이지 */}
-                    <div 
-                      className="w-1/2 h-full bg-cover bg-center bg-no-repeat opacity-30"
-                      style={{
-                        backgroundImage: `url(${pageData[currentPage + 1]?.svg || pageData[currentPage]?.svg})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'left center'
+                        width: `${100 / zoomLevel}%`,
+                        height: `${100 / zoomLevel}%`,
+                        left: `${50 - (dragOffset.x / (flipBookSize.width * zoomLevel)) * 100}%`,
+                        top: `${50 - (dragOffset.y / (flipBookSize.height * zoomLevel)) * 100}%`,
+                        transform: 'translate(-50%, -50%)',
                       }}
                     />
                   </div>
-                )}
-                
-                {/* 현재 뷰포트 표시 */}
-                <div 
-                  className="absolute border-2 border-red-500 bg-red-500/20 transition-all duration-200"
-                  style={{
-                    width: `${100 / zoomLevel}%`,
-                    height: `${100 / zoomLevel}%`,
-                    left: `${50 - (dragOffset.x / (flipBookSize.width * zoomLevel)) * 100}%`,
-                    top: `${50 - (dragOffset.y / (flipBookSize.height * zoomLevel)) * 100}%`,
-                    transform: 'translate(-50%, -50%)'
-                  }}
-                />
+                </div>
               </div>
-            </div>
+            )}
           </div>
-        )}
-      </div>
-
-      {/* 중앙 플립북 컨테이너 */}
-      <div className=" w-full h-full flex items-center justify-center p-4 relative">
-        {/* 플립북 컨테이너 하단 텍스트 */}
-        {/* <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-30">
+          {/* 중앙 플립북 컨테이너 */}
+          <div className=" w-full h-full flex items-center justify-center p-4 relative">
+            {/* 플립북 컨테이너 하단 텍스트 */}
+            {/* <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-30">
           <div className="bg-black/50 text-white px-4 py-2 rounded-full text-sm">
             무용접 파사드 시스템
           </div>
         </div> */}
-        
-        {/* 돋보기 버튼들 - 플립북 컨테이너 위에 배치 */}
-        <div className="absolute top-18 left-1/2 transform -translate-x-1/2 z-40 flex gap-3">
-          {/* 확대 버튼 */}
-          <button
-            onClick={handleZoomIn}
-            className="w-12 h-12 bg-white/90 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-            title={t('zoomIn')}
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-            </svg>
-          </button>
 
-          {/* 축소 버튼 */}
-          <button
-            onClick={handleZoomOut}
-            className="w-12 h-12 bg-white/90 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-            title={t('zoomOut')}
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
-            </svg>
-          </button>
+            {/* 돋보기 버튼들 - 플립북 컨테이너 위에 배치 */}
+            <div className="absolute top-18 left-1/2 transform -translate-x-1/2 z-40 flex gap-3">
+              {/* 확대 버튼 */}
+              <button
+                onClick={handleZoomIn}
+                className="w-12 h-12 bg-white/90 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                title={t('zoomIn')}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={3}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                  />
+                </svg>
+              </button>
 
-          {/* 확대/축소 리셋 버튼 */}
-          {isZoomed && (
-            <button
-              onClick={handleZoomReset}
-              className="w-12 h-12 bg-white/90 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomReset')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-            </button>
-          )}
-        </div>
-        <div className="flex items-center xl:gap-4">
-          {/* 왼쪽 네비게이션 버튼들 - 항상 표시하되 표지 페이지에서는 비활성화 */}
-          <div className="flex flex-col items-center gap-2">
-             {/* Left 버튼 */}
-             <button
-               onClick={goToPreviousPage}
-               className={`transition-transform duration-200 ${isFirstPage ? 'opacity-0 cursor-not-allowed' : 'cursor-pointer hover:scale-110'}`}
-               style={{ width: '48px', height: '48px', padding: '8px' }}
-               title={isFirstPage ? t('isFirstPage') : t('previousPage')}
-               disabled={isFirstPage}
-             >
-               <img
-                 src="/FrienderFile/Interactive/arrow_left.svg"
-                 alt={t('previousPage')}
-                 style={{ width: '32px', height: '32px' }}
-               />
-             </button>
-             {/* First 버튼 */}
-             <button
-               onClick={goToFirstPage}
-               className={`transition-transform duration-200 ${isFirstPage ? 'opacity-0 cursor-not-allowed' : 'cursor-pointer hover:scale-110'}`}
-               style={{ width: '48px', height: '48px', padding: '8px' }}
-               title={isFirstPage ? t('alreadyFirstPage') : t('firstPage')}
-               disabled={isFirstPage}
-             >
-               <img
-                 src="/FrienderFile/Interactive/arrow_first.svg"
-                 alt={t('firstPage')}
-                 style={{ width: '32px', height: '32px' }}
-               />
-             </button>
-          </div>
+              {/* 축소 버튼 */}
+              <button
+                onClick={handleZoomOut}
+                className="w-12 h-12 bg-white/90 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                title={t('zoomOut')}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={3}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                  />
+                </svg>
+              </button>
 
-          {/* 플립북 컨테이너 */}
-          <div 
-            ref={flipBookContainerRef}
-            className="flex items-center justify-center relative overflow-visible"
-            style={{ width: '100%', height: '100%' }}
-            onMouseDown={isZoomed ? handleMouseDown : undefined}
-            onMouseMove={isZoomed ? handleMouseMove : undefined}
-            onMouseUp={isZoomed ? handleMouseUp : undefined}
-            onMouseLeave={isZoomed ? handleMouseUp : undefined}
-            onTouchStart={isZoomed ? handleTouchStart : undefined}
-            onTouchEnd={isZoomed ? handleTouchEnd : undefined}
-          >
-            {/* 플립북 */}
-            <div 
-              className={`${isZoomed ? 'cursor-grab' : ''} ${isDragging ? 'cursor-grabbing' : ''}`}
-              style={{
-                transform: `scale(${zoomLevel}) translate(${dragOffset.x}px, ${dragOffset.y}px)`,
-                transformOrigin: 'center center',
-                transition: isDragging ? 'none' : 'transform 0.3s ease-in-out',
-                boxShadow: `
+              {/* 확대/축소 리셋 버튼 */}
+              {isZoomed && (
+                <button
+                  onClick={handleZoomReset}
+                  className="w-12 h-12 bg-white/90 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomReset')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={3}
+                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                    />
+                  </svg>
+                </button>
+              )}
+            </div>
+            <div className="flex items-center xl:gap-4">
+              {/* 왼쪽 네비게이션 버튼들 - 항상 표시하되 표지 페이지에서는 비활성화 */}
+              <div className="flex flex-col items-center gap-2">
+                {/* Left 버튼 */}
+                <button
+                  onClick={goToPreviousPage}
+                  className={`transition-transform duration-200 ${
+                    isFirstPage ? 'opacity-0 cursor-not-allowed' : 'cursor-pointer hover:scale-110'
+                  }`}
+                  style={{ width: '48px', height: '48px', padding: '8px' }}
+                  title={isFirstPage ? t('isFirstPage') : t('previousPage')}
+                  disabled={isFirstPage}
+                >
+                  <img
+                    src="/FrienderFile/Interactive/arrow_left.svg"
+                    alt={t('previousPage')}
+                    style={{ width: '32px', height: '32px' }}
+                  />
+                </button>
+                {/* First 버튼 */}
+                <button
+                  onClick={goToFirstPage}
+                  className={`transition-transform duration-200 ${
+                    isFirstPage ? 'opacity-0 cursor-not-allowed' : 'cursor-pointer hover:scale-110'
+                  }`}
+                  style={{ width: '48px', height: '48px', padding: '8px' }}
+                  title={isFirstPage ? t('alreadyFirstPage') : t('firstPage')}
+                  disabled={isFirstPage}
+                >
+                  <img
+                    src="/FrienderFile/Interactive/arrow_first.svg"
+                    alt={t('firstPage')}
+                    style={{ width: '32px', height: '32px' }}
+                  />
+                </button>
+              </div>
+
+              {/* 플립북 컨테이너 */}
+              <div
+                ref={flipBookContainerRef}
+                className="flex items-center justify-center relative overflow-visible"
+                style={{ width: '100%', height: '100%' }}
+                onMouseDown={isZoomed ? handleMouseDown : undefined}
+                onMouseMove={isZoomed ? handleMouseMove : undefined}
+                onMouseUp={isZoomed ? handleMouseUp : undefined}
+                onMouseLeave={isZoomed ? handleMouseUp : undefined}
+                onTouchStart={isZoomed ? handleTouchStart : undefined}
+                onTouchEnd={isZoomed ? handleTouchEnd : undefined}
+              >
+                {/* 플립북 */}
+                <div
+                  className={`${isZoomed ? 'cursor-grab' : ''} ${
+                    isDragging ? 'cursor-grabbing' : ''
+                  }`}
+                  style={{
+                    transform: `scale(${zoomLevel}) translate(${dragOffset.x}px, ${dragOffset.y}px)`,
+                    transformOrigin: 'center center',
+                    transition: isDragging ? 'none' : 'transform 0.3s ease-in-out',
+                    boxShadow: `
                   0 -20px 40px -10px rgba(0, 0, 0, 0.3),
                   0 20px 40px -10px rgba(0, 0, 0, 0.3),
                   -20px 0 40px -10px rgba(0, 0, 0, 0.3),
                   20px 0 40px -10px rgba(0, 0, 0, 0.3)
-                `
-              }}
-            >
-            <HTMLFlipBook 
-              ref={flipBookRef}
-              width={flipBookSize.width} 
-              height={flipBookSize.height}
-              maxShadowOpacity={0}
-              drawShadow={false}
-              showCover={true}
-              size='fixed'
-              disableFlipByClick={true}
-              swipeDistance={100}
-              flipOnTouch={false}
-              useMouseEvents={mouseEventsEnabled}
-              usePortrait={false}
-              showPageCorners={false}
-              onFlip={handlePageFlip}
-            >
-            {/* 표지 페이지 (첫 번째 페이지) */}
-            <div 
-              className="page shadow-lg overflow-hidden" 
-              key={pageData[0].id}
-              data-density="hard"
-            >
-              <div 
-                className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
-                style={{
-                  backgroundImage: showSvgBackground ? `url(${pageData[0].svg})` : 'none',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              >
-                {/* SVG 배경이 전체 페이지를 덮도록 함 */}
-                
-                {/* front.gif 전체 사이즈 배치 */}
-                {showFrontGif && (
-                  <div className="absolute inset-0 w-full h-full">
-                    <img
-                      src={getFrontGifPath(currentLanguage)}
-                      alt="Front Animation"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
-                
+                `,
+                  }}
+                >
+                  <HTMLFlipBook
+                    ref={flipBookRef}
+                    width={flipBookSize.width}
+                    height={flipBookSize.height}
+                    maxShadowOpacity={0}
+                    drawShadow={false}
+                    showCover={true}
+                    size="fixed"
+                    disableFlipByClick={true}
+                    swipeDistance={100}
+                    flipOnTouch={false}
+                    useMouseEvents={mouseEventsEnabled}
+                    usePortrait={false}
+                    showPageCorners={false}
+                    onFlip={handlePageFlip}
+                  >
+                    {/* 표지 페이지 (첫 번째 페이지) */}
+                    <div
+                      className="page shadow-lg overflow-hidden"
+                      key={pageData[0].id}
+                      data-density="hard"
+                    >
+                      <div
+                        className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
+                        style={{
+                          backgroundImage: showSvgBackground ? `url(${pageData[0].svg})` : 'none',
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }}
+                      >
+                        {/* SVG 배경이 전체 페이지를 덮도록 함 */}
 
-                {/* 오른쪽 터치 영역 (표지는 오른쪽) */}
-                <div 
-                  className="absolute right-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
-                  onMouseDown={() => handleTouchAreaMouseDown('right')}
-                  onMouseUp={handleTouchAreaMouseUp}
-                  onTouchStart={() => handleTouchAreaTouchStart('right')}
-                  onTouchEnd={handleTouchAreaTouchEnd}
-                  title={t('goToNextPage')}
-                />
-              </div>
-            </div>
+                        {/* front.gif 전체 사이즈 배치 */}
+                        {showFrontGif && (
+                          <div className="absolute inset-0 w-full h-full">
+                            <img
+                              src="/FrienderFile/Interactive/Front.gif"
+                              alt="Front Animation"
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
 
-            {/* 2번째 페이지 */}
-            <div 
-              className="page shadow-lg overflow-hidden" 
-              key={pageData[1].id}
-              data-density="hard"
-            >
-              <div 
-                className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
-                style={{
-                  backgroundImage: `url(${pageData[1].svg})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              >
-                {/* SVG 배경이 전체 페이지를 덮도록 함 */}
-                
-                {/* 2페이지 6개 영역 배치 (2-1 ~ 2-6) */}
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage2ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea2 === 1 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '16%',
-                    left: '7%',
-                    width: '62%',
-                    height: '16%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage2AreaClick(1)}
-                  onMouseEnter={(e) => {
-                    setHoveredArea2(1);
-                    handleTutorialHover('page2-area1', e);
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredArea2(null);
-                    handleTutorialLeave();
-                  }}
-                  title={t('popupWithNumber').replace('{number}', '2-1')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage2ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea2 === 2 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '23%',
-                    left: '7%',
-                    width: '28%',
-                    height: '17%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage2AreaClick(2)}
-                  onMouseEnter={(e) => {
-                    setHoveredArea2(2);
-                    handleTutorialHover('page2-area2', e);
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredArea2(null);
-                    handleTutorialLeave();
-                  }}
-                  title={t('popupWithNumber').replace('{number}', '2-2')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage2ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea2 === 3 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '23%',
-                    left: '40%',
-                    width: '28%',
-                    height: '17%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage2AreaClick(3)}
-                  onMouseEnter={(e) => {
-                    setHoveredArea2(3);
-                    handleTutorialHover('page2-area3', e);
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredArea2(null);
-                    handleTutorialLeave();
-                  }}
-                  title={t('popupWithNumber').replace('{number}', '2-3')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage2ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea2 === 4 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '4%',
-                    left: '7%',
-                    width: '28%',
-                    height: '17%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage2AreaClick(4)}
-                  onMouseEnter={(e) => {
-                    setHoveredArea2(4);
-                    handleTutorialHover('page2-area4', e);
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredArea2(null);
-                    handleTutorialLeave();
-                  }}
-                  title={t('popupWithNumber').replace('{number}', '2-4')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage2ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea2 === 5 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '4%',
-                    left: '40%',
-                    width: '28%',
-                    height: '17%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage2AreaClick(5)}
-                  onMouseEnter={(e) => {
-                    setHoveredArea2(5);
-                    handleTutorialHover('page2-area5', e);
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredArea2(null);
-                    handleTutorialLeave();
-                  }}
-                  title={t('popupWithNumber').replace('{number}', '2-5')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage2ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea2 === 6 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '2%',
-                    right: '0.5%',
-                    width: '27%',
-                    height: '44%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage2AreaClick(6)}
-                  onMouseEnter={(e) => {
-                    setHoveredArea2(6);
-                    handleTutorialHover('page2-area6', e);
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredArea2(null);
-                    handleTutorialLeave();
-                  }}
-                  title={t('popupWithNumber').replace('{number}', '2-6')}
-                >
-                </div>
-                
-                {/* 왼쪽 터치 영역 (2페이지는 왼쪽) */}
-                <div 
-                  className="absolute left-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
-                  onMouseDown={() => handleTouchAreaMouseDown('left')}
-                  onMouseUp={handleTouchAreaMouseUp}
-                  onTouchStart={() => handleTouchAreaTouchStart('left')}
-                  onTouchEnd={handleTouchAreaTouchEnd}
-                  title={t('goToPreviousPage')}
-                />
-              </div>
-            </div>
+                        {/* 오른쪽 터치 영역 (표지는 오른쪽) */}
+                        <div
+                          className="absolute right-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
+                          onMouseDown={() => handleTouchAreaMouseDown('right')}
+                          onMouseUp={handleTouchAreaMouseUp}
+                          onTouchStart={() => handleTouchAreaTouchStart('right')}
+                          onTouchEnd={handleTouchAreaTouchEnd}
+                          title={t('goToNextPage')}
+                        />
+                      </div>
+                    </div>
 
-            {/* 3번째 페이지 */}
-            <div 
-              className="page shadow-lg overflow-hidden" 
-              key={pageData[2].id}
-              data-density="hard"
-            >
-              <div 
-                className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
-                style={{
-                  backgroundImage: `url(${pageData[2].svg})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              >
-                {/* SVG 배경이 전체 페이지를 덮도록 함 */}
-                
-                {/* 3페이지 영역 5개 배치 - Popup 폴더 파일명에 맞춤 */}
-                {/* 3-1.jpg */}
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isPage3ModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea3 === 1 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '30%',
-                    left: '7%',
-                    width: '24%',
-                    height: '27%'
-                  }}
-                  onClick={() => handlePage3AreaClick(1)}
-                  onMouseEnter={() => setHoveredArea3(1)}
-                  onMouseLeave={() => setHoveredArea3(null)}
-                >
-                </div>
-                
-                {/* 3-2.jpg */}
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isPage3ModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea3 === 2 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '30%',
-                    left: '32%',
-                    width: '24%',
-                    height: '27%'
-                  }}
-                  onClick={() => handlePage3AreaClick(2)}
-                  onMouseEnter={() => setHoveredArea3(2)}
-                  onMouseLeave={() => setHoveredArea3(null)}
-                >
-                </div>
-                
-                {/* 3-3.png */}
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isPage3ModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea3 === 3 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '13%',
-                    left: '6%',
-                    width: '25%',
-                    height: '27%'
-                  }}
-                  onClick={() => handlePage3AreaClick(3)}
-                  onMouseEnter={() => setHoveredArea3(3)}
-                  onMouseLeave={() => setHoveredArea3(null)}
-                >
-                </div>
-                
-                {/* 3-4.jpg */}
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isPage3ModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea3 === 4 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '13%',
-                    left: '32%',
-                    width: '24%',
-                    height: '27%'
-                  }}
-                  onClick={() => handlePage3AreaClick(4)}
-                  onMouseEnter={() => setHoveredArea3(4)}
-                  onMouseLeave={() => setHoveredArea3(null)}
-                >
-                </div>
-                
-                {/* 3-5.jpg */}
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isPage3ModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea3 === 5 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '13%',
-                    right: '2%',
-                    width: '37%',
-                    height: '35%'
-                  }}
-                  onClick={() => handlePage3AreaClick(5)}
-                  onMouseEnter={() => setHoveredArea3(5)}
-                  onMouseLeave={() => setHoveredArea3(null)}
-                >
-                </div>
-                
-                {/* 왼쪽 아래 3D 모델 영역 - 주석 처리 */}
-                {/*
+                    {/* 2번째 페이지 */}
+                    <div
+                      className="page shadow-lg overflow-hidden"
+                      key={pageData[1].id}
+                      data-density="hard"
+                    >
+                      <div
+                        className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
+                        style={{
+                          backgroundImage: `url(${pageData[1].svg})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }}
+                      >
+                        {/* SVG 배경이 전체 페이지를 덮도록 함 */}
+
+                        {/* 2페이지 6개 영역 배치 (2-1 ~ 2-6) */}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage2ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea2 === 1 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '16%',
+                            left: '7%',
+                            width: '50%',
+                            height: '11%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage2AreaClick(1)}
+                          onMouseEnter={() => setHoveredArea2(1)}
+                          onMouseLeave={() => setHoveredArea2(null)}
+                          title={t('popupWithNumber').replace('{number}', '2-1')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage2ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea2 === 2 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '23%',
+                            left: '7%',
+                            width: '28%',
+                            height: '17%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage2AreaClick(2)}
+                          onMouseEnter={() => setHoveredArea2(2)}
+                          onMouseLeave={() => setHoveredArea2(null)}
+                          title={t('popupWithNumber').replace('{number}', '2-2')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage2ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea2 === 3 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '23%',
+                            left: '40%',
+                            width: '28%',
+                            height: '17%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage2AreaClick(3)}
+                          onMouseEnter={() => setHoveredArea2(3)}
+                          onMouseLeave={() => setHoveredArea2(null)}
+                          title={t('popupWithNumber').replace('{number}', '2-3')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage2ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea2 === 4 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '4%',
+                            left: '7%',
+                            width: '28%',
+                            height: '17%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage2AreaClick(4)}
+                          onMouseEnter={() => setHoveredArea2(4)}
+                          onMouseLeave={() => setHoveredArea2(null)}
+                          title={t('popupWithNumber').replace('{number}', '2-4')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage2ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea2 === 5 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '4%',
+                            left: '40%',
+                            width: '28%',
+                            height: '17%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage2AreaClick(5)}
+                          onMouseEnter={() => setHoveredArea2(5)}
+                          onMouseLeave={() => setHoveredArea2(null)}
+                          title={t('popupWithNumber').replace('{number}', '2-5')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage2ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea2 === 6 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '3%',
+                            right: '4%',
+                            width: '21%',
+                            height: '41%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage2AreaClick(6)}
+                          onMouseEnter={() => setHoveredArea2(6)}
+                          onMouseLeave={() => setHoveredArea2(null)}
+                          title={t('popupWithNumber').replace('{number}', '2-6')}
+                        ></div>
+
+                        {/* 왼쪽 터치 영역 (2페이지는 왼쪽) */}
+                        <div
+                          className="absolute left-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
+                          onMouseDown={() => handleTouchAreaMouseDown('left')}
+                          onMouseUp={handleTouchAreaMouseUp}
+                          onTouchStart={() => handleTouchAreaTouchStart('left')}
+                          onTouchEnd={handleTouchAreaTouchEnd}
+                          title={t('goToPreviousPage')}
+                        />
+                      </div>
+                    </div>
+
+                    {/* 3번째 페이지 */}
+                    <div
+                      className="page shadow-lg overflow-hidden"
+                      key={pageData[2].id}
+                      data-density="hard"
+                    >
+                      <div
+                        className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
+                        style={{
+                          backgroundImage: `url(${pageData[2].svg})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }}
+                      >
+                        {/* SVG 배경이 전체 페이지를 덮도록 함 */}
+
+                        {/* 3페이지 영역 5개 배치 - Popup 폴더 파일명에 맞춤 */}
+                        {/* 3-1.jpg */}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPage3ModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea3 === 1 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '30%',
+                            left: '7%',
+                            width: '24%',
+                            height: '25%',
+                          }}
+                          onClick={() => handlePage3AreaClick(1)}
+                          onMouseEnter={() => setHoveredArea3(1)}
+                          onMouseLeave={() => setHoveredArea3(null)}
+                        ></div>
+
+                        {/* 3-2.jpg */}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPage3ModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea3 === 2 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '30%',
+                            left: '32%',
+                            width: '24%',
+                            height: '25%',
+                          }}
+                          onClick={() => handlePage3AreaClick(2)}
+                          onMouseEnter={() => setHoveredArea3(2)}
+                          onMouseLeave={() => setHoveredArea3(null)}
+                        ></div>
+
+                        {/* 3-3.png */}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPage3ModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea3 === 3 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '14%',
+                            left: '6%',
+                            width: '25%',
+                            height: '26%',
+                          }}
+                          onClick={() => handlePage3AreaClick(3)}
+                          onMouseEnter={() => setHoveredArea3(3)}
+                          onMouseLeave={() => setHoveredArea3(null)}
+                        ></div>
+
+                        {/* 3-4.jpg */}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPage3ModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea3 === 4 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '14%',
+                            left: '32%',
+                            width: '24%',
+                            height: '26%',
+                          }}
+                          onClick={() => handlePage3AreaClick(4)}
+                          onMouseEnter={() => setHoveredArea3(4)}
+                          onMouseLeave={() => setHoveredArea3(null)}
+                        ></div>
+
+                        {/* 3-5.jpg */}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPage3ModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea3 === 5 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '15%',
+                            right: '6%',
+                            width: '29%',
+                            height: '25%',
+                          }}
+                          onClick={() => handlePage3AreaClick(5)}
+                          onMouseEnter={() => setHoveredArea3(5)}
+                          onMouseLeave={() => setHoveredArea3(null)}
+                        ></div>
+
+                        {/* 왼쪽 아래 3D 모델 영역 - 주석 처리 */}
+                        {/*
                 <div 
                   className="absolute cursor-pointer hover:bg-blue-500/10 transition-all.duration-300 rounded-lg"
                   style={{
@@ -2276,1211 +2143,1423 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   }}
                   onClick={open3DModal}
                   title={t('view3DModel')}
+                  title={t('view3DModel')}
                 >
                   <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-all.duration-300 rounded-lg flex items-center justify-center opacity-0 hover:opacity-100">
                     <div className="text-white text-sm.font-medium bg-blue-600/80 px-3 py-1 rounded-full">
+                      {t('view3DModel')}
                       {t('view3DModel')}
                     </div>
                   </div>
                 </div>
                 */}
 
-                {/* 오른쪽 터치 영역 (3페이지는 오른쪽) */}
-                <div 
-                  className="absolute right-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
-                  onMouseDown={() => handleTouchAreaMouseDown('right')}
-                  onMouseUp={handleTouchAreaMouseUp}
-                  onTouchStart={() => handleTouchAreaTouchStart('right')}
-                  onTouchEnd={handleTouchAreaTouchEnd}
-                  title={t('goToNextPage')}
-                />
-              </div>
-            </div>
+                        {/* 오른쪽 터치 영역 (3페이지는 오른쪽) */}
+                        <div
+                          className="absolute right-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
+                          onMouseDown={() => handleTouchAreaMouseDown('right')}
+                          onMouseUp={handleTouchAreaMouseUp}
+                          onTouchStart={() => handleTouchAreaTouchStart('right')}
+                          onTouchEnd={handleTouchAreaTouchEnd}
+                          title={t('goToNextPage')}
+                        />
+                      </div>
+                    </div>
 
-            {/* 4번째 페이지 */}
-            <div 
-              className="page shadow-lg overflow-hidden" 
-              key={pageData[3].id}
-              data-density="hard"
-            >
-              <div 
-                className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
-                style={{
-                  backgroundImage: `url(${pageData[3].svg})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              >
-                {/* SVG 배경이 전체 페이지를 덮도록 함 */}
-                
-                {/* 4페이지 영역 6개 배치 (4-1, 4-2, 4-1-img, 4-2-img, 4-3-img, 4-4-img) */}
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea4 === 1 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '10%',
-                    left: '17%',
-                    width: '81%',
-                    height: '25%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage4AreaClick(1)}
-                  onMouseEnter={(e) => {
-                    setHoveredArea4(1);
-                    handleTutorialHover('page4-area1', e);
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredArea4(null);
-                    handleTutorialLeave();
-                  }}
-                  title={t('popupWithNumber').replace('{number}', '4-1')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea4 === 2 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '22%',
-                    left: '17%',
-                    width: '81%',
-                    height: '23%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage4AreaClick(2)}
-                  onMouseEnter={(e) => {
-                    setHoveredArea4(2);
-                    handleTutorialHover('page4-area2', e);
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredArea4(null);
-                    handleTutorialLeave();
-                  }}
-                  title={t('popupWithNumber').replace('{number}', '4-2')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea4 === 3 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '33%',
-                    left: '18%',
-                    width: '37%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage4AreaClick(3)}
-                  onMouseEnter={(e) => {
-                    setHoveredArea4(3);
-                    handleTutorialHover('page4-area3', e);
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredArea4(null);
-                    handleTutorialLeave();
-                  }}
-                  title={t('popupWithNumber').replace('{number}', '4-1-img')}
-                >
-                  {/* 영상 목록 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 6h2v2H4zm0 5h2v2H4zm0 5h2v2H4zm16-7H8v-2h12zm0 5H8v-2h12zm0 5H8v-2h12z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea4 === 4 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '33%',
-                    right: '5%',
-                    width: '37%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage4AreaClick(4)}
-                  onMouseEnter={(e) => {
-                    setHoveredArea4(4);
-                    handleTutorialHover('page4-area4', e);
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredArea4(null);
-                    handleTutorialLeave();
-                  }}
-                  title={t('popupWithNumber').replace('{number}', '4-2-img')}
-                >
-                  {/* 이미지 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea4 === 5 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '4%',
-                    left: '18%',
-                    width: '37%',
-                    height: '20%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage4AreaClick(5)}
-                  onMouseEnter={(e) => {
-                    setHoveredArea4(5);
-                    handleTutorialHover('page4-area5', e);
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredArea4(null);
-                    handleTutorialLeave();
-                  }}
-                  title={t('popupWithNumber').replace('{number}', '4-3-img')}
-                >
-                  {/* 이미지 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea4 === 6 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '4%',
-                    right: '5%',
-                    width: '37%',
-                    height: '20%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage4AreaClick(6)}
-                  onMouseEnter={(e) => {
-                    setHoveredArea4(6);
-                    handleTutorialHover('page4-area6', e);
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredArea4(null);
-                    handleTutorialLeave();
-                  }}
-                  title={t('popupWithNumber').replace('{number}', '4-4-img')}
-                >
-                  {/* 이미지 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* 왼쪽 터치 영역 (4페이지는 왼쪽) */}
-                <div 
-                  className="absolute left-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
-                  onMouseDown={() => handleTouchAreaMouseDown('left')}
-                  onMouseUp={handleTouchAreaMouseUp}
-                  onTouchStart={() => handleTouchAreaTouchStart('left')}
-                  onTouchEnd={handleTouchAreaTouchEnd}
-                  title={t('goToPreviousPage')}
-                />
-              </div>
-            </div>
+                    {/* 4번째 페이지 */}
+                    <div
+                      className="page shadow-lg overflow-hidden"
+                      key={pageData[3].id}
+                      data-density="hard"
+                    >
+                      <div
+                        className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
+                        style={{
+                          backgroundImage: `url(${pageData[3].svg})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }}
+                      >
+                        {/* SVG 배경이 전체 페이지를 덮도록 함 */}
 
-            {/* 5번째 페이지 */}
-            <div 
-              className="page shadow-lg overflow-hidden" 
-              key={pageData[4].id}
-              data-density="hard"
-            >
-              <div 
-                className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
-                style={{
-                  backgroundImage: `url(${pageData[4].svg})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              >
-                {/* SVG 배경이 전체 페이지를 덮도록 함 */}
-                
-                {/* 5페이지 영역 6개 배치 (5-1, 5-2, 5-1-img, 5-2-img, 5-3-img, 5-4-img) */}
-                {/* 기존 3D 모델 및 외장재 영역은 주석 처리 */}
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea5 === 1 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '10%',
-                    left: '5%',
-                    width: '78%',
-                    height: '23%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage5AreaClick(1)}
-                  onMouseEnter={() => setHoveredArea5(1)}
-                  onMouseLeave={() => setHoveredArea5(null)}
-                  title={t('popupWithNumber').replace('{number}', '5-1')}
-                >
-                  {/* 기존 3D 모델 영역 주석 처리 */}
-                  {/* onClick={() => handlePage5AreaClick(1)} - 3D 모델 모달 */}
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea5 === 2 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '23%',
-                    left: '5%',
-                    width: '80%',
-                    height: '21%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage5AreaClick(2)}
-                  onMouseEnter={() => setHoveredArea5(2)}
-                  onMouseLeave={() => setHoveredArea5(null)}
-                  title={t('popupWithNumber').replace('{number}', '5-2')}
-                >
-                  {/* 기존 모달 영역 주석 처리 */}
-                  {/* onClick={() => handlePage5AreaClick(2)} - 모달 */}
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea5 === 3 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '33%',
-                    left: '5%',
-                    width: '37%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage5AreaClick(3)}
-                  onMouseEnter={() => setHoveredArea5(3)}
-                  onMouseLeave={() => setHoveredArea5(null)}
-                  title={t('popupWithNumber').replace('{number}', '5-1-img')}
-                >
-                  {/* 이미지 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea5 === 4 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '33%',
-                    right: '18%',
-                    width: '37%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage5AreaClick(4)}
-                  onMouseEnter={() => setHoveredArea5(4)}
-                  onMouseLeave={() => setHoveredArea5(null)}
-                  title={t('popupWithNumber').replace('{number}', '5-2-img')}
-                >
-                  {/* 이미지 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea5 === 5 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '5%',
-                    left: '5%',
-                    width: '37%',
-                    height: '18%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage5AreaClick(5)}
-                  onMouseEnter={() => setHoveredArea5(5)}
-                  onMouseLeave={() => setHoveredArea5(null)}
-                  title={t('popupWithNumber').replace('{number}', '5-3-img')}
-                >
-                  {/* 이미지 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea5 === 6 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '5%',
-                    right: '18%',
-                    width: '37%',
-                    height: '18%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage5AreaClick(6)}
-                  onMouseEnter={() => setHoveredArea5(6)}
-                  onMouseLeave={() => setHoveredArea5(null)}
-                  title={t('popupWithNumber').replace('{number}', '5-4-img')}
-                >
-                  {/* 이미지 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* 오른쪽 터치 영역 (5페이지는 오른쪽) */}
-                <div 
-                  className="absolute right-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
-                  onMouseDown={() => handleTouchAreaMouseDown('right')}
-                  onMouseUp={handleTouchAreaMouseUp}
-                  onTouchStart={() => handleTouchAreaTouchStart('right')}
-                  onTouchEnd={handleTouchAreaTouchEnd}
-                  title={t('goToNextPage')}
-                />
-              </div>
-            </div>
+                        {/* 4페이지 영역 6개 배치 (4-1, 4-2, 4-1-img, 4-2-img, 4-3-img, 4-4-img) */}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea4 === 1 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '10%',
+                            left: '17%',
+                            width: '74%',
+                            height: '23%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage4AreaClick(1)}
+                          onMouseEnter={() => setHoveredArea4(1)}
+                          onMouseLeave={() => setHoveredArea4(null)}
+                          title={t('popupWithNumber').replace('{number}', '4-1')}
+                        ></div>
 
-            {/* 6번째 페이지 */}
-            <div 
-              className="page shadow-lg overflow-hidden" 
-              key={pageData[5].id}
-              data-density="hard"
-            >
-              <div 
-                className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
-                style={{
-                  backgroundImage: `url(${pageData[5].svg})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              >
-                {/* SVG 배경이 전체 페이지를 덮도록 함 */}
-                
-                {/* 6페이지 7개 영역 배치 (6-1, 6-2, 6-3, 6-4, 6-1-img, 6-2-img, 6-3-img) */}
-                {/* GIF 관련 코드는 주석 처리 */}
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 1 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '14%',
-                    left: '6%',
-                    width: '88%',
-                    height: '17%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage6AreaClick(1)}
-                  onMouseEnter={() => setHoveredArea6(1)}
-                  onMouseLeave={() => setHoveredArea6(null)}
-                  title={t('popupWithNumber').replace('{number}', '6-1')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 2 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '31%',
-                    right: '1%',
-                    width: '49%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage6AreaClick(2)}
-                  onMouseEnter={() => setHoveredArea6(2)}
-                  onMouseLeave={() => setHoveredArea6(null)}
-                  title={t('popupWithNumber').replace('{number}', '6-2')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 3 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '52%',
-                    right: '1%',
-                    width: '49%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage6AreaClick(3)}
-                  onMouseEnter={() => setHoveredArea6(3)}
-                  onMouseLeave={() => setHoveredArea6(null)}
-                  title={t('popupWithNumber').replace('{number}', '6-3')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 4 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '8%',
-                    right: '1%',
-                    width: '49%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage6AreaClick(4)}
-                  onMouseEnter={() => setHoveredArea6(4)}
-                  onMouseLeave={() => setHoveredArea6(null)}
-                  title={t('popupWithNumber').replace('{number}', '6-4')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 5 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '31%',
-                    left: '6%',
-                    width: '43%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage6AreaClick(5)}
-                  onMouseEnter={() => setHoveredArea6(5)}
-                  onMouseLeave={() => setHoveredArea6(null)}
-                  title={t('popupWithNumber').replace('{number}', '6-1-img')}
-                >
-                  {/* 재생 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 6 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '52%',
-                    left: '6%',
-                    width: '43%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage6AreaClick(6)}
-                  onMouseEnter={() => setHoveredArea6(6)}
-                  onMouseLeave={() => setHoveredArea6(null)}
-                  title={t('popupWithNumber').replace('{number}', '6-2-img')}
-                >
-                  {/* 재생 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea6 === 7 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '8%',
-                    left: '6%',
-                    width: '43%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage6AreaClick(7)}
-                  onMouseEnter={() => setHoveredArea6(7)}
-                  onMouseLeave={() => setHoveredArea6(null)}
-                  title={t('popupWithNumber').replace('{number}', '6-3-img')}
-                >
-                  {/* 3D 모델 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18l8 4v8.64l-8-4V4.18zM4 8.82l8 4v8.64l-8-4V8.82z" opacity="0.9"/>
-                        <path d="M12 6L4 9.5v5L12 18l8-3.5v-5L12 6z" opacity="0.6"/>
-                      </svg>
-                    </div>
-                  </div>
-                  {/* 유튜브 링크는 주석 처리 */}
-                  {/* onClick={() => window.open('https://www.youtube.com/@%EC%83%9D%EA%B3%A0%EB%B1%85%EC%9D%B4%EC%86%8C%EB%B0%94%EC%BD%94%EB%A6%AC%EC%95%84/videos', '_blank')} */}
-                </div>
-                
-                {/* 왼쪽 터치 영역 (6페이지는 왼쪽) */}
-                <div 
-                  className="absolute left-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
-                  onMouseDown={() => handleTouchAreaMouseDown('left')}
-                  onMouseUp={handleTouchAreaMouseUp}
-                  onTouchStart={() => handleTouchAreaTouchStart('left')}
-                  onTouchEnd={handleTouchAreaTouchEnd}
-                  title={t('goToPreviousPage')}
-                />
-              </div>
-            </div>
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea4 === 2 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '24%',
+                            left: '17%',
+                            width: '74%',
+                            height: '20%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage4AreaClick(2)}
+                          onMouseEnter={() => setHoveredArea4(2)}
+                          onMouseLeave={() => setHoveredArea4(null)}
+                          title={t('popupWithNumber').replace('{number}', '4-2')}
+                        ></div>
 
-            {/* 7번째 페이지 */}
-            <div 
-              className="page shadow-lg overflow-hidden" 
-              key={pageData[6].id}
-              data-density="hard"
-            >
-              <div 
-                className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
-                style={{
-                  backgroundImage: `url(${pageData[6].svg})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              >
-                {/* SVG 배경이 전체 페이지를 덮도록 함 */}
-                
-                {/* 7페이지 7개 영역 배치 (7-1, 7-2, 7-3, 7-4, 7-1-img, 7-2-img, 7-3-img) */}
-                {/* 영상 관련 코드는 주석 처리 */}
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage7ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea7 === 1 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '14%',
-                    left: '6%',
-                    width: '93%',
-                    height: '16%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage7AreaClick(1)}
-                  onMouseEnter={() => setHoveredArea7(1)}
-                  onMouseLeave={() => setHoveredArea7(null)}
-                  title={t('popupWithNumber').replace('{number}', '7-1')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage7ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea7 === 2 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '31%',
-                    right: '1%',
-                    width: '50%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage7AreaClick(2)}
-                  onMouseEnter={() => setHoveredArea7(2)}
-                  onMouseLeave={() => setHoveredArea7(null)}
-                  title={t('popupWithNumber').replace('{number}', '7-2')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage7ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea7 === 3 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '52%',
-                    right: '1%',
-                    width: '50%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage7AreaClick(3)}
-                  onMouseEnter={() => setHoveredArea7(3)}
-                  onMouseLeave={() => setHoveredArea7(null)}
-                  title={t('popupWithNumber').replace('{number}', '7-3')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage7ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea7 === 4 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '8%',
-                    right: '1%',
-                    width: '50%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage7AreaClick(4)}
-                  onMouseEnter={() => setHoveredArea7(4)}
-                  onMouseLeave={() => setHoveredArea7(null)}
-                  title={t('popupWithNumber').replace('{number}', '7-4')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage7ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea7 === 5 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '31%',
-                    left: '6%',
-                    width: '43%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage7AreaClick(5)}
-                  onMouseEnter={() => setHoveredArea7(5)}
-                  onMouseLeave={() => setHoveredArea7(null)}
-                  title={t('popupWithNumber').replace('{number}', '7-1-img')}
-                >
-                  {/* 재생 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage7ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea7 === 6 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '52%',
-                    left: '6%',
-                    width: '43%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage7AreaClick(6)}
-                  onMouseEnter={() => setHoveredArea7(6)}
-                  onMouseLeave={() => setHoveredArea7(null)}
-                  title={t('popupWithNumber').replace('{number}', '7-2-img')}
-                >
-                  {/* 재생 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage7ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea7 === 7 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '8%',
-                    left: '6%',
-                    width: '43%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage7AreaClick(7)}
-                  onMouseEnter={() => setHoveredArea7(7)}
-                  onMouseLeave={() => setHoveredArea7(null)}
-                  title={t('popupWithNumber').replace('{number}', '7-3-img')}
-                >
-                  {/* 재생 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* 오른쪽 터치 영역 (7페이지는 오른쪽) */}
-                <div 
-                  className="absolute right-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
-                  onMouseDown={() => handleTouchAreaMouseDown('right')}
-                  onMouseUp={handleTouchAreaMouseUp}
-                  onTouchStart={() => handleTouchAreaTouchStart('right')}
-                  onTouchEnd={handleTouchAreaTouchEnd}
-                  title={t('goToNextPage')}
-                />
-              </div>
-            </div>
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea4 === 3 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '33%',
+                            left: '18%',
+                            width: '37%',
+                            height: '19%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage4AreaClick(3)}
+                          onMouseEnter={() => setHoveredArea4(3)}
+                          onMouseLeave={() => setHoveredArea4(null)}
+                          title={t('popupWithNumber').replace('{number}', '4-1-img')}
+                        ></div>
 
-            {/* 8번째 페이지 */}
-            <div 
-              className="page shadow-lg overflow-hidden" 
-              key={pageData[7].id}
-              data-density="hard"
-            >
-              <div 
-                className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
-                style={{
-                  backgroundImage: `url(${pageData[7].svg})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              >
-                {/* SVG 배경이 전체 페이지를 덮도록 함 */}
-                
-                {/* 8페이지 4개 영역 배치 (8-1, 8-2, 8-3, 8-1-img) */}
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage8ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea8 === 1 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '24%',
-                    left: '5%',
-                    width: '46%',
-                    height: '26%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage8AreaClick(1)}
-                  onMouseEnter={() => setHoveredArea8(1)}
-                  onMouseLeave={() => setHoveredArea8(null)}
-                  title={t('popupWithNumber').replace('{number}', '8-1')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage8ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea8 === 2 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '4%',
-                    left: '4%',
-                    width: '45%',
-                    height: '22%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage8AreaClick(2)}
-                  onMouseEnter={() => setHoveredArea8(2)}
-                  onMouseLeave={() => setHoveredArea8(null)}
-                  title={t('popupWithNumber').replace('{number}', '8-2')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage8ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea8 === 3 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '4%',
-                    right: '2%',
-                    width: '47%',
-                    height: '22%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage8AreaClick(3)}
-                  onMouseEnter={() => setHoveredArea8(3)}
-                  onMouseLeave={() => setHoveredArea8(null)}
-                  title={t('popupWithNumber').replace('{number}', '8-3')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage8ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea8 === 4 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '14%',
-                    right: '6%',
-                    width: '40%',
-                    height: '35%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage8AreaClick(4)}
-                  onMouseEnter={() => setHoveredArea8(4)}
-                  onMouseLeave={() => setHoveredArea8(null)}
-                  title={t('popupWithNumber').replace('{number}', '8-1-img')}
-                >
-                  {/* 이미지 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* 왼쪽 터치 영역 (8페이지는 왼쪽) */}
-                <div 
-                  className="absolute left-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
-                  onMouseDown={() => handleTouchAreaMouseDown('left')}
-                  onMouseUp={handleTouchAreaMouseUp}
-                  onTouchStart={() => handleTouchAreaTouchStart('left')}
-                  onTouchEnd={handleTouchAreaTouchEnd}
-                  title={t('goToPreviousPage')}
-                />
-              </div>
-            </div>
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea4 === 4 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '33%',
+                            right: '5%',
+                            width: '37%',
+                            height: '19%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage4AreaClick(4)}
+                          onMouseEnter={() => setHoveredArea4(4)}
+                          onMouseLeave={() => setHoveredArea4(null)}
+                          title={t('popupWithNumber').replace('{number}', '4-2-img')}
+                        ></div>
 
-            {/* 9번째 페이지 */}
-            <div 
-              className="page shadow-lg overflow-hidden" 
-              key={pageData[8].id}
-              data-density="hard"
-            >
-              <div 
-                className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
-                style={{
-                  backgroundImage: `url(${pageData[8].svg})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              >
-                {/* SVG 배경이 전체 페이지를 덮도록 함 */}
-                
-                {/* 9페이지 4개 영역 배치 (9-1, 9-2, 9-3, 9-4) */}
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage9ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea9 === 1 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '12%',
-                    left: '6%',
-                    width: '88%',
-                    height: '13%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage9AreaClick(1)}
-                  onMouseEnter={() => setHoveredArea9(1)}
-                  onMouseLeave={() => setHoveredArea9(null)}
-                  title={t('popupWithNumber').replace('{number}', '9-1')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage9ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea9 === 2 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '22%',
-                    left: '6%',
-                    width: '92%',
-                    height: '28%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage9AreaClick(2)}
-                  onMouseEnter={() => setHoveredArea9(2)}
-                  onMouseLeave={() => setHoveredArea9(null)}
-                  title={t('popupWithNumber').replace('{number}', '9-2')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage9ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea9 === 3 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '52%',
-                    left: '6%',
-                    width: '90%',
-                    height: '19%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage9AreaClick(3)}
-                  onMouseEnter={() => setHoveredArea9(3)}
-                  onMouseLeave={() => setHoveredArea9(null)}
-                  title={t('popupWithNumber').replace('{number}', '9-3')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage9ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea9 === 4 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '74%',
-                    left: '6%',
-                    width: '92%',
-                    height: '24%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage9AreaClick(4)}
-                  onMouseEnter={() => setHoveredArea9(4)}
-                  onMouseLeave={() => setHoveredArea9(null)}
-                  title={t('popupWithNumber').replace('{number}', '9-4')}
-                >
-                </div>
-                
-                {/* 오른쪽 터치 영역 (9페이지는 오른쪽) */}
-                <div 
-                  className="absolute right-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
-                  onMouseDown={() => handleTouchAreaMouseDown('right')}
-                  onMouseUp={handleTouchAreaMouseUp}
-                  onTouchStart={() => handleTouchAreaTouchStart('right')}
-                  onTouchEnd={handleTouchAreaTouchEnd}
-                  title={t('goToNextPage')}
-                />
-              </div>
-            </div>
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea4 === 5 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '4%',
+                            left: '18%',
+                            width: '37%',
+                            height: '20%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage4AreaClick(5)}
+                          onMouseEnter={() => setHoveredArea4(5)}
+                          onMouseLeave={() => setHoveredArea4(null)}
+                          title={t('popupWithNumber').replace('{number}', '4-3-img')}
+                        ></div>
 
-            {/* 10번째 페이지 */}
-            <div 
-              className="page shadow-lg overflow-hidden" 
-              key={pageData[9].id}
-              data-density="hard"
-            >
-              <div 
-                className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
-                style={{
-                  backgroundImage: `url(${pageData[9].svg})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              >
-                {/* SVG 배경이 전체 페이지를 덮도록 함 */}
-                
-                {/* 10페이지 6개 영역 배치 (10-1, 10-2, 10-1-img, 10-2-img, 10-3-img, 10-4-img) */}
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage10ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea10 === 1 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '12%',
-                    left: '6%',
-                    width: '93%',
-                    height: '12%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage10AreaClick(1)}
-                  onMouseEnter={() => setHoveredArea10(1)}
-                  onMouseLeave={() => setHoveredArea10(null)}
-                  title={t('popupWithNumber').replace('{number}', '10-1')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage10ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea10 === 2 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '26%',
-                    left: '5%',
-                    width: '95%',
-                    height: '20%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage10AreaClick(2)}
-                  onMouseEnter={() => setHoveredArea10(2)}
-                  onMouseLeave={() => setHoveredArea10(null)}
-                  title={t('popupWithNumber').replace('{number}', '10-2')}
-                >
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage10ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea10 === 3 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '5%',
-                    width: '45%',
-                    height: '22%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage10AreaClick(3)}
-                  onMouseEnter={() => setHoveredArea10(3)}
-                  onMouseLeave={() => setHoveredArea10(null)}
-                  title={t('popupWithNumber').replace('{number}', '10-1-img')}
-                >
-                  {/* 이미지 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage10ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea10 === 4 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    top: '50%',
-                    right: '5%',
-                    width: '45%',
-                    height: '22%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage10AreaClick(4)}
-                  onMouseEnter={() => setHoveredArea10(4)}
-                  onMouseLeave={() => setHoveredArea10(null)}
-                  title={t('popupWithNumber').replace('{number}', '10-2-img')}
-                >
-                  {/* 이미지 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage10ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea10 === 5 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '6%',
-                    left: '5%',
-                    width: '45%',
-                    height: '22%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage10AreaClick(5)}
-                  onMouseEnter={() => setHoveredArea10(5)}
-                  onMouseLeave={() => setHoveredArea10(null)}
-                  title={t('popupWithNumber').replace('{number}', '10-3-img')}
-                >
-                  {/* 이미지 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage10ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea10 === 6 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '6%',
-                    right: '5%',
-                    width: '45%',
-                    height: '22%'
-                  }}
-                  data-clickable="true"
-                  onClick={() => handlePage10AreaClick(6)}
-                  onMouseEnter={() => setHoveredArea10(6)}
-                  onMouseLeave={() => setHoveredArea10(null)}
-                  title={t('popupWithNumber').replace('{number}', '10-4-img')}
-                >
-                  {/* 이미지 아이콘 */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* 왼쪽 터치 영역 (10페이지는 왼쪽) */}
-                <div 
-                  className="absolute left-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
-                  onMouseDown={() => handleTouchAreaMouseDown('left')}
-                  onMouseUp={handleTouchAreaMouseUp}
-                  onTouchStart={() => handleTouchAreaTouchStart('left')}
-                  onTouchEnd={handleTouchAreaTouchEnd}
-                  title={t('goToPreviousPage')}
-                />
-              </div>
-            </div>
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea4 === 6 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '4%',
+                            right: '5%',
+                            width: '37%',
+                            height: '20%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage4AreaClick(6)}
+                          onMouseEnter={() => setHoveredArea4(6)}
+                          onMouseLeave={() => setHoveredArea4(null)}
+                          title={t('popupWithNumber').replace('{number}', '4-4-img')}
+                        ></div>
 
-            {/* 11번째 페이지 (마지막 페이지) */}
-            <div 
-              className="page shadow-lg overflow-hidden" 
-              key={pageData[10].id}
-              data-density="hard"
-            >
-              <div 
-                className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
-                style={{
-                  backgroundImage: `url(${pageData[10].svg})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              >
-                {/* SVG 배경이 전체 페이지를 덮도록 함 */}
-                
-                {/* 11페이지 1개 영역 배치 (11-1) */}
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''} ${hoveredArea11 === 1 ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: '27%',
-                    right: '8%',
-                    width: '54%',
-                    height: '33%'
-                  }}
-                  data-clickable="true"
-                  onClick={handlePage11AreaClick}
-                  onMouseEnter={() => setHoveredArea11(1)}
-                  onMouseLeave={() => setHoveredArea11(null)}
-                  title={t('popupWithNumber').replace('{number}', '11-1')}
-                >
+                        {/* 왼쪽 터치 영역 (4페이지는 왼쪽) */}
+                        <div
+                          className="absolute left-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
+                          onMouseDown={() => handleTouchAreaMouseDown('left')}
+                          onMouseUp={handleTouchAreaMouseUp}
+                          onTouchStart={() => handleTouchAreaTouchStart('left')}
+                          onTouchEnd={handleTouchAreaTouchEnd}
+                          title={t('goToPreviousPage')}
+                        />
+                      </div>
+                    </div>
+
+                    {/* 5번째 페이지 */}
+                    <div
+                      className="page shadow-lg overflow-hidden"
+                      key={pageData[4].id}
+                      data-density="hard"
+                    >
+                      <div
+                        className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
+                        style={{
+                          backgroundImage: `url(${pageData[4].svg})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }}
+                      >
+                        {/* SVG 배경이 전체 페이지를 덮도록 함 */}
+
+                        {/* 5페이지 영역 6개 배치 (5-1, 5-2, 5-1-img, 5-2-img, 5-3-img, 5-4-img) */}
+                        {/* 기존 3D 모델 및 외장재 영역은 주석 처리 */}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea5 === 1 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '10%',
+                            left: '5%',
+                            width: '74%',
+                            height: '22%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage5AreaClick(1)}
+                          onMouseEnter={() => setHoveredArea5(1)}
+                          onMouseLeave={() => setHoveredArea5(null)}
+                          title={t('popupWithNumber').replace('{number}', '5-1')}
+                        >
+                          {/* 기존 3D 모델 영역 주석 처리 */}
+                          {/* onClick={() => handlePage5AreaClick(1)} - 3D 모델 모달 */}
+                        </div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea5 === 2 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '23%',
+                            left: '5%',
+                            width: '74%',
+                            height: '21%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage5AreaClick(2)}
+                          onMouseEnter={() => setHoveredArea5(2)}
+                          onMouseLeave={() => setHoveredArea5(null)}
+                          title={t('popupWithNumber').replace('{number}', '5-2')}
+                        >
+                          {/* 기존 모달 영역 주석 처리 */}
+                          {/* onClick={() => handlePage5AreaClick(2)} - 모달 */}
+                        </div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea5 === 3 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '33%',
+                            left: '5%',
+                            width: '37%',
+                            height: '19%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage5AreaClick(3)}
+                          onMouseEnter={() => setHoveredArea5(3)}
+                          onMouseLeave={() => setHoveredArea5(null)}
+                          title={t('popupWithNumber').replace('{number}', '5-1-img')}
+                        >
+                          {/* 기존 외장재 영역 주석 처리 */}
+                          {/* onClick={() => handlePage5AreaClick(3)} - 외장재 모달 */}
+                        </div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea5 === 4 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '33%',
+                            right: '18%',
+                            width: '37%',
+                            height: '19%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage5AreaClick(4)}
+                          onMouseEnter={() => setHoveredArea5(4)}
+                          onMouseLeave={() => setHoveredArea5(null)}
+                          title={t('popupWithNumber').replace('{number}', '5-2-img')}
+                        >
+                          {/* 기존 외장재 영역 주석 처리 */}
+                          {/* onClick={() => handlePage5AreaClick(4)} - 외장재 모달 */}
+                        </div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea5 === 5 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '5%',
+                            left: '5%',
+                            width: '37%',
+                            height: '18%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage5AreaClick(5)}
+                          onMouseEnter={() => setHoveredArea5(5)}
+                          onMouseLeave={() => setHoveredArea5(null)}
+                          title={t('popupWithNumber').replace('{number}', '5-3-img')}
+                        >
+                          {/* 기존 외장재 영역 주석 처리 */}
+                          {/* onClick={() => handlePage5AreaClick(5)} - 외장재 모달 */}
+                        </div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea5 === 6 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '5%',
+                            right: '18%',
+                            width: '37%',
+                            height: '18%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage5AreaClick(6)}
+                          onMouseEnter={() => setHoveredArea5(6)}
+                          onMouseLeave={() => setHoveredArea5(null)}
+                          title={t('popupWithNumber').replace('{number}', '5-4-img')}
+                        >
+                          {/* 기존 외장재 영역 주석 처리 */}
+                          {/* onClick={() => handlePage5AreaClick(6)} - 외장재 모달 */}
+                        </div>
+
+                        {/* 오른쪽 터치 영역 (5페이지는 오른쪽) */}
+                        <div
+                          className="absolute right-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
+                          onMouseDown={() => handleTouchAreaMouseDown('right')}
+                          onMouseUp={handleTouchAreaMouseUp}
+                          onTouchStart={() => handleTouchAreaTouchStart('right')}
+                          onTouchEnd={handleTouchAreaTouchEnd}
+                          title={t('goToNextPage')}
+                        />
+                      </div>
+                    </div>
+
+                    {/* 6번째 페이지 */}
+                    <div
+                      className="page shadow-lg overflow-hidden"
+                      key={pageData[5].id}
+                      data-density="hard"
+                    >
+                      <div
+                        className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
+                        style={{
+                          backgroundImage: `url(${pageData[5].svg})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }}
+                      >
+                        {/* SVG 배경이 전체 페이지를 덮도록 함 */}
+
+                        {/* 6페이지 7개 영역 배치 (6-1, 6-2, 6-3, 6-4, 6-1-img, 6-2-img, 6-3-img) */}
+                        {/* GIF 관련 코드는 주석 처리 */}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea6 === 1 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '20%',
+                            left: '6%',
+                            width: '82%',
+                            height: '9%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage6AreaClick(1)}
+                          onMouseEnter={() => setHoveredArea6(1)}
+                          onMouseLeave={() => setHoveredArea6(null)}
+                          title={t('popupWithNumber').replace('{number}', '6-1')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea6 === 2 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '31%',
+                            right: '6%',
+                            width: '43%',
+                            height: '19%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage6AreaClick(2)}
+                          onMouseEnter={() => setHoveredArea6(2)}
+                          onMouseLeave={() => setHoveredArea6(null)}
+                          title={t('popupWithNumber').replace('{number}', '6-2')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea6 === 3 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '52%',
+                            right: '6%',
+                            width: '43%',
+                            height: '19%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage6AreaClick(3)}
+                          onMouseEnter={() => setHoveredArea6(3)}
+                          onMouseLeave={() => setHoveredArea6(null)}
+                          title={t('popupWithNumber').replace('{number}', '6-3')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea6 === 4 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '8%',
+                            right: '6%',
+                            width: '43%',
+                            height: '19%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage6AreaClick(4)}
+                          onMouseEnter={() => setHoveredArea6(4)}
+                          onMouseLeave={() => setHoveredArea6(null)}
+                          title={t('popupWithNumber').replace('{number}', '6-4')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea6 === 5 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '31%',
+                            left: '6%',
+                            width: '43%',
+                            height: '19%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage6AreaClick(5)}
+                          onMouseEnter={() => setHoveredArea6(5)}
+                          onMouseLeave={() => setHoveredArea6(null)}
+                          title={t('popupWithNumber').replace('{number}', '6-1-img')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea6 === 6 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '52%',
+                            left: '6%',
+                            width: '43%',
+                            height: '19%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage6AreaClick(6)}
+                          onMouseEnter={() => setHoveredArea6(6)}
+                          onMouseLeave={() => setHoveredArea6(null)}
+                          title={t('popupWithNumber').replace('{number}', '6-2-img')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea6 === 7 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '8%',
+                            left: '6%',
+                            width: '43%',
+                            height: '19%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage6AreaClick(7)}
+                          onMouseEnter={() => setHoveredArea6(7)}
+                          onMouseLeave={() => setHoveredArea6(null)}
+                          title={t('popupWithNumber').replace('{number}', '6-3-img')}
+                        >
+                          {/* 유튜브 링크는 주석 처리 */}
+                          {/* onClick={() => window.open('https://www.youtube.com/@%EC%83%9D%EA%B3%A0%EB%B1%85%EC%9D%B4%EC%86%8C%EB%B0%94%EC%BD%94%EB%A6%AC%EC%95%84/videos', '_blank')} */}
+                        </div>
+
+                        {/* 왼쪽 터치 영역 (6페이지는 왼쪽) */}
+                        <div
+                          className="absolute left-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
+                          onMouseDown={() => handleTouchAreaMouseDown('left')}
+                          onMouseUp={handleTouchAreaMouseUp}
+                          onTouchStart={() => handleTouchAreaTouchStart('left')}
+                          onTouchEnd={handleTouchAreaTouchEnd}
+                          title={t('goToPreviousPage')}
+                        />
+                      </div>
+                    </div>
+
+                    {/* 7번째 페이지 */}
+                    <div
+                      className="page shadow-lg overflow-hidden"
+                      key={pageData[6].id}
+                      data-density="hard"
+                    >
+                      <div
+                        className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
+                        style={{
+                          backgroundImage: `url(${pageData[6].svg})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }}
+                      >
+                        {/* SVG 배경이 전체 페이지를 덮도록 함 */}
+
+                        {/* 7페이지 7개 영역 배치 (7-1, 7-2, 7-3, 7-4, 7-1-img, 7-2-img, 7-3-img) */}
+                        {/* 영상 관련 코드는 주석 처리 */}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage7ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea7 === 1 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '20%',
+                            left: '6%',
+                            width: '82%',
+                            height: '9%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage7AreaClick(1)}
+                          onMouseEnter={() => setHoveredArea7(1)}
+                          onMouseLeave={() => setHoveredArea7(null)}
+                          title={t('popupWithNumber').replace('{number}', '7-1')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage7ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea7 === 2 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '31%',
+                            right: '6%',
+                            width: '43%',
+                            height: '19%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage7AreaClick(2)}
+                          onMouseEnter={() => setHoveredArea7(2)}
+                          onMouseLeave={() => setHoveredArea7(null)}
+                          title={t('popupWithNumber').replace('{number}', '7-2')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage7ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea7 === 3 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '52%',
+                            right: '6%',
+                            width: '43%',
+                            height: '19%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage7AreaClick(3)}
+                          onMouseEnter={() => setHoveredArea7(3)}
+                          onMouseLeave={() => setHoveredArea7(null)}
+                          title={t('popupWithNumber').replace('{number}', '7-3')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage7ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea7 === 4 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '8%',
+                            right: '6%',
+                            width: '43%',
+                            height: '19%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage7AreaClick(4)}
+                          onMouseEnter={() => setHoveredArea7(4)}
+                          onMouseLeave={() => setHoveredArea7(null)}
+                          title={t('popupWithNumber').replace('{number}', '7-4')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage7ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea7 === 5 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '31%',
+                            left: '6%',
+                            width: '43%',
+                            height: '19%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage7AreaClick(5)}
+                          onMouseEnter={() => setHoveredArea7(5)}
+                          onMouseLeave={() => setHoveredArea7(null)}
+                          title={t('popupWithNumber').replace('{number}', '7-1-img')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage7ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea7 === 6 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '52%',
+                            left: '6%',
+                            width: '43%',
+                            height: '19%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage7AreaClick(6)}
+                          onMouseEnter={() => setHoveredArea7(6)}
+                          onMouseLeave={() => setHoveredArea7(null)}
+                          title={t('popupWithNumber').replace('{number}', '7-2-img')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage7ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea7 === 7 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '8%',
+                            left: '6%',
+                            width: '43%',
+                            height: '19%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage7AreaClick(7)}
+                          onMouseEnter={() => setHoveredArea7(7)}
+                          onMouseLeave={() => setHoveredArea7(null)}
+                          title={t('popupWithNumber').replace('{number}', '7-3-img')}
+                        ></div>
+
+                        {/* 오른쪽 터치 영역 (7페이지는 오른쪽) */}
+                        <div
+                          className="absolute right-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
+                          onMouseDown={() => handleTouchAreaMouseDown('right')}
+                          onMouseUp={handleTouchAreaMouseUp}
+                          onTouchStart={() => handleTouchAreaTouchStart('right')}
+                          onTouchEnd={handleTouchAreaTouchEnd}
+                          title={t('goToNextPage')}
+                        />
+                      </div>
+                    </div>
+
+                    {/* 8번째 페이지 */}
+                    <div
+                      className="page shadow-lg overflow-hidden"
+                      key={pageData[7].id}
+                      data-density="hard"
+                    >
+                      <div
+                        className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
+                        style={{
+                          backgroundImage: `url(${pageData[7].svg})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }}
+                      >
+                        {/* SVG 배경이 전체 페이지를 덮도록 함 */}
+
+                        {/* 8페이지 4개 영역 배치 (8-1, 8-2, 8-3, 8-1-img) */}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage8ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea8 === 1 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '26%',
+                            left: '6%',
+                            width: '43%',
+                            height: '21%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage8AreaClick(1)}
+                          onMouseEnter={() => setHoveredArea8(1)}
+                          onMouseLeave={() => setHoveredArea8(null)}
+                          title={t('popupWithNumber').replace('{number}', '8-1')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage8ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea8 === 2 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '5%',
+                            left: '6%',
+                            width: '43%',
+                            height: '21%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage8AreaClick(2)}
+                          onMouseEnter={() => setHoveredArea8(2)}
+                          onMouseLeave={() => setHoveredArea8(null)}
+                          title={t('popupWithNumber').replace('{number}', '8-2')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage8ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea8 === 3 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '5%',
+                            right: '6%',
+                            width: '43%',
+                            height: '21%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage8AreaClick(3)}
+                          onMouseEnter={() => setHoveredArea8(3)}
+                          onMouseLeave={() => setHoveredArea8(null)}
+                          title={t('popupWithNumber').replace('{number}', '8-3')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage8ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea8 === 4 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '14%',
+                            right: '6%',
+                            width: '40%',
+                            height: '35%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage8AreaClick(4)}
+                          onMouseEnter={() => setHoveredArea8(4)}
+                          onMouseLeave={() => setHoveredArea8(null)}
+                          title={t('popupWithNumber').replace('{number}', '8-1-img')}
+                        ></div>
+
+                        {/* 왼쪽 터치 영역 (8페이지는 왼쪽) */}
+                        <div
+                          className="absolute left-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
+                          onMouseDown={() => handleTouchAreaMouseDown('left')}
+                          onMouseUp={handleTouchAreaMouseUp}
+                          onTouchStart={() => handleTouchAreaTouchStart('left')}
+                          onTouchEnd={handleTouchAreaTouchEnd}
+                          title={t('goToPreviousPage')}
+                        />
+                      </div>
+                    </div>
+
+                    {/* 9번째 페이지 */}
+                    <div
+                      className="page shadow-lg overflow-hidden"
+                      key={pageData[8].id}
+                      data-density="hard"
+                    >
+                      <div
+                        className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
+                        style={{
+                          backgroundImage: `url(${pageData[8].svg})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }}
+                      >
+                        {/* SVG 배경이 전체 페이지를 덮도록 함 */}
+
+                        {/* 9페이지 4개 영역 배치 (9-1, 9-2, 9-3, 9-4) */}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage9ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea9 === 1 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '13%',
+                            left: '6%',
+                            width: '80%',
+                            height: '10%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage9AreaClick(1)}
+                          onMouseEnter={() => setHoveredArea9(1)}
+                          onMouseLeave={() => setHoveredArea9(null)}
+                          title={t('popupWithNumber').replace('{number}', '9-1')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage9ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea9 === 2 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '24%',
+                            left: '6%',
+                            width: '87%',
+                            height: '26%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage9AreaClick(2)}
+                          onMouseEnter={() => setHoveredArea9(2)}
+                          onMouseLeave={() => setHoveredArea9(null)}
+                          title={t('popupWithNumber').replace('{number}', '9-2')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage9ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea9 === 3 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '53%',
+                            left: '6%',
+                            width: '80%',
+                            height: '18%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage9AreaClick(3)}
+                          onMouseEnter={() => setHoveredArea9(3)}
+                          onMouseLeave={() => setHoveredArea9(null)}
+                          title={t('popupWithNumber').replace('{number}', '9-3')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage9ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea9 === 4 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '74%',
+                            left: '6%',
+                            width: '80%',
+                            height: '21%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage9AreaClick(4)}
+                          onMouseEnter={() => setHoveredArea9(4)}
+                          onMouseLeave={() => setHoveredArea9(null)}
+                          title={t('popupWithNumber').replace('{number}', '9-4')}
+                        ></div>
+
+                        {/* 오른쪽 터치 영역 (9페이지는 오른쪽) */}
+                        <div
+                          className="absolute right-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
+                          onMouseDown={() => handleTouchAreaMouseDown('right')}
+                          onMouseUp={handleTouchAreaMouseUp}
+                          onTouchStart={() => handleTouchAreaTouchStart('right')}
+                          onTouchEnd={handleTouchAreaTouchEnd}
+                          title={t('goToNextPage')}
+                        />
+                      </div>
+                    </div>
+
+                    {/* 10번째 페이지 */}
+                    <div
+                      className="page shadow-lg overflow-hidden"
+                      key={pageData[9].id}
+                      data-density="hard"
+                    >
+                      <div
+                        className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
+                        style={{
+                          backgroundImage: `url(${pageData[9].svg})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }}
+                      >
+                        {/* SVG 배경이 전체 페이지를 덮도록 함 */}
+
+                        {/* 10페이지 6개 영역 배치 (10-1, 10-2, 10-1-img, 10-2-img, 10-3-img, 10-4-img) */}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage10ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea10 === 1 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '13%',
+                            left: '6%',
+                            width: '80%',
+                            height: '10%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage10AreaClick(1)}
+                          onMouseEnter={() => setHoveredArea10(1)}
+                          onMouseLeave={() => setHoveredArea10(null)}
+                          title={t('popupWithNumber').replace('{number}', '10-1')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage10ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea10 === 2 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '28%',
+                            left: '6%',
+                            width: '80%',
+                            height: '17%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage10AreaClick(2)}
+                          onMouseEnter={() => setHoveredArea10(2)}
+                          onMouseLeave={() => setHoveredArea10(null)}
+                          title={t('popupWithNumber').replace('{number}', '10-2')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage10ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea10 === 3 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '5%',
+                            width: '45%',
+                            height: '22%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage10AreaClick(3)}
+                          onMouseEnter={() => setHoveredArea10(3)}
+                          onMouseLeave={() => setHoveredArea10(null)}
+                          title={t('popupWithNumber').replace('{number}', '10-1-img')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage10ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea10 === 4 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '50%',
+                            right: '5%',
+                            width: '45%',
+                            height: '22%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage10AreaClick(4)}
+                          onMouseEnter={() => setHoveredArea10(4)}
+                          onMouseLeave={() => setHoveredArea10(null)}
+                          title={t('popupWithNumber').replace('{number}', '10-2-img')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage10ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea10 === 5 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '6%',
+                            left: '5%',
+                            width: '45%',
+                            height: '22%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage10AreaClick(5)}
+                          onMouseEnter={() => setHoveredArea10(5)}
+                          onMouseLeave={() => setHoveredArea10(null)}
+                          title={t('popupWithNumber').replace('{number}', '10-3-img')}
+                        ></div>
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage10ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea10 === 6 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '6%',
+                            right: '5%',
+                            width: '45%',
+                            height: '22%',
+                          }}
+                          data-clickable="true"
+                          onClick={() => handlePage10AreaClick(6)}
+                          onMouseEnter={() => setHoveredArea10(6)}
+                          onMouseLeave={() => setHoveredArea10(null)}
+                          title={t('popupWithNumber').replace('{number}', '10-4-img')}
+                        ></div>
+
+                        {/* 왼쪽 터치 영역 (10페이지는 왼쪽) */}
+                        <div
+                          className="absolute left-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
+                          onMouseDown={() => handleTouchAreaMouseDown('left')}
+                          onMouseUp={handleTouchAreaMouseUp}
+                          onTouchStart={() => handleTouchAreaTouchStart('left')}
+                          onTouchEnd={handleTouchAreaTouchEnd}
+                          title={t('goToPreviousPage')}
+                        />
+                      </div>
+                    </div>
+
+                    {/* 11번째 페이지 (마지막 페이지) */}
+                    <div
+                      className="page shadow-lg overflow-hidden"
+                      key={pageData[10].id}
+                      data-density="hard"
+                    >
+                      <div
+                        className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
+                        style={{
+                          backgroundImage: `url(${pageData[10].svg})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }}
+                      >
+                        {/* SVG 배경이 전체 페이지를 덮도록 함 */}
+
+                        {/* 11페이지 1개 영역 배치 (11-1) */}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          } ${hoveredArea11 === 1 ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '30%',
+                            right: '25%',
+                            width: '35%',
+                            height: '30%',
+                          }}
+                          data-clickable="true"
+                          onClick={handlePage11AreaClick}
+                          onMouseEnter={() => setHoveredArea11(1)}
+                          onMouseLeave={() => setHoveredArea11(null)}
+                          title={t('popupWithNumber').replace('{number}', '11-1')}
+                        ></div>
+
+                        {/* 왼쪽 터치 영역 (11페이지는 왼쪽, 마지막 페이지) */}
+                        <div
+                          className="absolute left-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
+                          onMouseDown={() => handleTouchAreaMouseDown('left')}
+                          onMouseUp={handleTouchAreaMouseUp}
+                          onTouchStart={() => handleTouchAreaTouchStart('left')}
+                          onTouchEnd={handleTouchAreaTouchEnd}
+                          title={t('goToPreviousPage')}
+                        />
+                      </div>
+                    </div>
+                  </HTMLFlipBook>
                 </div>
-                
-                {/* 왼쪽 터치 영역 (11페이지는 왼쪽, 마지막 페이지) */}
-                <div 
-                  className="absolute left-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
-                  onMouseDown={() => handleTouchAreaMouseDown('left')}
-                  onMouseUp={handleTouchAreaMouseUp}
-                  onTouchStart={() => handleTouchAreaTouchStart('left')}
-                  onTouchEnd={handleTouchAreaTouchEnd}
-                  title={t('goToPreviousPage')}
-                />
               </div>
-            </div>
-            </HTMLFlipBook>
+
+              {/* 오른쪽 네비게이션 버튼들 */}
+              <div className="flex flex-col items-center gap-2">
+                {/* Right 버튼 */}
+                <button
+                  onClick={goToNextPage}
+                  className={`transition-transform duration-200 ${
+                    isLastPage ? 'opacity-0 cursor-not-allowed' : 'cursor-pointer hover:scale-110'
+                  }`}
+                  style={{ width: '48px', height: '48px', padding: '8px' }}
+                  title={isLastPage ? t('isLastPage') : t('nextPage')}
+                  disabled={isLastPage}
+                >
+                  <img
+                    src="/FrienderFile/Interactive/arrow_right.svg"
+                    alt={t('nextPage')}
+                    style={{ width: '32px', height: '32px' }}
+                  />
+                </button>
+
+                {/* Last 버튼 */}
+                <button
+                  onClick={goToLastPage}
+                  className={`transition-transform duration-200 ${
+                    isLastPage ? 'opacity-0 cursor-not-allowed' : 'cursor-pointer hover:scale-110'
+                  }`}
+                  style={{ width: '48px', height: '48px', padding: '8px' }}
+                  title={isLastPage ? t('alreadyLastPage') : t('lastPage')}
+                  disabled={isLastPage}
+                >
+                  <img
+                    src="/FrienderFile/Interactive/arrow_last.svg"
+                    alt={t('lastPage')}
+                    style={{ width: '32px', height: '32px' }}
+                  />
+                </button>
+              </div>
             </div>
           </div>
-
-           {/* 오른쪽 네비게이션 버튼들 */}
-           <div className="flex flex-col items-center gap-2">
-             {/* 튜토리얼 버튼 */}
-             <button
-               onClick={toggleTutorialMode}
-               className={`transition-all duration-200 cursor-pointer hover:scale-110 rounded-full p-2 ${
-                 isTutorialMode 
-                   ? 'bg-blue-500 text-white shadow-lg' 
-                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-               }`}
-               style={{ width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-               title={isTutorialMode ? (t('tutorialModeOff') || '튜토리얼 모드 끄기') : (t('tutorialModeOn') || '튜토리얼 모드 켜기')}
-             >
-               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-               </svg>
-             </button>
-             
-             {/* Right 버튼 */}
-             <button
-               onClick={goToNextPage}
-               className={`transition-transform duration-200 ${isLastPage ? 'opacity-0 cursor-not-allowed' : 'cursor-pointer hover:scale-110'}`}
-               style={{ width: '48px', height: '48px', padding: '8px' }}
-               title={isLastPage ? t('isLastPage') : t('nextPage')}
-               disabled={isLastPage}
-             >
-               <img
-                 src="/FrienderFile/Interactive/arrow_right.svg"
-                 alt={t('nextPage')}
-                 style={{ width: '32px', height: '32px' }}
-               />
-             </button>
-             
-             {/* Last 버튼 */}
-             <button
-               onClick={goToLastPage}
-               className={`transition-transform duration-200 ${isLastPage ? 'opacity-0 cursor-not-allowed' : 'cursor-pointer hover:scale-110'}`}
-               style={{ width: '48px', height: '48px', padding: '8px' }}
-               title={isLastPage ? t('alreadyLastPage') : t('lastPage')}
-               disabled={isLastPage}
-             >
-               <img
-                 src="/FrienderFile/Interactive/arrow_last.svg"
-                 alt={t('lastPage')}
-                 style={{ width: '32px', height: '32px' }}
-               />
-             </button>
-           </div>
-        </div>
-      </div>
-
-
-      {/* 오른쪽 툴바 - 데스크톱 (1450px 초과) - 주석처리됨 */}
-      {/* {!isSmallScreen && (
+          {/* 오른쪽 툴바 - 데스크톱 (1450px 초과) - 주석처리됨 */}
+          {/* {!isSmallScreen && (
         <div className="flex flex-shrink-0 w-[4%] min-w-[40px] max-w-[60px] flex-col gap-3 bg-gray-800 p-3 items-center relative z-50">
         <button
           onClick={() => (window.location.href = '/Isover')}
@@ -3506,6 +3585,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           onClick={handleDownloadClick}
           className="w-8 h-8 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
           title={t('download')}
+          title={t('download')}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -3513,19 +3593,21 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
         </button>
         
         {/* 목차 버튼 숨김 처리 */}
-        {/* <button
+          {/* <button
           onClick={handleTocClick}
           className="w-8 h-8 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
+          title={t('toc')}
           title={t('toc')}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
           </svg>
         </button> */}
-
-        {/* <button
+          {/* </button> */}
+          {/* <button
           onClick={handleShareClick}
           className="w-8 h-8 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
+          title={t('share')}
           title={t('share')}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -3537,6 +3619,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           onClick={handleZoomIn}
           className="w-8 h-8 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
           title={t('zoomIn')}
+          title={t('zoomIn')}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -3546,6 +3629,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
         <button
           onClick={handleZoomOut}
           className="w-8 h-8 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
+          title={t('zoomOut')}
           title={t('zoomOut')}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -3565,1860 +3649,919 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           </button>
         )}
         </div>
-      )} */}
+      )}
 
       {/* 하단 툴바 - 모든 화면 크기에서 표시 */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-gray-800 p-3">
-        <div className="flex justify-center items-center gap-4">
-          {/* 홈 버튼 */}
-          <button
-            onClick={() => (window.location.href = '/Isover')}
-            className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
-            title={t('home')}
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
-          </button>
+          <div className="fixed bottom-0 left-0 right-0 z-50 bg-gray-800 p-3">
+            <div className="flex justify-center items-center gap-4">
+              {/* 홈 버튼 */}
+              <button
+                onClick={() => (window.location.href = '/Isover')}
+                className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
+                title={t('home')}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                  />
+                </svg>
+              </button>
 
-          {/* 프린터 버튼 */}
-          <button
-            onClick={handlePrintClick}
-            className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
-            title={t('print')}
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-            </svg>
-          </button>
+              {/* 프린터 버튼 */}
+              <button
+                onClick={handlePrintClick}
+                className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
+                title={t('print')}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+                  />
+                </svg>
+              </button>
 
-          {/* PDF 다운로드 버튼 */}
-          <button
-            onClick={handleDownloadClick}
-            className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
-            title={t('download')}
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </button>
+              {/* PDF 다운로드 버튼 */}
+              <button
+                onClick={handleDownloadClick}
+                className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
+                title={t('download')}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+              </button>
 
-          {/* 목차 버튼 숨김 처리 */}
-          {/* <button
+              {/* 목차 버튼 숨김 처리 */}
+              {/* <button
             onClick={handleTocClick}
             className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
+            title={t('toc')}
             title={t('toc')}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
             </svg>
           </button> */}
-          
-          {/* 공유 버튼 */}
-          <button
-            onClick={handleShareClick}
-            className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
-            title={t('share')}
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-            </svg>
-          </button>
 
-          {/* 언어 선택 버튼 */}
-          <div className="relative" ref={languageDropdownRef}>
-            <button
-              onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
-              className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
-              title={t('language')}
-            >
-              <img 
-                src="/FrienderFile/Interactive/Language.png" 
-                alt={t('language')} 
-                className="w-6 h-6 object-contain"
-                style={{ filter: 'brightness(0) invert(1)' }}
-              />
-            </button>
-            
-            {/* 언어 선택 드롭다운 (위로 열림) */}
-            {isLanguageDropdownOpen && (
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white rounded-lg shadow-lg border border-gray-200 min-w-[150px] z-50">
-                {languageList.map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => handleLanguageChange(lang.code)}
-                    className={`w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors duration-200 first:rounded-t-lg last:rounded-b-lg ${
-                      currentLanguage === lang.code ? 'bg-gray-100 font-semibold' : ''
-                    }`}
-                  >
-                    <span className="text-gray-800">{lang.nativeName}</span>
-                  </button>
-                ))}
+              {/* 공유 버튼 */}
+              <button
+                onClick={handleShareClick}
+                className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
+                title={t('share')}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"
+                  />
+                </svg>
+              </button>
+
+              {/* 언어 선택 버튼 */}
+              <div className="relative" ref={languageDropdownRef}>
+                <button
+                  onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
+                  className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
+                  title={t('language')}
+                >
+                  <img
+                    src="/FrienderFile/Interactive/Language.png"
+                    alt={t('language')}
+                    className="w-6 h-6 object-contain"
+                    style={{ filter: 'brightness(0) invert(1)' }}
+                  />
+                </button>
+
+                {/* 언어 선택 드롭다운 (위로 열림) */}
+                {isLanguageDropdownOpen && (
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white rounded-lg shadow-lg border border-gray-200 min-w-[150px] z-50">
+                    {languageList.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => handleLanguageChange(lang.code)}
+                        className={`w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors duration-200 first:rounded-t-lg last:rounded-b-lg ${
+                          currentLanguage === lang.code ? 'bg-gray-100 font-semibold' : ''
+                        }`}
+                      >
+                        <span className="text-gray-800">{lang.nativeName}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
-
-        </div>
-        </div>
-
-
-      {/* 3페이지 모달 */}
-      {isModalOpen && selectedArea && (
-        <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={closeModal}
-        >
-          {/* 고정 버튼들 - 모달 외부에 배치 */}
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
-            {/* 확대 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomIn();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomIn')}
+          {/* 3페이지 모달 */}
+          {isModalOpen && selectedArea && (
+            <div
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              onClick={closeModal}
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-              </svg>
-            </button>
-
-            {/* 축소 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomOut();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
-              </svg>
-            </button>
-
-            {/* 확대/축소 리셋 버튼 */}
-            {isModalZoomed && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalZoomReset();
-                }}
-                className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
+              {/* 고정 버튼들 - 모달 외부에 배치 */}
+              <div
+                className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+                onClick={(e) => e.stopPropagation()}
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
+                {/* 확대 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomIn();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomIn')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                    />
+                  </svg>
+                </button>
 
-            {/* 위치 리셋 버튼 */}
-            {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalPositionReset();
+                {/* 축소 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomOut();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomOut')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 확대/축소 리셋 버튼 */}
+                {isModalZoomed && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalZoomReset();
+                    }}
+                    className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                    title={t('zoomReset')}
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 위치 리셋 버튼 */}
+                {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalPositionReset();
+                    }}
+                    className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
+                    title="위치 리셋"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 닫기 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closeModal();
+                  }}
+                  className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
+                  title={t('close')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div
+                className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+                  isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+                }`}
+                style={{
+                  transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
+                  transformOrigin: 'center center',
+                  transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
                 }}
-                className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                title="위치 리셋"
+                onClick={(e) => e.stopPropagation()}
+                onMouseDown={handleModalDragStart}
+                onMouseMove={isModalDragging ? handleModalDragMove : undefined}
+                onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
+                onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 닫기 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                closeModal();
-              }}
-              className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
-              title={t('close')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-            style={{
-              transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
-              transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={handleModalDragStart}
-            onMouseMove={isModalDragging ? handleModalDragMove : undefined}
-            onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
-            onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
-          >
-
-            {/* 이미지 표시 */}
-            <div className="flex items-center justify-center relative">
-              
-              {/* 4번째 영역에 추가 영역 배치 */}
-              {selectedArea === 4 && (
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${hoveredModalArea === '3-4-1' ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    top: '32%',
-                    left: '15%',
-                    width: '24%',
-                    height: '64%'
-                  }}
-                  onClick={() => openImageModal('3-4-1')}
-                  onMouseEnter={() => setHoveredModalArea('3-4-1')}
-                  onMouseLeave={() => setHoveredModalArea(null)}
-                  title="3-4-1, 3-4-2 이미지 보기"
-                >
-                </div>
-              )}
-              
-              {/* 6번째 영역에 추가 영역 배치 */}
-              {selectedArea === 6 && (
-                <div 
-                  className={`absolute cursor-pointer rounded-lg ${hoveredModalArea === '3-6-1' ? 'border-2 border-yellow-500' : ''}`}
-                  style={{
-                    bottom: '12%',
-                    left: '12%',
-                    width: '22%',
-                    height: '55%'
-                  }}
-                  onClick={() => openImageModal('3-6-1')}
-                  onMouseEnter={() => setHoveredModalArea('3-6-1')}
-                  onMouseLeave={() => setHoveredModalArea(null)}
-                  title="3-6-1 이미지 보기"
-                >
-                </div>
-              )}
-
-              {/* 3번째 영역일 때 블랙페이싱 3D 모델 영역 추가 */}
-              {selectedArea === 3 && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="relative w-full h-full">
-                    {/* 블랙페이싱 3D 모델 영역 */}
-                    <div 
-                      className="absolute"
+                {/* 이미지 표시 */}
+                <div className="flex items-center justify-center relative">
+                  {/* 4번째 영역에 추가 영역 배치 */}
+                  {selectedArea === 4 && (
+                    <div
+                      className={`absolute cursor-pointer rounded-lg ${
+                        hoveredModalArea === '3-4-1' ? 'border-2 border-yellow-500' : ''
+                      }`}
                       style={{
-                        top: '31%',
-                        right: '6%',
-                        width: '30%',
-                        height: '16%'
+                        top: '32%',
+                        left: '15%',
+                        width: '24%',
+                        height: '64%',
                       }}
-                    >
+                      onClick={() => openImageModal('3-4-1')}
+                      onMouseEnter={() => setHoveredModalArea('3-4-1')}
+                      onMouseLeave={() => setHoveredModalArea(null)}
+                      title="3-4-1, 3-4-2 이미지 보기"
+                    ></div>
+                  )}
+
+                  {/* 6번째 영역에 추가 영역 배치 */}
+                  {selectedArea === 6 && (
+                    <div
+                      className={`absolute cursor-pointer rounded-lg ${
+                        hoveredModalArea === '3-6-1' ? 'border-2 border-yellow-500' : ''
+                      }`}
+                      style={{
+                        bottom: '12%',
+                        left: '12%',
+                        width: '22%',
+                        height: '55%',
+                      }}
+                      onClick={() => openImageModal('3-6-1')}
+                      onMouseEnter={() => setHoveredModalArea('3-6-1')}
+                      onMouseLeave={() => setHoveredModalArea(null)}
+                      title="3-6-1 이미지 보기"
+                    ></div>
+                  )}
+
+                  {/* 3번째 영역일 때 블랙페이싱 3D 모델 영역 추가 */}
+                  {selectedArea === 3 && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="relative w-full h-full">
+                        {/* 블랙페이싱 3D 모델 영역 */}
+                        <div
+                          className="absolute"
+                          style={{
+                            top: '31%',
+                            right: '6%',
+                            width: '30%',
+                            height: '16%',
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+          {/* 추가 4개 영역 모달 */}
+          {isAdditionalModalOpen && selectedAdditionalArea && (
+            <div
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              onClick={closeAdditionalModal}
+            >
+              {/* 고정 버튼들 - 모달 외부에 배치 */}
+              <div
+                className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* 확대 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomIn();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomIn')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 축소 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomOut();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomOut')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 확대/축소 리셋 버튼 */}
+                {isModalZoomed && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalZoomReset();
+                    }}
+                    className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                    title={t('zoomReset')}
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 위치 리셋 버튼 */}
+                {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalPositionReset();
+                    }}
+                    className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
+                    title="위치 리셋"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 닫기 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closeAdditionalModal();
+                  }}
+                  className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
+                  title={t('close')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div
+                className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+                  isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+                }`}
+                style={{
+                  transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
+                  transformOrigin: 'center center',
+                  transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
+                }}
+                onClick={(e) => e.stopPropagation()}
+                onMouseDown={handleModalDragStart}
+                onMouseMove={isModalDragging ? handleModalDragMove : undefined}
+                onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
+                onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
+              >
+                {/* 이미지와 3D 모델 표시 */}
+                <div className="relative flex items-center justify-center">
+                  {/* 3D 모델 영역 - 각 영역마다 다른 모델 */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="relative w-full h-full">
+                      {selectedAdditionalArea === 7 && (
+                        <>
+                          <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]"></div>
+                          {/* 오른쪽 추가 영역 */}
+                          <div
+                            className={`absolute cursor-pointer rounded-lg ${
+                              hoveredModalArea === '7-right' ? 'border-2 border-yellow-500' : ''
+                            }`}
+                            style={{
+                              top: '18%',
+                              right: '5%',
+                              width: '19.5%',
+                              height: '62%',
+                            }}
+                            onClick={() => {
+                              openAdditionalImageModal('pae_3-1');
+                            }}
+                            onMouseEnter={() => setHoveredModalArea('7-right')}
+                            onMouseLeave={() => setHoveredModalArea(null)}
+                          ></div>
+                        </>
+                      )}
+
+                      {selectedAdditionalArea === 8 && (
+                        <>
+                          <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]"></div>
+                          {/* 오른쪽 추가 영역 */}
+                          <div
+                            className={`absolute cursor-pointer rounded-lg ${
+                              hoveredModalArea === '8-right' ? 'border-2 border-yellow-500' : ''
+                            }`}
+                            style={{
+                              top: '16%',
+                              right: '5%',
+                              width: '19%',
+                              height: '54%',
+                            }}
+                            onClick={() => {
+                              openAdditionalImageModal('pae_3-2');
+                            }}
+                            onMouseEnter={() => setHoveredModalArea('8-right')}
+                            onMouseLeave={() => setHoveredModalArea(null)}
+                          ></div>
+                        </>
+                      )}
+
+                      {selectedAdditionalArea === 9 && (
+                        <>
+                          <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]"></div>
+                          {/* 오른쪽 추가 영역 */}
+                          <div
+                            className={`absolute cursor-pointer rounded-lg ${
+                              hoveredModalArea === '9-right' ? 'border-2 border-yellow-500' : ''
+                            }`}
+                            style={{
+                              top: '26%',
+                              right: '5%',
+                              width: '19.5%',
+                              height: '50%',
+                            }}
+                            onClick={() => {
+                              openAdditionalImageModal('pae_3-3');
+                            }}
+                            onMouseEnter={() => setHoveredModalArea('9-right')}
+                            onMouseLeave={() => setHoveredModalArea(null)}
+                          ></div>
+                        </>
+                      )}
+
+                      {selectedAdditionalArea === 10 && (
+                        <>
+                          <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]"></div>
+                          {/* 오른쪽 추가 영역 */}
+                          <div
+                            className={`absolute cursor-pointer rounded-lg ${
+                              hoveredModalArea === '10-right' ? 'border-2 border-yellow-500' : ''
+                            }`}
+                            style={{
+                              top: '21%',
+                              right: '5%',
+                              width: '19%',
+                              height: '64%',
+                            }}
+                            onClick={() => {
+                              openAdditionalImageModal('pae_3-4');
+                            }}
+                            onMouseEnter={() => setHoveredModalArea('10-right')}
+                            onMouseLeave={() => setHoveredModalArea(null)}
+                          ></div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
-              )}
-              
-            </div>
-          </div>
-        </div>
-      )}
-      {/* 추가 4개 영역 모달 */}
-      {isAdditionalModalOpen && selectedAdditionalArea && (
-        <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={closeAdditionalModal}
-        >
-          {/* 고정 버튼들 - 모달 외부에 배치 */}
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
-            {/* 확대 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomIn();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomIn')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-              </svg>
-            </button>
-
-            {/* 축소 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomOut();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
-              </svg>
-            </button>
-
-            {/* 확대/축소 리셋 버튼 */}
-            {isModalZoomed && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalZoomReset();
-                }}
-                className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 위치 리셋 버튼 */}
-            {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalPositionReset();
-                }}
-                className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                title="위치 리셋"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 닫기 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                closeAdditionalModal();
-              }}
-              className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
-              title={t('close')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-            style={{
-              transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
-              transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={handleModalDragStart}
-            onMouseMove={isModalDragging ? handleModalDragMove : undefined}
-            onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
-            onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
-          >
-
-            {/* 이미지와 3D 모델 표시 */}
-            <div className="relative flex items-center justify-center">
-              
-              {/* 3D 모델 영역 - 각 영역마다 다른 모델 */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative w-full h-full">
-                  {selectedAdditionalArea === 7 && (
-                    <>
-                      <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]">
-                      </div>
-                      {/* 오른쪽 추가 영역 */}
-                      <div 
-                        className={`absolute cursor-pointer rounded-lg ${hoveredModalArea === '7-right' ? 'border-2 border-yellow-500' : ''}`}
-                        style={{
-                          top: '18%',
-                          right: '5%',
-                          width: '19.5%',
-                          height: '62%'
-                        }}
-                        onClick={() => {
-                          openAdditionalImageModal('pae_3-1');
-                        }}
-                        onMouseEnter={() => setHoveredModalArea('7-right')}
-                        onMouseLeave={() => setHoveredModalArea(null)}
-                      >
-                      </div>
-                    </>
-                  )}
-                  
-                  {selectedAdditionalArea === 8 && (
-                    <>
-                      <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]">
-                      </div>
-                      {/* 오른쪽 추가 영역 */}
-                      <div 
-                        className={`absolute cursor-pointer rounded-lg ${hoveredModalArea === '8-right' ? 'border-2 border-yellow-500' : ''}`}
-                        style={{
-                          top: '16%',
-                          right: '5%',
-                          width: '19%',
-                          height: '54%'
-                        }}
-                        onClick={() => {
-                          openAdditionalImageModal('pae_3-2');
-                        }}
-                        onMouseEnter={() => setHoveredModalArea('8-right')}
-                        onMouseLeave={() => setHoveredModalArea(null)}
-                      >
-                      </div>
-                    </>
-                  )}
-                  
-                  {selectedAdditionalArea === 9 && (
-                    <>
-                      <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]">
-                      </div>
-                      {/* 오른쪽 추가 영역 */}
-                      <div 
-                        className={`absolute cursor-pointer rounded-lg ${hoveredModalArea === '9-right' ? 'border-2 border-yellow-500' : ''}`}
-                        style={{
-                          top: '26%',
-                          right: '5%',
-                          width: '19.5%',
-                          height: '50%'
-                        }}
-                        onClick={() => {
-                          openAdditionalImageModal('pae_3-3');
-                        }}
-                        onMouseEnter={() => setHoveredModalArea('9-right')}
-                        onMouseLeave={() => setHoveredModalArea(null)}
-                      >
-                      </div>
-                    </>
-                  )}
-                  
-                  {selectedAdditionalArea === 10 && (
-                    <>
-                      <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]">
-                      </div>
-                      {/* 오른쪽 추가 영역 */}
-                      <div 
-                        className={`absolute cursor-pointer rounded-lg ${hoveredModalArea === '10-right' ? 'border-2 border-yellow-500' : ''}`}
-                        style={{
-                          top: '21%',
-                          right: '5%',
-                          width: '19%',
-                          height: '64%'
-                        }}
-                        onClick={() => {
-                          openAdditionalImageModal('pae_3-4');
-                        }}
-                        onMouseEnter={() => setHoveredModalArea('10-right')}
-                        onMouseLeave={() => setHoveredModalArea(null)}
-                      >
-                      </div>
-                    </>
-                  )}
-                  
-                </div>
               </div>
-              
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* 4페이지 모달 */}
-      {isPage4ModalOpen && selectedPage4Area && (
-        <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={closePage4Modal}
-        >
-          {/* 고정 버튼들 - 모달 외부에 배치 */}
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
-            {/* 확대 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomIn();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomIn')}
+          )}
+          {/* 4페이지 모달 */}
+          {isPage4ModalOpen && selectedPage4Area && (
+            <div
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              onClick={closePage4Modal}
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-              </svg>
-            </button>
-
-            {/* 축소 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomOut();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
-              </svg>
-            </button>
-
-            {/* 확대/축소 리셋 버튼 */}
-            {isModalZoomed && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalZoomReset();
-                }}
-                className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 위치 리셋 버튼 */}
-            {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalPositionReset();
-                }}
-                className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                title="위치 리셋"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 닫기 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                closePage4Modal();
-              }}
-              className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
-              title={t('close')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <div
-            className={`bg-white rounded-2xl p-6 max-w-5xl max-h-[95vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-            style={{
-              transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
-              transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={handleModalDragStart}
-            onMouseMove={isModalDragging ? handleModalDragMove : undefined}
-            onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
-            onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
-          >
-
-            {/* 팝업 콘텐츠 */}
-            <div className="relative flex items-center justify-center w-full">
-              {selectedPage4Area === 3 ? (
-                <div className="w-full space-y-6">
-                  <div className="text-center space-y-2">
-                    <p className="text-2xl font-semibold text-gray-900">{t('droneLearningContent')}</p>
-                    <p className="text-sm text-gray-600">{t('dronePlaylistDescription')}</p>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {getDroneVideoPlaylist(t).map((video, index) => {
-                      const embedUrl = getYouTubeEmbedUrl(video.url);
-                      return (
-                        <div
-                          key={video.url}
-                          className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 flex flex-col"
-                        >
-                          {embedUrl ? (
-                            <div className="relative w-full pt-[56.25%] bg-black">
-                              <iframe
-                                src={embedUrl}
-                                title={`${index + 1}. ${video.title}`}
-                                className="absolute inset-0 w-full h-full"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                referrerPolicy="strict-origin-when-cross-origin"
-                                allowFullScreen
-                              />
-                            </div>
-                          ) : (
-                            <div className="p-6 text-center text-sm text-red-500">
-                              영상을 불러올 수 없습니다.
-                            </div>
-                          )}
-
-                          <div className="p-4 space-y-1 bg-gray-50">
-                            <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">
-                              {`${index + 1}. ${video.category}`}
-                            </p>
-                            <p className="text-base font-semibold text-gray-900">{video.title}</p>
-                            <p className="text-sm text-gray-600">{video.description}</p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <img
-                    src={getPopupPath(currentLanguage,
-                      selectedPage4Area === 1 ? '4-1.jpg' :
-                      selectedPage4Area === 2 ? '4-2.jpg' :
-                      selectedPage4Area === 3 ? '4-1-img.jpg' :
-                      selectedPage4Area === 4 ? '4-2-img.jpg' :
-                      selectedPage4Area === 5 ? '4-3-img.jpg' :
-                      selectedPage4Area === 6 ? '4-4-img.jpg' :
-                      '4-1.jpg'
-                    )}
-                    alt={t('popupWithNumber').replace('{number}', `4-${selectedPage4Area}`)}
-                    className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-lg"
-                    onError={(e) => {
-                      // 이미지 로드 실패 시 메시지 표시
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'block';
-                    }}
-                  />
-                  
-                  <div
-                    className="hidden text-gray-500 text-center"
-                    style={{ display: 'none' }}
-                  >
-                    <p>{t('imageLoadFailed')}</p>
-                    <p className="text-sm">{t('path')}: /FrienderFile/Popup/4-{selectedPage4Area}.jpg</p>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 4페이지 영역 2번 전용 모달 (테스트용) */}
-      {isPage4Area2ModalOpen && (
-        <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={closePage4Area2Modal}
-        >
-          <div
-            className="bg-white rounded-2xl p-6 max-w-5xl max-h-[95vh] overflow-auto relative shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* 닫기 버튼 */}
-            <button
-              onClick={closePage4Area2Modal}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-3xl font-bold z-10 transition-colors duration-300"
-            >
-              ×
-            </button>
-
-            {/* 이미지와 3D 모델 표시 */}
-            <div className="relative flex items-center justify-center">
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 5페이지 모달 */}
-      {isPage5ModalOpen && selectedPage5Area && (
-        <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={closePage5Modal}
-        >
-          {/* 고정 버튼들 - 모달 외부에 배치 */}
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
-            {/* 확대 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomIn();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomIn')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-              </svg>
-            </button>
-
-            {/* 축소 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomOut();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
-              </svg>
-            </button>
-
-            {/* 확대/축소 리셋 버튼 */}
-            {isModalZoomed && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalZoomReset();
-                }}
-                className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 위치 리셋 버튼 */}
-            {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalPositionReset();
-                }}
-                className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                title="위치 리셋"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 닫기 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                closePage5Modal();
-              }}
-              className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
-              title={t('close')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-            style={{
-              transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
-              transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={handleModalDragStart}
-            onMouseMove={isModalDragging ? handleModalDragMove : undefined}
-            onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
-            onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
-          >
-            {/* 팝업 이미지 표시 */}
-            <div className="flex items-center justify-center">
-              <img
-                src={getPopupPath(currentLanguage,
-                  selectedPage5Area === 1 ? '5-1.jpg' :
-                  selectedPage5Area === 2 ? '5-2.jpg' :
-                  selectedPage5Area === 3 ? '5-1-img.jpg' :
-                  selectedPage5Area === 4 ? '5-2-img.jpg' :
-                  selectedPage5Area === 5 ? '5-3-img.jpg' :
-                  selectedPage5Area === 6 ? '5-4-img.jpg' :
-                  '5-1.jpg'
-                )}
-                alt={t('popupWithNumber').replace('{number}', `5-${selectedPage5Area}`)}
-                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 메시지 표시
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
-              />
+              {/* 고정 버튼들 - 모달 외부에 배치 */}
               <div
-                className="hidden text-gray-500 text-center"
-                style={{ display: 'none' }}
+                className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+                onClick={(e) => e.stopPropagation()}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: /FrienderFile/Popup/5-{selectedPage5Area}.jpg</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-      {/* 6페이지 모달 */}
-      {isPage6ModalOpen && selectedPage6Area && (
-        <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={closePage6Modal}
-        >
-          {/* 고정 버튼들 - 모달 외부에 배치 */}
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
-            {/* 확대 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomIn();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomIn')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-              </svg>
-            </button>
-
-            {/* 축소 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomOut();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
-              </svg>
-            </button>
-
-            {/* 확대/축소 리셋 버튼 */}
-            {isModalZoomed && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalZoomReset();
-                }}
-                className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 위치 리셋 버튼 */}
-            {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalPositionReset();
-                }}
-                className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                title="위치 리셋"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 닫기 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                closePage6Modal();
-              }}
-              className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
-              title={t('close')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-            style={{
-              transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
-              transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={handleModalDragStart}
-            onMouseMove={isModalDragging ? handleModalDragMove : undefined}
-            onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
-            onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
-          >
-
-            {/* 팝업 이미지 또는 GIF 표시 */}
-            <div className="flex items-center justify-center w-full">
-              {page6MediaOverride ? (
-                <img
-                  src={page6MediaOverride.src}
-                  alt={page6MediaOverride.alt}
-                  className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
-                  style={{
-                    width: 'auto',
-                    height: 'auto',
+                {/* 확대 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomIn();
                   }}
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
-                  }}
-                />
-              ) : (
-                <img
-                  src={getPopupPath(currentLanguage,
-                    selectedPage6Area === 1 ? '6-1.jpg' :
-                    selectedPage6Area === 2 ? '6-2.jpg' :
-                    selectedPage6Area === 3 ? '6-3.jpg' :
-                    selectedPage6Area === 4 ? '6-4.jpg' :
-                    selectedPage6Area === 5 ? '6-1-img.jpg' :
-                    selectedPage6Area === 6 ? '6-2-img.jpg' :
-                    selectedPage6Area === 7 ? '6-3-img.jpg' :
-                    '6-1.jpg'
-                  )}
-                  alt={t('popupArea').replace('{area}', selectedPage6Area)}
-                  className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                  onError={(e) => {
-                    // 이미지 로드 실패 시 메시지 표시
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
-                  }}
-                />
-              )}
-              <div
-                className="hidden text-gray-500 text-center"
-                style={{ display: 'none' }}
-              >
-                <p>{t('imageLoadFailed')}</p>
-                <p className="text-sm">
-                  {page6MediaOverride
-                    ? `${t('path')}: ${page6MediaOverride.src}`
-                    : t('popupFileNotFound').replace('{area}', selectedPage6Area)}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomIn')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                    />
+                  </svg>
+                </button>
 
-      {/* 6페이지 3D 모델 모달창 */}
-      {isPage63DModalOpen && (
-        <div 
-          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
-          onClick={closePage63DModal}
-        >
-          <div 
-            className="relative w-[90vw] h-[90vh] bg-white rounded-lg shadow-2xl overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* 3D 모델 컨테이너 */}
-            <div className="w-full h-full relative">
-              {/* 3D 모델 */}
-              <div className="w-full h-full">
-                <Frender3DModel 
-                  isVisible={true} 
-                  opacity={0.9}
-                  scale={0.7}
-                  position={{ x: 0, y: 0 }}
-                  animationDelay={0}
-                  modelPath="/FrienderFile/3DModel/Drone.glb"
-                  isModal={true}
-                  cameraPosition={[3, 3, 8]}
-                  cameraFov={15}
-                  customScale={0.5}
-                  rotateSpeed={1.0}
-                  showWireframe={false}
-                />
-              </div>
-            </div>
-            
-            {/* 모달 하단 컨트롤 */}
-            <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
-              <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
-                <div className="flex justify-center">
+                {/* 축소 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomOut();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomOut')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 확대/축소 리셋 버튼 */}
+                {isModalZoomed && (
                   <button
-                    onClick={closePage63DModal}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalZoomReset();
+                    }}
+                    className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                    title={t('zoomReset')}
                   >
-                    {t('close')}
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
                   </button>
+                )}
+
+                {/* 위치 리셋 버튼 */}
+                {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalPositionReset();
+                    }}
+                    className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
+                    title="위치 리셋"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 닫기 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closePage4Modal();
+                  }}
+                  className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
+                  title={t('close')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div
+                className={`bg-white rounded-2xl p-6 max-w-5xl max-h-[95vh] overflow-auto relative shadow-2xl ${
+                  isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+                }`}
+                style={{
+                  transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
+                  transformOrigin: 'center center',
+                  transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
+                }}
+                onClick={(e) => e.stopPropagation()}
+                onMouseDown={handleModalDragStart}
+                onMouseMove={isModalDragging ? handleModalDragMove : undefined}
+                onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
+                onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
+              >
+                {/* 팝업 콘텐츠 */}
+                <div className="relative flex items-center justify-center w-full">
+                  {selectedPage4Area === 3 ? (
+                    <div className="w-full space-y-6">
+                      <div className="text-center space-y-2">
+                        <p className="text-2xl font-semibold text-gray-900">
+                          {t('droneLearningContent')}
+                        </p>
+                        <p className="text-sm text-gray-600">{t('dronePlaylistDescription')}</p>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {getDroneVideoPlaylist(t).map((video, index) => {
+                          const embedUrl = getYouTubeEmbedUrl(video.url);
+                          return (
+                            <div
+                              key={video.url}
+                              className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 flex flex-col"
+                            >
+                              {embedUrl ? (
+                                <div className="relative w-full pt-[56.25%] bg-black">
+                                  <iframe
+                                    src={embedUrl}
+                                    title={`${index + 1}. ${video.title}`}
+                                    className="absolute inset-0 w-full h-full"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerPolicy="strict-origin-when-cross-origin"
+                                    allowFullScreen
+                                  />
+                                </div>
+                              ) : (
+                                <div className="p-6 text-center text-sm text-red-500">
+                                  영상을 불러올 수 없습니다.
+                                </div>
+                              )}
+
+                              <div className="p-4 space-y-1 bg-gray-50">
+                                <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">
+                                  {`${index + 1}. ${video.category}`}
+                                </p>
+                                <p className="text-base font-semibold text-gray-900">
+                                  {video.title}
+                                </p>
+                                <p className="text-sm text-gray-600">{video.description}</p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <img
+                        src={getPopupPath(
+                          currentLanguage,
+                          selectedPage4Area === 1
+                            ? '4-1.jpg'
+                            : selectedPage4Area === 2
+                            ? '4-2.jpg'
+                            : selectedPage4Area === 4
+                            ? '4-1-img.jpg'
+                            : selectedPage4Area === 5
+                            ? '4-2-img.jpg'
+                            : selectedPage4Area === 6
+                            ? '4-3-img.jpg'
+                            : '4-1.jpg'
+                        )}
+                        alt={t('popupWithNumber').replace('{number}', `4-${selectedPage4Area}`)}
+                        className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-lg"
+                        onError={(e) => {
+                          // 이미지 로드 실패 시 메시지 표시
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'block';
+                        }}
+                      />
+
+                      <div className="hidden text-gray-500 text-center" style={{ display: 'none' }}>
+                        <p>{t('imageLoadFailed')}</p>
+                        <p className="text-sm">
+                          {t('path')}: /FrienderFile/Popup/4-{selectedPage4Area}.jpg
+                        </p>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* 2페이지 모달 */}
-      {isPage2ModalOpen && selectedPage2Area && (
-        <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={closePage2Modal}
-        >
-          {/* 고정 버튼들 - 모달 외부에 배치 */}
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
-            {/* 확대 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomIn();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomIn')}
+          )}
+          {/* 4페이지 영역 2번 전용 모달 (테스트용) */}
+          {isPage4Area2ModalOpen && (
+            <div
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              onClick={closePage4Area2Modal}
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-              </svg>
-            </button>
-
-            {/* 축소 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomOut();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
-              </svg>
-            </button>
-
-            {/* 확대/축소 리셋 버튼 */}
-            {isModalZoomed && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalZoomReset();
-                }}
-                className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 위치 리셋 버튼 */}
-            {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalPositionReset();
-                }}
-                className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                title="위치 리셋"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 닫기 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                closePage2Modal();
-              }}
-              className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
-              title={t('close')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-            style={{
-              transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
-              transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={handleModalDragStart}
-            onMouseMove={isModalDragging ? handleModalDragMove : undefined}
-            onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
-            onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
-          >
-            {/* 팝업 이미지 표시 */}
-            <div className="flex items-center justify-center">
-              <img
-                src={getPopupPath(currentLanguage, `2-${selectedPage2Area}.jpg`)}
-                alt={t('popupWithNumber').replace('{number}', `2-${selectedPage2Area}`)}
-                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 메시지 표시
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
-              />
               <div
-                className="hidden text-gray-500 text-center"
-                style={{ display: 'none' }}
+                className="bg-white rounded-2xl p-6 max-w-5xl max-h-[95vh] overflow-auto relative shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: /FrienderFile/Popup/2-{selectedPage2Area}.jpg</p>
+                {/* 닫기 버튼 */}
+                <button
+                  onClick={closePage4Area2Modal}
+                  className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-3xl font-bold z-10 transition-colors duration-300"
+                >
+                  ×
+                </button>
+
+                {/* 이미지와 3D 모델 표시 */}
+                <div className="relative flex items-center justify-center"></div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* 3페이지 모달 */}
-      {isPage3ModalOpen && selectedPage3Area && (
-        <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={closePage3Modal}
-        >
-          {/* 고정 버튼들 - 모달 외부에 배치 */}
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
-            {/* 확대 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomIn();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomIn')}
+          )}
+          {/* 5페이지 모달 */}
+          {isPage5ModalOpen && selectedPage5Area && (
+            <div
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              onClick={closePage5Modal}
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-              </svg>
-            </button>
-
-            {/* 축소 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomOut();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
-              </svg>
-            </button>
-
-            {/* 확대/축소 리셋 버튼 */}
-            {isModalZoomed && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalZoomReset();
-                }}
-                className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 위치 리셋 버튼 */}
-            {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalPositionReset();
-                }}
-                className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                title="위치 리셋"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 닫기 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                closePage3Modal();
-              }}
-              className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
-              title={t('close')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-            style={{
-              transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
-              transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={handleModalDragStart}
-            onMouseMove={isModalDragging ? handleModalDragMove : undefined}
-            onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
-            onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
-          >
-            {/* 팝업 이미지 표시 */}
-            <div className="flex items-center justify-center">
-              <img
-                src={getPopupPath(currentLanguage,
-                  selectedPage3Area === 1 ? '3-1.jpg' :
-                  selectedPage3Area === 2 ? '3-2.jpg' :
-                  selectedPage3Area === 3 ? '3-3.jpg' :
-                  selectedPage3Area === 4 ? '3-4.jpg' :
-                  selectedPage3Area === 5 ? '3-5.jpg' :
-                  '3-1.jpg'
-                )}
-                alt={t('popupWithNumber').replace('{number}', `3-${selectedPage3Area}`)}
-                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 메시지 표시
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
-              />
+              {/* 고정 버튼들 - 모달 외부에 배치 */}
               <div
-                className="hidden text-gray-500 text-center"
-                style={{ display: 'none' }}
+                className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+                onClick={(e) => e.stopPropagation()}
               >
-                <p>이미지를 불러올 수 없습니다.</p>
-                    <p className="text-sm">{t('path')}: /FrienderFile/Popup/3-{selectedPage3Area}.jpg 또는 .png</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 7페이지 모달 */}
-      {isPage7ModalOpen && selectedPage7Area && (
-        <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={closePage7Modal}
-        >
-          {/* 고정 버튼들 - 모달 외부에 배치 */}
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
-            {/* 확대 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomIn();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomIn')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-              </svg>
-            </button>
-
-            {/* 축소 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomOut();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
-              </svg>
-            </button>
-
-            {/* 확대/축소 리셋 버튼 */}
-            {isModalZoomed && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalZoomReset();
-                }}
-                className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 위치 리셋 버튼 */}
-            {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalPositionReset();
-                }}
-                className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                title="위치 리셋"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 닫기 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                closePage7Modal();
-              }}
-              className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
-              title={t('close')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-            style={{
-              transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
-              transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={handleModalDragStart}
-            onMouseMove={isModalDragging ? handleModalDragMove : undefined}
-            onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
-            onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
-          >
-            {/* 팝업 이미지 또는 GIF 표시 */}
-            <div className="flex items-center justify-center w-full">
-              {page7MediaOverride ? (
-                <img
-                  src={page7MediaOverride.src}
-                  alt={page7MediaOverride.alt}
-                  className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
+                {/* 확대 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomIn();
                   }}
-                />
-              ) : (
-                <img
-                  src={getPopupPath(currentLanguage,
-                    selectedPage7Area === 1 ? '7-1.jpg' :
-                    selectedPage7Area === 2 ? '7-2.jpg' :
-                    selectedPage7Area === 3 ? '7-3.jpg' :
-                    selectedPage7Area === 4 ? '7-4.jpg' :
-                    selectedPage7Area === 5 ? '7-1-img.jpg' :
-                    selectedPage7Area === 6 ? '7-2-img.jpg' :
-                    selectedPage7Area === 7 ? '7-3-img.jpg' :
-                    '7-1.jpg'
-                  )}
-                  alt={t('popupWithNumber').replace('{number}', `7-${selectedPage7Area}`)}
-                  className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                  onError={(e) => {
-                    // 이미지 로드 실패 시 메시지 표시
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomIn')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 축소 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomOut();
                   }}
-                />
-              )}
-              <div
-                className="hidden text-gray-500 text-center"
-                style={{ display: 'none' }}
-              >
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">
-                  {page7MediaOverride
-                    ? `${t('path')}: ${page7MediaOverride.src}`
-                    : `${t('path')}: /FrienderFile/Popup/7-${selectedPage7Area}.jpg`}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomOut')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                    />
+                  </svg>
+                </button>
 
-      {/* 8페이지 모달 */}
-      {isPage8ModalOpen && selectedPage8Area && (
-        <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={closePage8Modal}
-        >
-          {/* 고정 버튼들 - 모달 외부에 배치 */}
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
-            {/* 확대 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomIn();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomIn')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-              </svg>
-            </button>
-
-            {/* 축소 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomOut();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
-              </svg>
-            </button>
-
-            {/* 확대/축소 리셋 버튼 */}
-            {isModalZoomed && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalZoomReset();
-                }}
-                className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 위치 리셋 버튼 */}
-            {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalPositionReset();
-                }}
-                className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                title="위치 리셋"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 닫기 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                closePage8Modal();
-              }}
-              className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
-              title={t('close')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-            style={{
-              transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
-              transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={handleModalDragStart}
-            onMouseMove={isModalDragging ? handleModalDragMove : undefined}
-            onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
-            onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
-          >
-            {/* 팝업 이미지 표시 */}
-            <div className="flex items-center justify-center">
-              <img
-                src={getPopupPath(currentLanguage,
-                  selectedPage8Area === 1 ? '8-1.jpg' :
-                  selectedPage8Area === 2 ? '8-2.jpg' :
-                  selectedPage8Area === 3 ? '8-3.jpg' :
-                  selectedPage8Area === 4 ? '8-1-img.jpg' :
-                  '8-1.jpg'
+                {/* 확대/축소 리셋 버튼 */}
+                {isModalZoomed && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalZoomReset();
+                    }}
+                    className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                    title={t('zoomReset')}
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
                 )}
-                alt={t('popupWithNumber').replace('{number}', `8-${selectedPage8Area}`)}
-                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 메시지 표시
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
-              />
-              <div
-                className="hidden text-gray-500 text-center"
-                style={{ display: 'none' }}
-              >
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: /FrienderFile/Popup/8-{selectedPage8Area}.jpg</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-      {/* 9페이지 모달 */}
-      {isPage9ModalOpen && selectedPage9Area && (
-        <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={closePage9Modal}
-        >
-          {/* 고정 버튼들 - 모달 외부에 배치 */}
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
-            {/* 확대 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomIn();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomIn')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-              </svg>
-            </button>
 
-            {/* 축소 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomOut();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
-              </svg>
-            </button>
-
-            {/* 확대/축소 리셋 버튼 */}
-            {isModalZoomed && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalZoomReset();
-                }}
-                className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 위치 리셋 버튼 */}
-            {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalPositionReset();
-                }}
-                className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                title="위치 리셋"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 닫기 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                closePage9Modal();
-              }}
-              className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
-              title={t('close')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-            style={{
-              transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
-              transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={handleModalDragStart}
-            onMouseMove={isModalDragging ? handleModalDragMove : undefined}
-            onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
-            onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
-          >
-            {/* 팝업 이미지 표시 */}
-            <div className="flex items-center justify-center">
-              <img
-                src={getPopupPath(currentLanguage, `9-${selectedPage9Area}.jpg`)}
-                alt={t('popupWithNumber').replace('{number}', `9-${selectedPage9Area}`)}
-                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 메시지 표시
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
-              />
-              <div
-                className="hidden text-gray-500 text-center"
-                style={{ display: 'none' }}
-              >
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: /FrienderFile/Popup/9-{selectedPage9Area}.jpg</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-      {/* 10페이지 모달 */}
-      {isPage10ModalOpen && selectedPage10Area && (
-        <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={closePage10Modal}
-        >
-          {/* 고정 버튼들 - 모달 외부에 배치 */}
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
-            {/* 확대 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomIn();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomIn')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-              </svg>
-            </button>
-
-            {/* 축소 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomOut();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
-              </svg>
-            </button>
-
-            {/* 확대/축소 리셋 버튼 */}
-            {isModalZoomed && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalZoomReset();
-                }}
-                className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 위치 리셋 버튼 */}
-            {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalPositionReset();
-                }}
-                className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                title="위치 리셋"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 닫기 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                closePage10Modal();
-              }}
-              className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
-              title={t('close')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-            style={{
-              transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
-              transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={handleModalDragStart}
-            onMouseMove={isModalDragging ? handleModalDragMove : undefined}
-            onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
-            onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
-          >
-            {/* 팝업 이미지 표시 */}
-            <div className="flex items-center justify-center">
-              <img
-                src={getPopupPath(currentLanguage,
-                  selectedPage10Area === 1 ? '10-1.jpg' :
-                  selectedPage10Area === 2 ? '10-2.jpg' :
-                  selectedPage10Area === 3 ? '10-1-img.jpg' :
-                  selectedPage10Area === 4 ? '10-2-img.jpg' :
-                  selectedPage10Area === 5 ? '10-3-img.jpg' :
-                  selectedPage10Area === 6 ? '10-4-img.jpg' :
-                  '10-1.jpg'
+                {/* 위치 리셋 버튼 */}
+                {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalPositionReset();
+                    }}
+                    className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
+                    title="위치 리셋"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
                 )}
-                alt={t('popupWithNumber').replace('{number}', `10-${selectedPage10Area}`)}
-                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 메시지 표시
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
-              />
-              <div
-                className="hidden text-gray-500 text-center"
-                style={{ display: 'none' }}
-              >
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: /FrienderFile/Popup/10-{selectedPage10Area}.jpg</p>
+
+                {/* 닫기 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closePage5Modal();
+                  }}
+                  className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
+                  title={t('close')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
-      {/* 11페이지 모달 */}
-      {isPage11ModalOpen && (
-        <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={closePage11Modal}
-        >
-          {/* 고정 버튼들 - 모달 외부에 배치 */}
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
-            {/* 확대 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomIn();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomIn')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-              </svg>
-            </button>
 
-            {/* 축소 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleModalZoomOut();
-              }}
-              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-              title={t('zoomOut')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
-              </svg>
-            </button>
-
-            {/* 확대/축소 리셋 버튼 */}
-            {isModalZoomed && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalZoomReset();
+              <div
+                className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+                  isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+                }`}
+                style={{
+                  transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
+                  transformOrigin: 'center center',
+                  transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
                 }}
-                className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
-                title={t('zoomReset')}
+                onClick={(e) => e.stopPropagation()}
+                onMouseDown={handleModalDragStart}
+                onMouseMove={isModalDragging ? handleModalDragMove : undefined}
+                onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
+                onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 위치 리셋 버튼 */}
-            {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleModalPositionReset();
-                }}
-                className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
-                title="위치 리셋"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-            )}
-
-            {/* 닫기 버튼 */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                closePage11Modal();
-              }}
-              className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
-              title={t('close')}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-            style={{
-              transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
-              transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={handleModalDragStart}
-            onMouseMove={isModalDragging ? handleModalDragMove : undefined}
-            onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
-            onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
-          >
-            {/* 팝업 이미지 + 네이버 지도 */}
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-stretch">
-              <div className="flex-1 flex items-center justify-center">
-                <div className="flex flex-col items-center gap-3">
+                {/* 팝업 이미지 표시 */}
+                <div className="flex items-center justify-center">
                   <img
-                    src={getPopupPath(currentLanguage, '11-1.jpg')}
-                    alt={t('popupWithNumber').replace('{number}', '11-1')}
+                    src={getPopupPath(
+                      currentLanguage,
+                      selectedPage5Area === 1
+                        ? '5-1.jpg'
+                        : selectedPage5Area === 2
+                        ? '5-2.jpg'
+                        : selectedPage5Area === 3
+                        ? '5-1-img.jpg'
+                        : selectedPage5Area === 4
+                        ? '5-2-img.jpg'
+                        : selectedPage5Area === 5
+                        ? '5-3-img.jpg'
+                        : selectedPage5Area === 6
+                        ? '5-4-img.jpg'
+                        : '5-1.jpg'
+                    )}
+                    alt={t('popupWithNumber').replace('{number}', `5-${selectedPage5Area}`)}
                     className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
                     onError={(e) => {
                       // 이미지 로드 실패 시 메시지 표시
@@ -5426,208 +4569,1539 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                       e.target.nextSibling.style.display = 'block';
                     }}
                   />
-                  <div
-                    className="hidden text-gray-500 text-center"
-                    style={{ display: 'none' }}
-                  >
-                    <p>{t('imageLoadFailed')}</p>
-                    <p className="text-sm">{t('path')}: /FrienderFile/Popup/11-1.jpg</p>
+                  <div className="hidden text-gray-500 text-center" style={{ display: 'none' }}>
+                    <p>이미지를 불러올 수 없습니다.</p>
+                    <p className="text-sm">경로: /FrienderFile/Popup/5-{selectedPage5Area}.jpg</p>
                   </div>
                 </div>
               </div>
+            </div>
+          )}
+          {/* 6페이지 모달 */}
+          {isPage6ModalOpen && selectedPage6Area && (
+            <div
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              onClick={closePage6Modal}
+            >
+              {/* 고정 버튼들 - 모달 외부에 배치 */}
+              <div
+                className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* 확대 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomIn();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomIn')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                    />
+                  </svg>
+                </button>
 
-              <div className="flex-1 flex flex-col gap-4">
-                <div className="relative w-full min-h-[260px] h-[320px] lg:h-full rounded-2xl overflow-hidden border border-gray-200 shadow-inner bg-gray-50">
-                  <iframe
-                    title="Friender 위치 안내 (네이버 지도)"
-                    src={NAVER_MAP_EMBED_URL}
-                    className="w-full h-full"
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    allowFullScreen
-                    allow="accelerometer; gyroscope; magnetometer"
-                  />
-                  <div className="pointer-events-none absolute bottom-3 right-3 bg-white/90 text-xs text-gray-700 px-3 py-1 rounded-full shadow">
-                    네이버 지도
-                  </div>
-                </div>
+                {/* 축소 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomOut();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomOut')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                    />
+                  </svg>
+                </button>
 
-                <div className="space-y-1 text-sm leading-relaxed text-gray-700">
-                  <p className="text-base font-semibold text-gray-900">주소</p>
-                  <p>{NAVER_MAP_ADDRESS}</p>
-                  <p className="text-xs text-gray-500">
-                    위도 {NAVER_MAP_COORDINATES.lat.toFixed(6)} · 경도 {NAVER_MAP_COORDINATES.lng.toFixed(6)}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {t('mapNotVisible')}
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-3">
+                {/* 확대/축소 리셋 버튼 */}
+                {isModalZoomed && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleOpenNaverMap();
+                      handleModalZoomReset();
                     }}
-                    className="px-5 py-2.5 rounded-full bg-green-500 text-white font-semibold text-sm shadow hover:bg-green-600 transition-colors duration-200 cursor-pointer"
-                    title="네이버 지도 새 창에서 열기"
+                    className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                    title={t('zoomReset')}
                   >
-                    네이버 지도 열기
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
                   </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+                )}
 
-      {/* 5페이지 3D 모델 모달창 */}
-      {isPage53DModalOpen && (
-        <div 
-          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
-          onClick={() => {
-            setIsPage53DModalOpen(false);
-            setCurrentPartModel(null);
-            setSelectedPart(1);
-            setIsPage53DModelLoading(false);
-          }}
-        >
-          <div 
-            className={`relative w-[90vw] h-[90vh] bg-white rounded-lg shadow-2xl overflow-hidden ${currentPartModel ? 'p-0' : ''}`}
-            onClick={(e) => e.stopPropagation()}
-            key={`3d-modal-${modalKey}-${selectedPart}`} // 모달 새로고침을 위한 키 (파트 변경 포함)
-          >
-            {/* 모달 헤더 - 전체 시스템일 때만 표시 */}
-            {!currentPartModel && (
-              <div className="absolute top-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-b border-gray-200 p-4">
-                <div className="flex justify-center items-center">
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    5페이지 3D 모델 뷰어 - 전체 시스템
-                  </h3>
-                </div>
+                {/* 위치 리셋 버튼 */}
+                {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalPositionReset();
+                    }}
+                    className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
+                    title="위치 리셋"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 닫기 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closePage6Modal();
+                  }}
+                  className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
+                  title={t('close')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
               </div>
-            )}
-            
-            {/* 3D 모델 컨테이너 - 제목과 하단 컨트롤 영역 제외 */}
-            <div className={`w-full relative ${!currentPartModel ? 'h-full pt-16 pb-20' : 'h-full pb-16'}`}>
-              
-              
-              {/* 파트 선택 안내 텍스트 */}
-              {!currentPartModel && (
-                <div className="absolute top-20 left-1/2 transform -translate-x-1/2 z-20 bg-white/90 backdrop-blur-sm rounded-lg px-6 py-3 shadow-lg border border-gray-200">
-                  <div className="text-center">
-                    <p className="text-lg font-semibold text-gray-800 mb-1">🎯 {t('selectPart')}</p>
-                    <p className="text-sm text-gray-600">{t('modelControlsDetail')}</p>
+
+              <div
+                className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+                  isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+                }`}
+                style={{
+                  transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
+                  transformOrigin: 'center center',
+                  transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
+                }}
+                onClick={(e) => e.stopPropagation()}
+                onMouseDown={handleModalDragStart}
+                onMouseMove={isModalDragging ? handleModalDragMove : undefined}
+                onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
+                onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
+              >
+                {/* 팝업 이미지 또는 GIF 표시 */}
+                <div className="flex items-center justify-center w-full">
+                  {page6MediaOverride ? (
+                    <img
+                      src={page6MediaOverride.src}
+                      alt={page6MediaOverride.alt}
+                      className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+                      style={{
+                        width: 'auto',
+                        height: 'auto',
+                      }}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'block';
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={getPopupPath(
+                        currentLanguage,
+                        selectedPage6Area === 1
+                          ? '6-1.jpg'
+                          : selectedPage6Area === 2
+                          ? '6-2.jpg'
+                          : selectedPage6Area === 3
+                          ? '6-3.jpg'
+                          : selectedPage6Area === 4
+                          ? '6-4.jpg'
+                          : selectedPage6Area === 5
+                          ? '6-1-img.jpg'
+                          : selectedPage6Area === 6
+                          ? '6-2-img.jpg'
+                          : selectedPage6Area === 7
+                          ? '6-3-img.jpg'
+                          : '6-1.jpg'
+                      )}
+                      alt={t('popupArea').replace('{area}', selectedPage6Area)}
+                      className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                      onError={(e) => {
+                        // 이미지 로드 실패 시 메시지 표시
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'block';
+                      }}
+                    />
+                  )}
+                  <div className="hidden text-gray-500 text-center" style={{ display: 'none' }}>
+                    <p>{t('imageLoadFailed')}</p>
+                    <p className="text-sm">
+                      {page6MediaOverride
+                        ? `${t('path')}: ${page6MediaOverride.src}`
+                        : t('popupFileNotFound').replace('{area}', selectedPage6Area)}
+                    </p>
                   </div>
                 </div>
-              )}
-              
-              {/* 3D 모델 - 배경 이미지 위에 표시 */}
-              <div className={`z-10 w-full h-full ${currentPartModel ? 'absolute inset-0' : 'relative'}`}>
-                <Frender3DModel 
-                  isVisible={true} 
-                  opacity={0.9}
-                  scale={0.7}
-                  position={{ x: 0, y: 0 }}
-                  animationDelay={0}
-                  modelPath={currentPartModel || ""}
-                  isModal={true}
-                  cameraPosition={[3, -2, 8]} // 파트 모델링과 system_with_panel 분리
-                  cameraFov={30}
-                  customScale={0.3}
-                  rotateSpeed={1.0}
-                  showWireframe={!currentPartModel} // 파트 모델이 선택되면 박스 숨김
-                  onPartClick={handlePage5PartClick}
-                  onModelLoad={() => setIsPage53DModelLoading(false)} // 모델 로딩 완료 시 로딩 상태 해제
-                />
               </div>
             </div>
-            
-            {/* 모달 하단 컨트롤 */}
-            <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
-              <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
-                <div className="flex justify-center space-x-4">
-                  {currentPartModel && (
-                    <button
-                      onClick={() => {
-                        setCurrentPartModel(null);
-                        setSelectedPart(1);
-                        setIsPage53DModelLoading(false);
-                      }}
-                      className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-                    >
-                      전체 모델로 돌아가기
-                    </button>
-                  )}
+          )}
+          {/* 6페이지 3D 모델 모달창 */}
+          {isPage63DModalOpen && (
+            <div
+              className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+              onClick={closePage63DModal}
+            >
+              <div
+                className="relative w-[90vw] h-[90vh] bg-white rounded-lg shadow-2xl overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* 3D 모델 컨테이너 */}
+                <div className="w-full h-full relative">
+                  {/* 3D 모델 */}
+                  <div className="w-full h-full">
+                    <Frender3DModel
+                      isVisible={true}
+                      opacity={0.9}
+                      scale={0.7}
+                      position={{ x: 0, y: 0 }}
+                      animationDelay={0}
+                      modelPath="/FrienderFile/3DModel/Drone.glb"
+                      isModal={true}
+                      cameraPosition={[3, 3, 8]}
+                      cameraFov={15}
+                      customScale={0.5}
+                      rotateSpeed={1.0}
+                      showWireframe={false}
+                    />
+                  </div>
+                </div>
+
+                {/* 모달 하단 컨트롤 */}
+                <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
+                  <div className="text-center">
+                    <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
+                    <div className="flex justify-center">
+                      <button
+                        onClick={closePage63DModal}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        {t('close')}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* 2페이지 모달 */}
+          {isPage2ModalOpen && selectedPage2Area && (
+            <div
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              onClick={closePage2Modal}
+            >
+              {/* 고정 버튼들 - 모달 외부에 배치 */}
+              <div
+                className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* 확대 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomIn();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomIn')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 축소 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomOut();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomOut')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 확대/축소 리셋 버튼 */}
+                {isModalZoomed && (
                   <button
-                    onClick={() => {
-                      setIsPage53DModalOpen(false);
-                      setCurrentPartModel(null);
-                      setSelectedPart(1);
-                      setIsPage53DModelLoading(false);
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalZoomReset();
                     }}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                    title={t('zoomReset')}
                   >
-                    {t('close')}
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
                   </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+                )}
 
-      {/* 5페이지 외장재 모달창 */}
-      {isPage5ExteriorModalOpen && selectedExteriorType && (
-        <div 
-          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
-          onClick={closePage5ExteriorModal}
-        >
-          <div 
-            className="relative w-[90vw] h-[90vh] bg-white rounded-lg shadow-2xl overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* 3D 모델 컨테이너 - 제목과 하단 컨트롤 영역 제외 */}
-            <div className="w-full h-full pb-16 relative">
-              
-              {/* 3D 모델 */}
-              <div className="absolute inset-0 z-10 w-full h-full">
-                <Frender3DModel 
-                  isVisible={true} 
-                  opacity={0.9}
-                  scale={0.7}
-                  position={{ x: 0, y: 0 }}
-                  animationDelay={0}
-                  modelPath=""
-                  isModal={true}
-                  cameraPosition={[3, -2, 8]}
-                  cameraFov={20}
-                  customScale={0.6}
-                  rotateSpeed={1.0}
-                  showWireframe={false}
-                />
-              </div>
-            </div>
-            
-            {/* 모달 하단 컨트롤 */}
-            <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
-              <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
-                <div className="flex justify-center space-x-4">
+                {/* 위치 리셋 버튼 */}
+                {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
                   <button
-                    onClick={closePage5ExteriorModal}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalPositionReset();
+                    }}
+                    className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
+                    title="위치 리셋"
                   >
-                    {t('close')}
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
                   </button>
+                )}
+
+                {/* 닫기 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closePage2Modal();
+                  }}
+                  className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
+                  title={t('close')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div
+                className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+                  isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+                }`}
+                style={{
+                  transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
+                  transformOrigin: 'center center',
+                  transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
+                }}
+                onClick={(e) => e.stopPropagation()}
+                onMouseDown={handleModalDragStart}
+                onMouseMove={isModalDragging ? handleModalDragMove : undefined}
+                onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
+                onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
+              >
+                {/* 팝업 이미지 표시 */}
+                <div className="flex items-center justify-center">
+                  <img
+                    src={getPopupPath(currentLanguage, `2-${selectedPage2Area}.jpg`)}
+                    alt={t('popupWithNumber').replace('{number}', `2-${selectedPage2Area}`)}
+                    className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                    onError={(e) => {
+                      // 이미지 로드 실패 시 메시지 표시
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'block';
+                    }}
+                  />
+                  <div className="hidden text-gray-500 text-center" style={{ display: 'none' }}>
+                    <p>이미지를 불러올 수 없습니다.</p>
+                    <p className="text-sm">경로: /FrienderFile/Popup/2-{selectedPage2Area}.jpg</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
+          )}
+          {/* 3페이지 모달 */}
+          {isPage3ModalOpen && selectedPage3Area && (
+            <div
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              onClick={closePage3Modal}
+            >
+              {/* 고정 버튼들 - 모달 외부에 배치 */}
+              <div
+                className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* 확대 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomIn();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomIn')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                    />
+                  </svg>
+                </button>
 
+                {/* 축소 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomOut();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomOut')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 확대/축소 리셋 버튼 */}
+                {isModalZoomed && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalZoomReset();
+                    }}
+                    className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                    title={t('zoomReset')}
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 위치 리셋 버튼 */}
+                {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalPositionReset();
+                    }}
+                    className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
+                    title="위치 리셋"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 닫기 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closePage3Modal();
+                  }}
+                  className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
+                  title={t('close')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div
+                className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+                  isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+                }`}
+                style={{
+                  transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
+                  transformOrigin: 'center center',
+                  transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
+                }}
+                onClick={(e) => e.stopPropagation()}
+                onMouseDown={handleModalDragStart}
+                onMouseMove={isModalDragging ? handleModalDragMove : undefined}
+                onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
+                onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
+              >
+                {/* 팝업 이미지 표시 */}
+                <div className="flex items-center justify-center">
+                  <img
+                    src={getPopupPath(
+                      currentLanguage,
+                      selectedPage3Area === 1
+                        ? '3-1.jpg'
+                        : selectedPage3Area === 2
+                        ? '3-2.jpg'
+                        : selectedPage3Area === 3
+                        ? '3-3.jpg'
+                        : selectedPage3Area === 4
+                        ? '3-4.jpg'
+                        : selectedPage3Area === 5
+                        ? '3-5.jpg'
+                        : '3-1.jpg'
+                    )}
+                    alt={t('popupWithNumber').replace('{number}', `3-${selectedPage3Area}`)}
+                    className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                    onError={(e) => {
+                      // 이미지 로드 실패 시 메시지 표시
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'block';
+                    }}
+                  />
+                  <div className="hidden text-gray-500 text-center" style={{ display: 'none' }}>
+                    <p>이미지를 불러올 수 없습니다.</p>
+                    <p className="text-sm">
+                      {t('path')}: /FrienderFile/Popup/3-{selectedPage3Area}.jpg 또는 .png
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* 7페이지 모달 */}
+          {isPage7ModalOpen && selectedPage7Area && (
+            <div
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              onClick={closePage7Modal}
+            >
+              {/* 고정 버튼들 - 모달 외부에 배치 */}
+              <div
+                className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* 확대 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomIn();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomIn')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 축소 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomOut();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomOut')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 확대/축소 리셋 버튼 */}
+                {isModalZoomed && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalZoomReset();
+                    }}
+                    className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                    title={t('zoomReset')}
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 위치 리셋 버튼 */}
+                {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalPositionReset();
+                    }}
+                    className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
+                    title="위치 리셋"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 닫기 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closePage7Modal();
+                  }}
+                  className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
+                  title={t('close')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div
+                className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+                  isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+                }`}
+                style={{
+                  transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
+                  transformOrigin: 'center center',
+                  transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
+                }}
+                onClick={(e) => e.stopPropagation()}
+                onMouseDown={handleModalDragStart}
+                onMouseMove={isModalDragging ? handleModalDragMove : undefined}
+                onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
+                onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
+              >
+                {/* 팝업 이미지 또는 GIF 표시 */}
+                <div className="flex items-center justify-center w-full">
+                  {page7MediaOverride ? (
+                    <img
+                      src={page7MediaOverride.src}
+                      alt={page7MediaOverride.alt}
+                      className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'block';
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={getPopupPath(
+                        currentLanguage,
+                        selectedPage7Area === 1
+                          ? '7-1.jpg'
+                          : selectedPage7Area === 2
+                          ? '7-2.jpg'
+                          : selectedPage7Area === 3
+                          ? '7-3.jpg'
+                          : selectedPage7Area === 4
+                          ? '7-4.jpg'
+                          : selectedPage7Area === 5
+                          ? '7-1-img.jpg'
+                          : selectedPage7Area === 6
+                          ? '7-2-img.jpg'
+                          : selectedPage7Area === 7
+                          ? '7-3-img.jpg'
+                          : '7-1.jpg'
+                      )}
+                      alt={t('popupWithNumber').replace('{number}', `7-${selectedPage7Area}`)}
+                      className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                      onError={(e) => {
+                        // 이미지 로드 실패 시 메시지 표시
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'block';
+                      }}
+                    />
+                  )}
+                  <div className="hidden text-gray-500 text-center" style={{ display: 'none' }}>
+                    <p>이미지를 불러올 수 없습니다.</p>
+                    <p className="text-sm">
+                      {page7MediaOverride
+                        ? `${t('path')}: ${page7MediaOverride.src}`
+                        : `${t('path')}: /FrienderFile/Popup/7-${selectedPage7Area}.jpg`}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* 8페이지 모달 */}
+          {isPage8ModalOpen && selectedPage8Area && (
+            <div
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              onClick={closePage8Modal}
+            >
+              {/* 고정 버튼들 - 모달 외부에 배치 */}
+              <div
+                className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* 확대 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomIn();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomIn')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 축소 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomOut();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomOut')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 확대/축소 리셋 버튼 */}
+                {isModalZoomed && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalZoomReset();
+                    }}
+                    className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                    title={t('zoomReset')}
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 위치 리셋 버튼 */}
+                {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalPositionReset();
+                    }}
+                    className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
+                    title="위치 리셋"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 닫기 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closePage8Modal();
+                  }}
+                  className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
+                  title={t('close')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div
+                className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+                  isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+                }`}
+                style={{
+                  transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
+                  transformOrigin: 'center center',
+                  transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
+                }}
+                onClick={(e) => e.stopPropagation()}
+                onMouseDown={handleModalDragStart}
+                onMouseMove={isModalDragging ? handleModalDragMove : undefined}
+                onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
+                onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
+              >
+                {/* 팝업 이미지 표시 */}
+                <div className="flex items-center justify-center">
+                  <img
+                    src={getPopupPath(
+                      currentLanguage,
+                      selectedPage8Area === 1
+                        ? '8-1.jpg'
+                        : selectedPage8Area === 2
+                        ? '8-2.jpg'
+                        : selectedPage8Area === 3
+                        ? '8-3.jpg'
+                        : selectedPage8Area === 4
+                        ? '8-1-img.jpg'
+                        : '8-1.jpg'
+                    )}
+                    alt={t('popupWithNumber').replace('{number}', `8-${selectedPage8Area}`)}
+                    className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                    onError={(e) => {
+                      // 이미지 로드 실패 시 메시지 표시
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'block';
+                    }}
+                  />
+                  <div className="hidden text-gray-500 text-center" style={{ display: 'none' }}>
+                    <p>이미지를 불러올 수 없습니다.</p>
+                    <p className="text-sm">경로: /FrienderFile/Popup/8-{selectedPage8Area}.jpg</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* 9페이지 모달 */}
+          {isPage9ModalOpen && selectedPage9Area && (
+            <div
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              onClick={closePage9Modal}
+            >
+              {/* 고정 버튼들 - 모달 외부에 배치 */}
+              <div
+                className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* 확대 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomIn();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomIn')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 축소 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomOut();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomOut')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 확대/축소 리셋 버튼 */}
+                {isModalZoomed && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalZoomReset();
+                    }}
+                    className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                    title={t('zoomReset')}
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 위치 리셋 버튼 */}
+                {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalPositionReset();
+                    }}
+                    className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
+                    title="위치 리셋"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 닫기 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closePage9Modal();
+                  }}
+                  className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
+                  title={t('close')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div
+                className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+                  isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+                }`}
+                style={{
+                  transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
+                  transformOrigin: 'center center',
+                  transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
+                }}
+                onClick={(e) => e.stopPropagation()}
+                onMouseDown={handleModalDragStart}
+                onMouseMove={isModalDragging ? handleModalDragMove : undefined}
+                onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
+                onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
+              >
+                {/* 팝업 이미지 표시 */}
+                <div className="flex items-center justify-center">
+                  <img
+                    src={getPopupPath(currentLanguage, `9-${selectedPage9Area}.jpg`)}
+                    alt={t('popupWithNumber').replace('{number}', `9-${selectedPage9Area}`)}
+                    className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                    onError={(e) => {
+                      // 이미지 로드 실패 시 메시지 표시
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'block';
+                    }}
+                  />
+                  <div className="hidden text-gray-500 text-center" style={{ display: 'none' }}>
+                    <p>이미지를 불러올 수 없습니다.</p>
+                    <p className="text-sm">경로: /FrienderFile/Popup/9-{selectedPage9Area}.jpg</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* 10페이지 모달 */}
+          {isPage10ModalOpen && selectedPage10Area && (
+            <div
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              onClick={closePage10Modal}
+            >
+              {/* 고정 버튼들 - 모달 외부에 배치 */}
+              <div
+                className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* 확대 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomIn();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomIn')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 축소 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomOut();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomOut')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 확대/축소 리셋 버튼 */}
+                {isModalZoomed && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalZoomReset();
+                    }}
+                    className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                    title={t('zoomReset')}
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 위치 리셋 버튼 */}
+                {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalPositionReset();
+                    }}
+                    className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
+                    title="위치 리셋"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 닫기 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closePage10Modal();
+                  }}
+                  className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
+                  title={t('close')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div
+                className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+                  isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+                }`}
+                style={{
+                  transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
+                  transformOrigin: 'center center',
+                  transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
+                }}
+                onClick={(e) => e.stopPropagation()}
+                onMouseDown={handleModalDragStart}
+                onMouseMove={isModalDragging ? handleModalDragMove : undefined}
+                onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
+                onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
+              >
+                {/* 팝업 이미지 표시 */}
+                <div className="flex items-center justify-center">
+                  <img
+                    src={getPopupPath(
+                      currentLanguage,
+                      selectedPage10Area === 1
+                        ? '10-1.jpg'
+                        : selectedPage10Area === 2
+                        ? '10-2.jpg'
+                        : selectedPage10Area === 3
+                        ? '10-1-img.jpg'
+                        : selectedPage10Area === 4
+                        ? '10-2-img.jpg'
+                        : selectedPage10Area === 5
+                        ? '10-3-img.jpg'
+                        : selectedPage10Area === 6
+                        ? '10-4-img.jpg'
+                        : '10-1.jpg'
+                    )}
+                    alt={t('popupWithNumber').replace('{number}', `10-${selectedPage10Area}`)}
+                    className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                    onError={(e) => {
+                      // 이미지 로드 실패 시 메시지 표시
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'block';
+                    }}
+                  />
+                  <div className="hidden text-gray-500 text-center" style={{ display: 'none' }}>
+                    <p>이미지를 불러올 수 없습니다.</p>
+                    <p className="text-sm">경로: /FrienderFile/Popup/10-{selectedPage10Area}.jpg</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* 11페이지 모달 */}
+          {isPage11ModalOpen && (
+            <div
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+              onClick={closePage11Modal}
+            >
+              {/* 고정 버튼들 - 모달 외부에 배치 */}
+              <div
+                className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* 확대 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomIn();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomIn')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 축소 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleModalZoomOut();
+                  }}
+                  className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                  title={t('zoomOut')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 확대/축소 리셋 버튼 */}
+                {isModalZoomed && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalZoomReset();
+                    }}
+                    className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                    title={t('zoomReset')}
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 위치 리셋 버튼 */}
+                {(modalDragOffset.x !== 0 || modalDragOffset.y !== 0) && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleModalPositionReset();
+                    }}
+                    className="w-12 h-12 bg-blue-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-blue-600 rounded-full shadow-lg border border-blue-400 transition-colors duration-300 cursor-pointer"
+                    title="위치 리셋"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                {/* 닫기 버튼 */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closePage11Modal();
+                  }}
+                  className="w-12 h-12 bg-red-500/95 backdrop-blur-sm text-white flex items-center justify-center hover:bg-red-600 rounded-full shadow-lg border border-red-400 transition-colors duration-300 cursor-pointer"
+                  title={t('close')}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div
+                className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+                  isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+                }`}
+                style={{
+                  transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
+                  transformOrigin: 'center center',
+                  transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
+                }}
+                onClick={(e) => e.stopPropagation()}
+                onMouseDown={handleModalDragStart}
+                onMouseMove={isModalDragging ? handleModalDragMove : undefined}
+                onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
+                onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
+              >
+                {/* 팝업 이미지 + 네이버 지도 */}
+                <div className="flex flex-col gap-8 lg:flex-row lg:items-stretch">
+                  <div className="flex-1 flex items-center justify-center">
+                    <div className="flex flex-col items-center gap-3">
+                      <img
+                        src={getPopupPath(currentLanguage, '11-1.jpg')}
+                        alt={t('popupWithNumber').replace('{number}', '11-1')}
+                        className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                        onError={(e) => {
+                          // 이미지 로드 실패 시 메시지 표시
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'block';
+                        }}
+                      />
+                      <div className="hidden text-gray-500 text-center" style={{ display: 'none' }}>
+                        <p>{t('imageLoadFailed')}</p>
+                        <p className="text-sm">{t('path')}: /FrienderFile/Popup/11-1.jpg</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex-1 flex flex-col gap-4">
+                    <div className="relative w-full min-h-[260px] h-[320px] lg:h-full rounded-2xl overflow-hidden border border-gray-200 shadow-inner bg-gray-50">
+                      <iframe
+                        title="Friender 위치 안내 (네이버 지도)"
+                        src={NAVER_MAP_EMBED_URL}
+                        className="w-full h-full"
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        allowFullScreen
+                        allow="accelerometer; gyroscope; magnetometer"
+                      />
+                      <div className="pointer-events-none absolute bottom-3 right-3 bg-white/90 text-xs text-gray-700 px-3 py-1 rounded-full shadow">
+                        네이버 지도
+                      </div>
+                    </div>
+
+                    <div className="space-y-1 text-sm leading-relaxed text-gray-700">
+                      <p className="text-base font-semibold text-gray-900">주소</p>
+                      <p>{NAVER_MAP_ADDRESS}</p>
+                      <p className="text-xs text-gray-500">
+                        위도 {NAVER_MAP_COORDINATES.lat.toFixed(6)} · 경도{' '}
+                        {NAVER_MAP_COORDINATES.lng.toFixed(6)}
+                      </p>
+                      <p className="text-xs text-gray-500">{t('mapNotVisible')}</p>
+                    </div>
+
+                    <div className="flex flex-wrap gap-3">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenNaverMap();
+                        }}
+                        className="px-5 py-2.5 rounded-full bg-green-500 text-white font-semibold text-sm shadow hover:bg-green-600 transition-colors duration-200 cursor-pointer"
+                        title="네이버 지도 새 창에서 열기"
+                      >
+                        네이버 지도 열기
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* 5페이지 3D 모델 모달창 */}
+          {isPage53DModalOpen && (
+            <div
+              className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+              onClick={() => {
+                setIsPage53DModalOpen(false);
+                setCurrentPartModel(null);
+                setSelectedPart(1);
+                setIsPage53DModelLoading(false);
+              }}
+            >
+              <div
+                className={`relative w-[90vw] h-[90vh] bg-white rounded-lg shadow-2xl overflow-hidden ${
+                  currentPartModel ? 'p-0' : ''
+                }`}
+                onClick={(e) => e.stopPropagation()}
+                key={`3d-modal-${modalKey}-${selectedPart}`} // 모달 새로고침을 위한 키 (파트 변경 포함)
+              >
+                {/* 모달 헤더 - 전체 시스템일 때만 표시 */}
+                {!currentPartModel && (
+                  <div className="absolute top-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-b border-gray-200 p-4">
+                    <div className="flex justify-center items-center">
+                      <h3 className="text-lg font-semibold text-gray-800">
+                        5페이지 3D 모델 뷰어 - 전체 시스템
+                      </h3>
+                    </div>
+                  </div>
+                )}
+
+                {/* 3D 모델 컨테이너 - 제목과 하단 컨트롤 영역 제외 */}
+                <div
+                  className={`w-full relative ${
+                    !currentPartModel ? 'h-full pt-16 pb-20' : 'h-full pb-16'
+                  }`}
+                >
+                  {/* 파트 선택 안내 텍스트 */}
+                  {!currentPartModel && (
+                    <div className="absolute top-20 left-1/2 transform -translate-x-1/2 z-20 bg-white/90 backdrop-blur-sm rounded-lg px-6 py-3 shadow-lg border border-gray-200">
+                      <div className="text-center">
+                        <p className="text-lg font-semibold text-gray-800 mb-1">
+                          🎯 {t('selectPart')}
+                        </p>
+                        <p className="text-sm text-gray-600">{t('modelControlsDetail')}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 3D 모델 - 배경 이미지 위에 표시 */}
+                  <div
+                    className={`z-10 w-full h-full ${
+                      currentPartModel ? 'absolute inset-0' : 'relative'
+                    }`}
+                  >
+                    <Frender3DModel
+                      isVisible={true}
+                      opacity={0.9}
+                      scale={0.7}
+                      position={{ x: 0, y: 0 }}
+                      animationDelay={0}
+                      modelPath={currentPartModel || ''}
+                      isModal={true}
+                      cameraPosition={[3, -2, 8]} // 파트 모델링과 system_with_panel 분리
+                      cameraFov={30}
+                      customScale={0.3}
+                      rotateSpeed={1.0}
+                      showWireframe={!currentPartModel} // 파트 모델이 선택되면 박스 숨김
+                      onPartClick={handlePage5PartClick}
+                      onModelLoad={() => setIsPage53DModelLoading(false)} // 모델 로딩 완료 시 로딩 상태 해제
+                    />
+                  </div>
+                </div>
+
+                {/* 모달 하단 컨트롤 */}
+                <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
+                  <div className="text-center">
+                    <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
+                    <div className="flex justify-center space-x-4">
+                      {currentPartModel && (
+                        <button
+                          onClick={() => {
+                            setCurrentPartModel(null);
+                            setSelectedPart(1);
+                            setIsPage53DModelLoading(false);
+                          }}
+                          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                        >
+                          전체 모델로 돌아가기
+                        </button>
+                      )}
+                      <button
+                        onClick={() => {
+                          setIsPage53DModalOpen(false);
+                          setCurrentPartModel(null);
+                          setSelectedPart(1);
+                          setIsPage53DModelLoading(false);
+                        }}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        {t('close')}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* 5페이지 외장재 모달창 */}
+          {isPage5ExteriorModalOpen && selectedExteriorType && (
+            <div
+              className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+              onClick={closePage5ExteriorModal}
+            >
+              <div
+                className="relative w-[90vw] h-[90vh] bg-white rounded-lg shadow-2xl overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* 3D 모델 컨테이너 - 제목과 하단 컨트롤 영역 제외 */}
+                <div className="w-full h-full pb-16 relative">
+                  {/* 3D 모델 */}
+                  <div className="absolute inset-0 z-10 w-full h-full">
+                    <Frender3DModel
+                      isVisible={true}
+                      opacity={0.9}
+                      scale={0.7}
+                      position={{ x: 0, y: 0 }}
+                      animationDelay={0}
+                      modelPath=""
+                      isModal={true}
+                      cameraPosition={[3, -2, 8]}
+                      cameraFov={20}
+                      customScale={0.6}
+                      rotateSpeed={1.0}
+                      showWireframe={false}
+                    />
+                  </div>
+                </div>
+
+                {/* 모달 하단 컨트롤 */}
+                <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
+                  <div className="text-center">
+                    <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
+                    <div className="flex justify-center space-x-4">
+                      <button
+                        onClick={closePage5ExteriorModal}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        {t('close')}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
       {/* 3페이지 이미지 모달창 */}
@@ -5637,7 +6111,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           onClick={closeImageModal}
         >
           {/* 고정 버튼들 - 모달 외부에 배치 */}
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* 확대 버튼 */}
             <button
               onClick={(e) => {
@@ -5648,7 +6125,12 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
               title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                />
               </svg>
             </button>
 
@@ -5662,7 +6144,12 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                />
               </svg>
             </button>
 
@@ -5677,7 +6164,12 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -5693,7 +6185,12 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                 title="위치 리셋"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -5708,17 +6205,24 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
               title={t('close')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
 
           <div
-            className={`bg-white rounded-2xl p-6 max-w-7xl max-h-[95vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`bg-white rounded-2xl p-6 max-w-7xl max-h-[95vh] overflow-auto relative shadow-2xl ${
+              isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
             style={{
               transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
               transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
+              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
             }}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={handleModalDragStart}
@@ -5726,10 +6230,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
             onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
             onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
           >
-
             {/* 이미지 표시 */}
-            <div className="flex items-center justify-center">
-            </div>
+            <div className="flex items-center justify-center"></div>
           </div>
         </div>
       )}
@@ -5740,7 +6242,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           onClick={closeNewAreaModal}
         >
           {/* 고정 버튼들 - 모달 외부에 배치 */}
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* 확대 버튼 */}
             <button
               onClick={(e) => {
@@ -5751,7 +6256,12 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
               title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                />
               </svg>
             </button>
 
@@ -5765,7 +6275,12 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                />
               </svg>
             </button>
 
@@ -5780,7 +6295,12 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -5796,7 +6316,12 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                 title="위치 리셋"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -5811,17 +6336,24 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
               title={t('close')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
 
           <div
-            className={`bg-white rounded-2xl p-6 max-w-4xl max-h-[90vh] overflow-auto relative shadow-2xl ${isNewAreaModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`bg-white rounded-2xl p-6 max-w-4xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+              isNewAreaModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
             style={{
               transform: `scale(${newAreaModalZoomLevel}) translate(${newAreaModalDragOffset.x}px, ${newAreaModalDragOffset.y}px)`,
               transformOrigin: 'center center',
-              transition: isNewAreaModalDragging ? 'none' : 'transform 0.3s ease-in-out'
+              transition: isNewAreaModalDragging ? 'none' : 'transform 0.3s ease-in-out',
             }}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={handleNewAreaModalDragStart}
@@ -5830,8 +6362,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
             onMouseLeave={isNewAreaModalDragging ? handleNewAreaModalDragEnd : undefined}
           >
             {/* 이미지 표시 */}
-            <div className="flex items-center justify-center">
-            </div>
+            <div className="flex items-center justify-center"></div>
           </div>
         </div>
       )}
@@ -5843,7 +6374,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
           onClick={closeAdditionalImageModal}
         >
           {/* 고정 버튼들 - 모달 외부에 배치 */}
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* 확대 버튼 */}
             <button
               onClick={(e) => {
@@ -5854,7 +6388,12 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
               title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                />
               </svg>
             </button>
 
@@ -5868,7 +6407,12 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                />
               </svg>
             </button>
 
@@ -5883,7 +6427,12 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -5899,7 +6448,12 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                 title="위치 리셋"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -5914,17 +6468,24 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
               title={t('close')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
 
           <div
-            className={`bg-white rounded-2xl p-6 max-w-7xl max-h-[95vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`bg-white rounded-2xl p-6 max-w-7xl max-h-[95vh] overflow-auto relative shadow-2xl ${
+              isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
             style={{
               transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
               transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
+              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
             }}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={handleModalDragStart}
@@ -5932,10 +6493,8 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
             onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
             onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
           >
-
             {/* 이미지 표시 */}
-            <div className="flex items-center justify-center">
-            </div>
+            <div className="flex items-center justify-center"></div>
           </div>
         </div>
       )}
@@ -5954,7 +6513,11 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
             <div className="flex items-start gap-2">
               <div className="flex-shrink-0 mt-0.5">
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </div>
               <div className="flex-1">
@@ -5972,7 +6535,7 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
       )}
 
       {/* Dialogflow 챗봇 플로팅 버튼 */}
-     <Chatbot language={currentLanguage} />
+      <Chatbot language={currentLanguage} />
     </div>
   );
 }

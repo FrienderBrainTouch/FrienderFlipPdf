@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import Frender3DModel from './Frender3DModel';
 import Chatbot from './Chatbot';
-import { getLanguageList, getLanguageFromPath, getLanguagePath, getPagePath, getPopupPath, getPdfPath, getFrontGifPath } from '../utils/language';
+import { getLanguageList, getLanguageFromPath, getLanguagePath, getPagePath, getPopupPath, getPdfPath } from '../utils/language';
 import { getTranslation } from '../utils/translations';
 
 const getDroneVideoPlaylist = (t) => [
@@ -40,7 +40,7 @@ const getDroneVideoPlaylist = (t) => [
     title: t('dronePracticeFire'),
     category: t('dronePractice'),
     description: t('dronePracticeFireDesc'),
-    url: 'https://youtu.be/bEeKg5p4fJwhttps://youtu.be/bEeKg5p4fJw?si=RQC6FMFBOsErjkBm',
+    url: 'https://youtu.be/bEeKg5p4fJw?si=RQC6FMFBOsErjkBm',
   },
   {
     title: t('droneTrack'),
@@ -58,7 +58,9 @@ const getYouTubeVideoId = (url) => {
 
 const getYouTubeEmbedUrl = (url) => {
   const videoId = getYouTubeVideoId(url);
-  return videoId ? `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1` : '';
+  return videoId
+    ? `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1`
+    : '';
 };
 
 const getPage6MediaOverrides = (t) => ({
@@ -76,13 +78,16 @@ const getPage7MediaOverrides = (t) => ({
   5: {
     src: '/FrienderFile/VideoFile/AIStory.gif',
     alt: t('aiStoryGifAnimation'),
+    alt: t('aiStoryGifAnimation'),
   },
   6: {
     src: '/FrienderFile/VideoFile/DreampathAI.gif',
     alt: t('dreampathAiGifAnimation'),
+    alt: t('dreampathAiGifAnimation'),
   },
   7: {
     src: '/FrienderFile/VideoFile/InnoWorks.gif',
+    alt: t('innoWorksGifAnimation'),
     alt: t('innoWorksGifAnimation'),
   },
 });
@@ -102,7 +107,7 @@ const handleOpenNaverMap = () => {
 
 /**
  * FrienderPage-mobile 컴포넌트
- * 
+ *
  * 이 컴포넌트는 모바일용 Friender 페이지를 구현합니다.
  * 주요 기능:
  * - 초기 로딩 애니메이션 (Friender 로고)
@@ -160,13 +165,13 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
 
   // 3D 모델 뷰어 상태 관리 (표지 페이지에서만 표시)
   const [show3DModel, setShow3DModel] = useState(true);
-  
+
   // 3D 모델 모달 상태 관리
   const [is3DModalOpen, setIs3DModalOpen] = useState(false);
-  
+
   // 6페이지 3D 모델 모달 상태 관리
   const [isPage63DModalOpen, setIsPage63DModalOpen] = useState(false);
-  
+
   // front.gif 표시 상태 관리
   const [showFrontGif, setShowFrontGif] = useState(false);
   const [showSvgBackground, setShowSvgBackground] = useState(false);
@@ -174,41 +179,41 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   // 3페이지 모달 상태 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedArea, setSelectedArea] = useState(null);
-  
+
   // 3페이지 이미지 모달 상태 관리
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [selectedImageType, setSelectedImageType] = useState(null); // '3-4-1', '3-4-2', '3-6-1'
-  
+
   // 추가 4개 영역 모달 상태 관리
   const [isAdditionalModalOpen, setIsAdditionalModalOpen] = useState(false);
   const [selectedAdditionalArea, setSelectedAdditionalArea] = useState(null);
-  
+
   // 4페이지 모달 상태 관리
   const [isPage4ModalOpen, setIsPage4ModalOpen] = useState(false);
   const [selectedPage4Area, setSelectedPage4Area] = useState(null);
   const [isPage4ModalJustOpened, setIsPage4ModalJustOpened] = useState(false);
   const [isPage4ModalJustClosed, setIsPage4ModalJustClosed] = useState(false);
-  
+
   // 4페이지 영역 2번 전용 모달 상태 관리 (테스트용)
   const [isPage4Area2ModalOpen, setIsPage4Area2ModalOpen] = useState(false);
-  
+
   // 5페이지 모달 상태 관리
   const [isPage5ModalOpen, setIsPage5ModalOpen] = useState(false);
   const [selectedPage5Area, setSelectedPage5Area] = useState(null);
   const [isPage5ModalJustOpened, setIsPage5ModalJustOpened] = useState(false);
   const [isPage5ModalJustClosed, setIsPage5ModalJustClosed] = useState(false);
-  
+
   // 5페이지 3D 모델 모달 상태 관리
   const [isPage53DModalOpen, setIsPage53DModalOpen] = useState(false);
   const [selectedPart, setSelectedPart] = useState(1); // 선택된 파트 (1-4)
   const [currentPartModel, setCurrentPartModel] = useState(null); // 현재 표시할 파트 모델
   const [isPage53DModelLoading, setIsPage53DModelLoading] = useState(false); // 5페이지 3D 모델 로딩 상태
   const [modalKey, setModalKey] = useState(0); // 모달 새로고침을 위한 키
-  
+
   // 5페이지 외장재 모달 상태 관리
   const [isPage5ExteriorModalOpen, setIsPage5ExteriorModalOpen] = useState(false);
   const [selectedExteriorType, setSelectedExteriorType] = useState(null); // 선택된 외장재 타입 (3-6)
-  
+
   // 6페이지 모달 상태 관리
   const [isPage6ModalOpen, setIsPage6ModalOpen] = useState(false);
   const [selectedPage6Area, setSelectedPage6Area] = useState(null);
@@ -224,7 +229,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   // 추가 영역 이미지 모달 상태 관리 (돋보기 없이 단순 이미지 표시)
   const [isAdditionalImageModalOpen, setIsAdditionalImageModalOpen] = useState(false);
   const [selectedAdditionalImageType, setSelectedAdditionalImageType] = useState(null);
-  
+
   // 7페이지 모달 상태 관리
   const [isPage7ModalOpen, setIsPage7ModalOpen] = useState(false);
   const [selectedPage7Area, setSelectedPage7Area] = useState(null);
@@ -253,9 +258,9 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     console.log('📊 [2페이지] 모달 상태 변화:', {
       isPage2ModalOpen,
       selectedPage2Area,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
-    
+
     // 모달이 열릴 때 짧은 시간 동안 배경 클릭 무시
     if (isPage2ModalOpen) {
       setIsPage2ModalJustOpened(true);
@@ -472,8 +477,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     setImageOpacity(1);
   };
 
-
-
   /**
    * 반응형 이미지 크기 계산 함수
    * @param {number} baseSize - 기본 크기
@@ -483,8 +486,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     const isLargeScreen = window.innerWidth >= 1024;
     return isLargeScreen ? baseSize : baseSize * 0.8;
   };
-
-
 
   // Friender 페이지별 이미지 데이터 (11페이지) - 언어별 경로 적용
   const pageImages = useMemo(() => [
@@ -581,7 +582,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   const startTransition = React.useCallback(() => {
     console.log('2단계 애니메이션 시작');
     setWhiteScreenVisible(false);
-    
+
     // 전환 완료 후 본 화면 표시
     setTimeout(() => {
       setMainScreenVisible(true);
@@ -615,7 +616,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
       const animate = (currentTime) => {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        
+
         // ease-out 효과 적용
         const easeOut = 1 - Math.pow(1 - progress, 3);
         setLogoOpacity(easeOut);
@@ -659,12 +660,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     }
   };
 
-
-
-
-
-
-
   /**
    * 홈 버튼 클릭 핸들러 - FrienderPage 재시작 또는 뒤로 가기
    */
@@ -692,7 +687,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         const animate = (currentTime) => {
           const elapsed = currentTime - startTime;
           const progress = Math.min(elapsed / duration, 1);
-          
+
           const easeOut = 1 - Math.pow(1 - progress, 3);
           setLogoOpacity(easeOut);
 
@@ -708,7 +703,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
       logoAnimation();
     }, 500);
   };
-
 
   /**
    * 프린터 버튼 클릭 핸들러 - PDF를 열고 프린트
@@ -769,11 +763,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
       });
     } else {
       // Web Share API를 지원하지 않는 경우 클립보드에 복사
-      navigator.clipboard.writeText(window.location.href).then(() => {
-        alert('Friender 링크가 클립보드에 복사되었습니다!');
-      }).catch(() => {
-        alert('클립보드 복사에 실패했습니다.');
-      });
+      navigator.clipboard
+        .writeText(window.location.href)
+        .then(() => {
+          alert('Friender 링크가 클립보드에 복사되었습니다!');
+        })
+        .catch(() => {
+          alert('클립보드 복사에 실패했습니다.');
+        });
     }
   };
 
@@ -831,7 +828,10 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
 
   const handleArea5Click = () => {
     // 5번 영역: 유튜브 링크 새 탭에서 열기
-    window.open('https://www.youtube.com/@%EC%83%9D%EA%B3%A0%EB%B1%85%EC%9D%B4%EC%86%8C%EB%B0%94%EC%BD%94%EB%A6%AC%EC%95%84/videos', '_blank');
+    window.open(
+      'https://www.youtube.com/@%EC%83%9D%EA%B3%A0%EB%B1%85%EC%9D%B4%EC%86%8C%EB%B0%94%EC%BD%94%EB%A6%AC%EC%95%84/videos',
+      '_blank'
+    );
   };
 
   /**
@@ -842,14 +842,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     if (isPage3ModalJustClosed) {
       return;
     }
-    
+
     // 모달 열기 전에 확대/축소 상태 리셋
     setModalZoomLevel(1);
     setIsModalZoomed(false);
     setModalDragOffset({ x: 0, y: 0 });
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
-    
+
     setSelectedPage3Area(areaNumber);
     setIsPage3ModalOpen(true);
   };
@@ -943,7 +943,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     if (isPage4ModalJustClosed) {
       return;
     }
-    
+
     setSelectedPage4Area(areaNumber);
     setIsPage4ModalOpen(true);
   };
@@ -975,7 +975,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     setIsPage4Area2ModalOpen(false);
   };
 
-
   /**
    * 5페이지 영역 클릭 핸들러
    */
@@ -984,7 +983,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     if (isPage5ModalJustClosed) {
       return;
     }
-    
+
     setSelectedPage5Area(areaNumber);
     setIsPage5ModalOpen(true);
     // 기존 3D 모델 및 외장재 로직 주석 처리
@@ -1012,12 +1011,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     console.log(`Part ${partNumber} clicked`);
     setSelectedPart(partNumber);
     setIsPage53DModelLoading(true); // 파트 변경 시 로딩 상태 시작
-    
+
     // 파트별 모델 경로 설정
-    setCurrentPartModel("/FrienderFile/3DModel/Drone.glb");
-    
+    setCurrentPartModel('/FrienderFile/3DModel/Drone.glb');
+
     // 모달 새로고침을 위한 키 증가
-    setModalKey(prev => prev + 1);
+    setModalKey((prev) => prev + 1);
   };
 
   /**
@@ -1049,7 +1048,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     if (isPage6ModalJustClosed) {
       return;
     }
-    
+
     // areaNumber에 따라 파일명 결정
     // 1: 6-1, 2: 6-2, 3: 6-3, 4: 6-4, 5: 6-1-img, 6: 6-2-img, 7: 6-3-img
     if (areaNumber === 7) {
@@ -1087,13 +1086,13 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   const handlePage2AreaClick = (areaNumber) => {
     console.log('🔵 [2페이지] 영역 클릭:', areaNumber);
     console.log('🔵 [2페이지] isPage2ModalJustClosed:', isPage2ModalJustClosed);
-    
+
     // 모달이 방금 닫힌 경우 영역 클릭 무시
     if (isPage2ModalJustClosed) {
       console.log('⏸️ [2페이지] 모달이 방금 닫힘 - 영역 클릭 무시');
       return;
     }
-    
+
     setSelectedPage2Area(areaNumber);
     setIsPage2ModalOpen(true);
     console.log('🔵 [2페이지] 모달 열기 완료');
@@ -1125,7 +1124,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     if (isPage7ModalJustClosed) {
       return;
     }
-    
+
     setSelectedPage7Area(areaNumber);
     setIsPage7ModalOpen(true);
     // 기존 웹사이트 링크 로직 주석 처리
@@ -1157,7 +1156,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     if (isPage8ModalJustClosed) {
       return;
     }
-    
+
     setSelectedPage8Area(areaNumber);
     setIsPage8ModalOpen(true);
   };
@@ -1183,7 +1182,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     if (isPage9ModalJustClosed) {
       return;
     }
-    
+
     setSelectedPage9Area(areaNumber);
     setIsPage9ModalOpen(true);
   };
@@ -1209,7 +1208,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     if (isPage10ModalJustClosed) {
       return;
     }
-    
+
     setSelectedPage10Area(areaNumber);
     setIsPage10ModalOpen(true);
   };
@@ -1235,7 +1234,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     if (isPage11ModalJustClosed) {
       return;
     }
-    
+
     setIsPage11ModalOpen(true);
   };
 
@@ -1255,7 +1254,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    * 모달 확대 핸들러
    */
   const handleModalZoomIn = () => {
-    setModalZoomLevel(prev => Math.min(prev + 0.2, 3));
+    setModalZoomLevel((prev) => Math.min(prev + 0.2, 3));
     setIsModalZoomed(true);
   };
 
@@ -1263,7 +1262,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    * 모달 축소 핸들러
    */
   const handleModalZoomOut = () => {
-    setModalZoomLevel(prev => {
+    setModalZoomLevel((prev) => {
       const newLevel = Math.max(prev - 0.2, 0.5);
       if (newLevel === 1) {
         setIsModalZoomed(false);
@@ -1288,7 +1287,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     const rect = e.currentTarget.getBoundingClientRect();
     modalDragStartRef.current = {
       x: e.clientX - rect.left - modalDragOffset.x,
-      y: e.clientY - rect.top - modalDragOffset.y
+      y: e.clientY - rect.top - modalDragOffset.y,
     };
   };
 
@@ -1329,7 +1328,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
     <div className="w-full h-screen overflow-hidden relative">
       {/* 인트로 화면 (흰 화면 + 로고) */}
       {showIntro && (
-        <div 
+        <div
           className={`fixed inset-0 bg-white z-50 transition-transform duration-500 ease-out ${
             whiteScreenVisible ? 'translate-y-0' : '-translate-y-full'
           }`}
@@ -1358,16 +1357,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   key={page.id}
                   className="relative overflow-hidden bg-white"
                   data-page-index={index}
-                  style={{ 
-                    width: '100%', 
+                  style={{
+                    width: '100%',
                     height: 'auto',
                     minHeight: 'auto',
-                    aspectRatio: 'auto'
+                    aspectRatio: 'auto',
                   }}
                 >
-                  <div 
-                    className="w-full h-full flex flex-col justify-center items-center text-center relative"
-                  >
+                  <div className="w-full h-full flex flex-col justify-center items-center text-center relative">
                     {/* 모든 페이지 배경 이미지 */}
                     <img
                       src={page.backgroundImage}
@@ -1376,7 +1373,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                       style={{
                         width: '100%',
                         height: '100%',
-                        objectFit: 'cover'
+                        objectFit: 'cover',
                       }}
                     />
 
@@ -1400,21 +1397,44 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     {index === 1 && (
                       <>
                         {/* 2페이지 영역 6개 배치 - FrienderPage.jsx와 동일한 위치 */}
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             top: '16%',
                             left: '7%',
                             width: '50%',
-                            height: '11%'
+                            height: '11%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
                             console.log('🟢 [2페이지-1] onTouchStart 발생');
-                            console.log('🟢 [2페이지-1] isPage2ModalJustClosed:', isPage2ModalJustClosed);
+                            console.log(
+                              '🟢 [2페이지-1] isPage2ModalJustClosed:',
+                              isPage2ModalJustClosed
+                            );
                             console.log('🟢 [2페이지-1] 이벤트 타겟:', e.target);
-                            
+
                             // 모달이 방금 닫힌 경우 터치 무시
                             if (isPage2ModalJustClosed) {
                               console.log('⏸️ [2페이지-1] 모달이 방금 닫힘 - 터치 무시');
@@ -1422,7 +1442,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            
+
                             console.log('🟢 [2페이지-1] stopPropagation 호출');
                             e.stopPropagation();
                             console.log('🟢 [2페이지-1] handlePage2AreaClick 호출');
@@ -1430,8 +1450,11 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           onClick={(e) => {
                             console.log('🟢 [2페이지-1] onClick 발생');
-                            console.log('🟢 [2페이지-1] isPage2ModalJustClosed:', isPage2ModalJustClosed);
-                            
+                            console.log(
+                              '🟢 [2페이지-1] isPage2ModalJustClosed:',
+                              isPage2ModalJustClosed
+                            );
+
                             // 모달이 방금 닫힌 경우 클릭 무시
                             if (isPage2ModalJustClosed) {
                               console.log('⏸️ [2페이지-1] 모달이 방금 닫힘 - 클릭 무시');
@@ -1439,7 +1462,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                               e.stopPropagation();
                               return;
                             }
-                            
+
                             e.stopPropagation();
                             handlePage2AreaClick(1);
                           }}
@@ -1454,7 +1477,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             bottom: '23%',
                             left: '7%',
                             width: '28%',
-                            height: '17%'
+                            height: '17%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -1485,7 +1508,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             bottom: '23%',
                             left: '38%',
                             width: '28%',
-                            height: '17%'
+                            height: '17%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -1516,7 +1539,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             bottom: '4%',
                             left: '5%',
                             width: '28%',
-                            height: '17%'
+                            height: '17%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -1547,7 +1570,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             bottom: '4%',
                             left: '39%',
                             width: '25%',
-                            height: '16%'
+                            height: '16%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -1578,7 +1601,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             bottom: '3%',
                             right: '4%',
                             width: '21%',
-                            height: '41%'
+                            height: '41%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -1609,14 +1632,35 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                       <>
                         {/* 3페이지 영역 5개 배치 - FrienderPage.jsx와 동일한 위치 */}
                         {/* 3-1.jpg */}
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isPage3ModalOpen || isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPage3ModalOpen ||
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             top: '30%',
                             left: '7%',
                             width: '24%',
-                            height: '25%'
+                            height: '25%',
                           }}
                           onTouchStart={(e) => {
                             if (isPage3ModalJustClosed) {
@@ -1635,18 +1679,38 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage3AreaClick(1);
                           }}
-                        >
-                        </div>
-                        
+                        ></div>
+
                         {/* 3-2.jpg */}
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isPage3ModalOpen || isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPage3ModalOpen ||
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             top: '30%',
                             left: '32%',
                             width: '24%',
-                            height: '25%'
+                            height: '25%',
                           }}
                           onTouchStart={(e) => {
                             if (isPage3ModalJustClosed) {
@@ -1665,18 +1729,38 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage3AreaClick(2);
                           }}
-                        >
-                        </div>
-                        
+                        ></div>
+
                         {/* 3-3.png */}
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isPage3ModalOpen || isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPage3ModalOpen ||
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             bottom: '14%',
                             left: '6%',
                             width: '25%',
-                            height: '26%'
+                            height: '26%',
                           }}
                           onTouchStart={(e) => {
                             if (isPage3ModalJustClosed) {
@@ -1695,18 +1779,38 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage3AreaClick(3);
                           }}
-                        >
-                        </div>
-                        
+                        ></div>
+
                         {/* 3-4.jpg */}
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isPage3ModalOpen || isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPage3ModalOpen ||
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             bottom: '14%',
                             left: '32%',
                             width: '24%',
-                            height: '26%'
+                            height: '26%',
                           }}
                           onTouchStart={(e) => {
                             if (isPage3ModalJustClosed) {
@@ -1725,18 +1829,38 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage3AreaClick(4);
                           }}
-                        >
-                        </div>
-                        
+                        ></div>
+
                         {/* 3-5.jpg */}
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isPage3ModalOpen || isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPage3ModalOpen ||
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             bottom: '15%',
                             right: '6%',
                             width: '29%',
-                            height: '25%'
+                            height: '25%',
                           }}
                           onTouchStart={(e) => {
                             if (isPage3ModalJustClosed) {
@@ -1755,8 +1879,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             }
                             handlePage3AreaClick(5);
                           }}
-                        >
-                        </div>
+                        ></div>
                       </>
                     )}
 
@@ -1764,14 +1887,34 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     {index === 3 && (
                       <>
                         {/* 4페이지 영역 6개 배치 - FrienderPage.jsx와 동일한 위치 */}
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             top: '10%',
                             left: '17%',
                             width: '74%',
-                            height: '23%'
+                            height: '23%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -1802,7 +1945,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             bottom: '24%',
                             left: '17%',
                             width: '74%',
-                            height: '20%'
+                            height: '20%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -1833,7 +1976,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             top: '33%',
                             left: '18%',
                             width: '37%',
-                            height: '19%'
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -1855,24 +1998,36 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '4-1-img')}
                         >
-                          {/* 영상 목록 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4 6h2v2H4zm0 5h2v2H4zm0 5h2v2H4zm16-7H8v-2h12zm0 5H8v-2h12zm0 5H8v-2h12z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
-                        
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             top: '33%',
                             right: '5%',
                             width: '37%',
-                            height: '19%'
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -1894,24 +2049,36 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '4-2-img')}
                         >
-                          {/* 이미지 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
-                        
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             bottom: '4%',
                             left: '18%',
                             width: '37%',
-                            height: '20%'
+                            height: '20%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -1933,24 +2100,36 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '4-3-img')}
                         >
-                          {/* 이미지 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
-                        
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             bottom: '4%',
                             right: '5%',
                             width: '37%',
-                            height: '20%'
+                            height: '20%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -1972,14 +2151,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '4-4-img')}
                         >
-                          {/* 이미지 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
                       </>
                     )}
@@ -1988,14 +2159,34 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     {index === 4 && (
                       <>
                         {/* 5페이지 영역 6개 배치 - FrienderPage.jsx와 동일한 위치 */}
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             top: '10%',
                             left: '5%',
                             width: '74%',
-                            height: '22%'
+                            height: '22%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2026,7 +2217,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             bottom: '23%',
                             left: '5%',
                             width: '74%',
-                            height: '21%'
+                            height: '21%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2050,14 +2241,34 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                         >
                         </div>
 
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             top: '33%',
                             left: '5%',
                             width: '37%',
-                            height: '19%'
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2079,24 +2290,36 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '5-1-img')}
                         >
-                          {/* 이미지 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
-                        
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             top: '33%',
                             right: '18%',
                             width: '37%',
-                            height: '19%'
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2118,24 +2341,36 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '5-2-img')}
                         >
-                          {/* 이미지 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
-                        
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             bottom: '5%',
                             left: '5%',
                             width: '37%',
-                            height: '18%'
+                            height: '18%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2157,24 +2392,36 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '5-3-img')}
                         >
-                          {/* 이미지 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
-                        
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             bottom: '5%',
                             right: '18%',
                             width: '37%',
-                            height: '18%'
+                            height: '18%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2196,14 +2443,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '5-4-img')}
                         >
-                          {/* 이미지 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
                       </>
                     )}
@@ -2212,14 +2451,34 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     {index === 5 && (
                       <>
                         {/* 6페이지 영역 7개 배치 - FrienderPage.jsx와 동일한 위치 */}
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             top: '20%',
                             left: '6%',
                             width: '82%',
-                            height: '9%'
+                            height: '9%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2250,7 +2509,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             top: '31%',
                             right: '6%',
                             width: '43%',
-                            height: '19%'
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2281,7 +2540,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             top: '52%',
                             right: '6%',
                             width: '43%',
-                            height: '19%'
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2312,7 +2571,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             bottom: '8%',
                             right: '6%',
                             width: '43%',
-                            height: '19%'
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2343,7 +2602,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             top: '31%',
                             left: '6%',
                             width: '43%',
-                            height: '19%'
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2365,24 +2624,36 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '6-1-img')}
                         >
-                          {/* 재생 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8 5v14l11-7z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
-                        
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             top: '52%',
                             left: '6%',
                             width: '43%',
-                            height: '19%'
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2404,24 +2675,36 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '6-2-img')}
                         >
-                          {/* 재생 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8 5v14l11-7z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
-                        
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             bottom: '8%',
                             left: '6%',
                             width: '43%',
-                            height: '19%'
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2443,15 +2726,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '6-3-img')}
                         >
-                          {/* 3D 모델 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18l8 4v8.64l-8-4V4.18zM4 8.82l8 4v8.64l-8-4V8.82z" opacity="0.9"/>
-                                <path d="M12 6L4 9.5v5L12 18l8-3.5v-5L12 6z" opacity="0.6"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
                       </>
                     )}
@@ -2460,14 +2734,34 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     {index === 6 && (
                       <>
                         {/* 7페이지 영역 7개 배치 - FrienderPage.jsx와 동일한 위치 */}
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             top: '20%',
                             left: '6%',
                             width: '82%',
-                            height: '9%'
+                            height: '9%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2498,7 +2792,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             top: '31%',
                             right: '6%',
                             width: '43%',
-                            height: '19%'
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2529,7 +2823,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             top: '52%',
                             right: '6%',
                             width: '43%',
-                            height: '19%'
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2560,7 +2854,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             bottom: '8%',
                             right: '6%',
                             width: '43%',
-                            height: '19%'
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2591,7 +2885,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             top: '31%',
                             left: '6%',
                             width: '43%',
-                            height: '19%'
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2613,24 +2907,36 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '7-1-img')}
                         >
-                          {/* 재생 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8 5v14l11-7z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
-                        
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             top: '52%',
                             left: '6%',
                             width: '43%',
-                            height: '19%'
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2652,24 +2958,36 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '7-2-img')}
                         >
-                          {/* 재생 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8 5v14l11-7z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
-                        
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             bottom: '8%',
                             left: '6%',
                             width: '43%',
-                            height: '19%'
+                            height: '19%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2691,14 +3009,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '7-3-img')}
                         >
-                          {/* 재생 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8 5v14l11-7z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
                       </>
                     )}
@@ -2707,14 +3017,34 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     {index === 7 && (
                       <>
                         {/* 8페이지 영역 4개 배치 - FrienderPage.jsx와 동일한 위치 */}
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             top: '26%',
                             left: '6%',
                             width: '43%',
-                            height: '21%'
+                            height: '21%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2745,7 +3075,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             bottom: '5%',
                             left: '6%',
                             width: '43%',
-                            height: '21%'
+                            height: '21%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2776,7 +3106,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             bottom: '5%',
                             right: '6%',
                             width: '43%',
-                            height: '21%'
+                            height: '21%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2807,7 +3137,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             top: '14%',
                             right: '6%',
                             width: '40%',
-                            height: '35%'
+                            height: '35%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2829,14 +3159,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '8-1-img')}
                         >
-                          {/* 이미지 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
                       </>
                     )}
@@ -2845,14 +3167,34 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     {index === 8 && (
                       <>
                         {/* 9페이지 영역 4개 배치 - FrienderPage.jsx와 동일한 위치 */}
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             top: '13%',
                             left: '6%',
                             width: '80%',
-                            height: '10%'
+                            height: '10%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2883,7 +3225,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             top: '24%',
                             left: '6%',
                             width: '87%',
-                            height: '26%'
+                            height: '26%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2914,7 +3256,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             top: '53%',
                             left: '6%',
                             width: '80%',
-                            height: '18%'
+                            height: '18%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2945,7 +3287,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             top: '74%',
                             left: '6%',
                             width: '80%',
-                            height: '21%'
+                            height: '21%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -2975,14 +3317,34 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     {index === 9 && (
                       <>
                         {/* 10페이지 영역 6개 배치 - FrienderPage.jsx와 동일한 위치 */}
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             top: '13%',
                             left: '6%',
                             width: '80%',
-                            height: '10%'
+                            height: '10%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -3013,7 +3375,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             top: '28%',
                             left: '6%',
                             width: '80%',
-                            height: '17%'
+                            height: '17%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -3044,7 +3406,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             top: '50%',
                             left: '5%',
                             width: '45%',
-                            height: '22%'
+                            height: '22%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -3066,24 +3428,36 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '10-1-img')}
                         >
-                          {/* 이미지 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
-                        
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             top: '50%',
                             right: '5%',
                             width: '45%',
-                            height: '22%'
+                            height: '22%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -3105,24 +3479,36 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '10-2-img')}
                         >
-                          {/* 이미지 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
-                        
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             bottom: '6%',
                             left: '5%',
                             width: '45%',
-                            height: '22%'
+                            height: '22%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -3144,24 +3530,36 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '10-3-img')}
                         >
-                          {/* 이미지 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
-                        
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             bottom: '6%',
                             right: '5%',
                             width: '45%',
-                            height: '22%'
+                            height: '22%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -3183,14 +3581,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           }}
                           title={t('popupWithNumber').replace('{number}', '10-4-img')}
                         >
-                          {/* 이미지 아이콘 */}
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="bg-black/50 rounded-full p-3 flex items-center justify-center">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                              </svg>
-                            </div>
-                          </div>
                         </div>
                       </>
                     )}
@@ -3199,14 +3589,34 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     {index === 10 && (
                       <>
                         {/* 11페이지 영역 1개 배치 - FrienderPage.jsx와 동일한 위치 */}
-                        <div 
-                          className={`absolute cursor-pointer rounded-lg ${(isModalOpen || isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || isPage2ModalOpen || isPage7ModalOpen || isPage8ModalOpen || isPage9ModalOpen || isPage10ModalOpen || isPage11ModalOpen) ? 'pointer-events-none' : ''}`}
+                        <div
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isModalOpen ||
+                            isAdditionalModalOpen ||
+                            isPage4ModalOpen ||
+                            isPage4Area2ModalOpen ||
+                            isPage5ModalOpen ||
+                            isPage53DModalOpen ||
+                            isPage6ModalOpen ||
+                            isPage63DModalOpen ||
+                            is3DModalOpen ||
+                            isImageModalOpen ||
+                            isPage5ExteriorModalOpen ||
+                            isPage2ModalOpen ||
+                            isPage7ModalOpen ||
+                            isPage8ModalOpen ||
+                            isPage9ModalOpen ||
+                            isPage10ModalOpen ||
+                            isPage11ModalOpen
+                              ? 'pointer-events-none'
+                              : ''
+                          }`}
                           style={{
                             position: 'absolute',
                             bottom: '30%',
                             right: '25%',
                             width: '35%',
-                            height: '30%'
+                            height: '30%',
                           }}
                           data-clickable="true"
                           onTouchStart={(e) => {
@@ -3250,7 +3660,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title={t('home')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                  />
                 </svg>
               </button>
 
@@ -3261,7 +3676,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title={t('print')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+                  />
                 </svg>
               </button>
 
@@ -3272,14 +3692,22 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title={t('download')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
                 </svg>
               </button>
 
               {/* 목차 버튼 숨김 처리 */}
               {/* <button
+              {/* 목차 버튼 숨김 처리 */}
+              {/* <button
                 onClick={handleTocClick}
                 className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
+                title={t('toc')}
                 title={t('toc')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -3294,7 +3722,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title={t('share')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"
+                  />
                 </svg>
               </button>
 
@@ -3376,19 +3809,22 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   // 이미지 로드 실패 시 메시지 표시
                   e.target.style.display = 'none';
                   e.target.nextSibling.style.display = 'block';
+                  // 이미지 로드 실패 시 메시지 표시
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'block';
                 }}
               />
-              
+
               {/* 4번째 영역에 추가 영역 배치 */}
               {selectedArea === 4 && (
-                <div 
+                <div
                   className={`absolute cursor-pointer rounded-lg z-10`}
                   style={{
                     top: '32%',
                     left: '14.5%',
                     width: '24%',
                     height: '64%',
-                    zIndex: 10
+                    zIndex: 10,
                   }}
                   onClick={(e) => {
                     console.log('🎯 4번째 영역 클릭됨 - 이벤트 전파 방지');
@@ -3397,20 +3833,19 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     openImageModal('3-4-1');
                   }}
                   title="3-4-1, 3-4-2 이미지 보기"
-                >
-                </div>
+                ></div>
               )}
-              
+
               {/* 6번째 영역에 추가 영역 배치 */}
               {selectedArea === 6 && (
-                <div 
+                <div
                   className={`absolute cursor-pointer rounded-lg z-10`}
                   style={{
                     bottom: '12%',
                     left: '12%',
                     width: '22%',
                     height: '55%',
-                    zIndex: 10
+                    zIndex: 10,
                   }}
                   onClick={(e) => {
                     console.log('🎯 6번째 영역 클릭됨 - 이벤트 전파 방지');
@@ -3419,8 +3854,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     openImageModal('3-6-1');
                   }}
                   title="3-6-1 이미지 보기"
-                >
-                </div>
+                ></div>
               )}
 
               {/* 3번째 영역일 때 블랙페이싱 3D 모델 영역 추가 */}
@@ -3428,13 +3862,13 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="relative w-full h-full">
                     {/* 블랙페이싱 3D 모델 영역 */}
-                    <div 
+                    <div
                       className="absolute"
                       style={{
                         top: '31%',
                         right: '6%',
                         width: '30%',
-                        height: '16%'
+                        height: '16%',
                       }}
                     >
                       <Frender3DModel language={currentLanguage} 
@@ -3455,17 +3889,31 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   </div>
                 </div>
               )}
-              
+
               {/* 5페이지로 이동하는 클릭 영역 - 첫 번째 영역에서만 표시 */}
               {selectedArea === 1 && (
                 <div
-                  className={`absolute cursor-pointer transition-all duration-300 hover:scale-105 hover:border-2 hover:border-[#FEDB66] rounded-lg ${(isAdditionalModalOpen || isPage4ModalOpen || isPage4Area2ModalOpen || isPage5ModalOpen || isPage53DModalOpen || isPage6ModalOpen || isPage63DModalOpen || is3DModalOpen || isImageModalOpen || isPage5ExteriorModalOpen || showVideo) ? 'pointer-events-none' : ''}`}
+                  className={`absolute cursor-pointer transition-all duration-300 hover:scale-105 hover:border-2 hover:border-[#FEDB66] rounded-lg ${
+                    isAdditionalModalOpen ||
+                    isPage4ModalOpen ||
+                    isPage4Area2ModalOpen ||
+                    isPage5ModalOpen ||
+                    isPage53DModalOpen ||
+                    isPage6ModalOpen ||
+                    isPage63DModalOpen ||
+                    is3DModalOpen ||
+                    isImageModalOpen ||
+                    isPage5ExteriorModalOpen ||
+                    showVideo
+                      ? 'pointer-events-none'
+                      : ''
+                  }`}
                   style={{
                     top: '49%',
                     left: '7%',
                     width: '34%',
                     height: '26%',
-                    zIndex: 1
+                    zIndex: 1,
                   }}
                   onClick={(e) => {
                     console.log('🚀 5페이지로 이동하는 영역 클릭됨 (1번 영역)');
@@ -3474,8 +3922,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     handleGoToPage5();
                   }}
                   title="5페이지로 이동"
-                >
-                </div>
+                ></div>
               )}
               
               <div
@@ -3525,7 +3972,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   e.target.nextSibling.style.display = 'block';
                 }}
               />
-              
+
               {/* 3D 모델 영역 - 각 영역마다 다른 모델 */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="relative w-full h-full">
@@ -3545,7 +3992,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                       />
                     </div>
                   )}
-                  
+
                   {selectedAdditionalArea === 8 && (
                     <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]">
                     <Frender3DModel language={currentLanguage} 
@@ -3562,7 +4009,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     />
                   </div>
                   )}
-                  
+
                   {selectedAdditionalArea === 9 && (
                     <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]">
                     <Frender3DModel language={currentLanguage} 
@@ -3579,7 +4026,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     />
                   </div>
                   )}
-                  
+
                   {selectedAdditionalArea === 10 && (
                     <div className="absolute top-[8%] left-[5%] w-[25%] h-[80%]">
                     <Frender3DModel language={currentLanguage} 
@@ -3598,13 +4045,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   )}
 
                   {/* 오른쪽 추가 영역 (7~10 공통) - 투명 클릭 영역 */}
-                  {(selectedAdditionalArea >= 7 && selectedAdditionalArea <= 10) && (
-                    <div 
+                  {selectedAdditionalArea >= 7 && selectedAdditionalArea <= 10 && (
+                    <div
                       className="absolute"
                       style={{ top: '18%', right: '5%', width: '19%', height: '60%' }}
-                      onClick={() => openAdditionalImageModal(`pae_3-${selectedAdditionalArea - 6}`)}
-                    >
-                    </div>
+                      onClick={() =>
+                        openAdditionalImageModal(`pae_3-${selectedAdditionalArea - 6}`)
+                      }
+                    ></div>
                   )}
                 </div>
               </div>
@@ -3768,7 +4216,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
 
       {/* 5페이지 3D 모델 모달창 */}
       {isPage53DModalOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
           onClick={(e) => {
             // 배경 클릭 시에만 모달 닫기 (모달 내용 클릭 시에는 닫지 않음)
@@ -3780,8 +4228,10 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             }
           }}
         >
-          <div 
-            className={`relative w-[90vw] h-[90vh] bg-white rounded-lg shadow-2xl overflow-hidden ${currentPartModel ? 'p-0' : ''}`}
+          <div
+            className={`relative w-[90vw] h-[90vh] bg-white rounded-lg shadow-2xl overflow-hidden ${
+              currentPartModel ? 'p-0' : ''
+            }`}
             onClick={(e) => e.stopPropagation()}
             key={`3d-modal-${modalKey}-${selectedPart}`} // 모달 새로고침을 위한 키 (파트 변경 포함)
           >
@@ -3795,10 +4245,13 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 </div>
               </div>
             )}
-            
+
             {/* 3D 모델 컨테이너 - 제목과 하단 컨트롤 영역 제외 */}
-            <div className={`w-full relative ${!currentPartModel ? 'h-full pt-16 pb-20' : 'h-full pb-16'}`}>
-              
+            <div
+              className={`w-full relative ${
+                !currentPartModel ? 'h-full pt-16 pb-20' : 'h-full pb-16'
+              }`}
+            >
               {/* 배경 이미지 - 파트 선택 시에만 표시 */}
               {currentPartModel && (
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -3813,17 +4266,21 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   />
                 </div>
               )}
-              
+
               {/* 파트 선택 안내 텍스트 */}
               {!currentPartModel && (
                 <div className="absolute top-20 left-1/2 transform -translate-x-1/2 z-20 bg-white/90 backdrop-blur-sm rounded-lg px-6 py-3 shadow-lg border border-gray-200">
                   <div className="text-center">
-                    <p className="text-lg font-semibold text-gray-800 mb-1">🎯 파트를 선택해보세요!</p>
-                    <p className="text-sm text-gray-600">마우스로 회전하여 각 파트를 확인하고 클릭해보세요</p>
+                    <p className="text-lg font-semibold text-gray-800 mb-1">
+                      🎯 파트를 선택해보세요!
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      마우스로 회전하여 각 파트를 확인하고 클릭해보세요
+                    </p>
                   </div>
                 </div>
               )}
-              
+
               {/* 3D 모델 - 배경 이미지 위에 표시 */}
               <div className={`z-10 w-full h-full ${currentPartModel ? 'absolute inset-0' : 'relative'}`}>
                 <Frender3DModel language={currentLanguage} 
@@ -3844,10 +4301,11 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 />
               </div>
             </div>
-            
+
             {/* 모달 하단 컨트롤 */}
             <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
               <div className="text-center">
+                <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
                 <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
                 {currentPartModel && (
                   <p className="text-sm text-blue-600 mb-2">선택된 파트: {selectedPart}</p>
@@ -3903,7 +4361,10 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
           }}
           style={{ touchAction: 'manipulation' }}
         >
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -3913,7 +4374,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                />
               </svg>
             </button>
             <button
@@ -3925,7 +4391,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                />
               </svg>
             </button>
             {isModalZoomed && (
@@ -3938,7 +4409,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -3952,7 +4428,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title="위치 리셋"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -3965,16 +4446,23 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title="닫기"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
           <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+              isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
             style={{
               transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
               transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
+              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
             }}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={handleModalDragStart}
@@ -4038,11 +4526,11 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
 
       {/* 6페이지 3D 모델 모달창 */}
       {isPage63DModalOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
           onClick={closePage63DModal}
         >
-          <div 
+          <div
             className="relative w-[90vw] h-[90vh] bg-white rounded-lg shadow-2xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
@@ -4066,10 +4554,11 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 />
               </div>
             </div>
-            
+
             {/* 모달 하단 컨트롤 */}
             <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
               <div className="text-center">
+                <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
                 <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
                 <div className="flex justify-center">
                   <button
@@ -4157,9 +4646,9 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     alt="3-4-2 Korean 이미지"
                     className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
                     onError={(e) => {
-                        // 이미지 로드 실패 시 메시지 표시
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'block';
+                      // 이미지 로드 실패 시 메시지 표시
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'block';
                     }}
                   />
                 </div>
@@ -4170,6 +4659,9 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   alt={`${selectedImageType} 이미지`}
                   className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
                   onError={(e) => {
+                    // 이미지 로드 실패 시 메시지 표시
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'block';
                     // 이미지 로드 실패 시 메시지 표시
                     e.target.style.display = 'none';
                     e.target.nextSibling.style.display = 'block';
@@ -4218,6 +4710,9 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   // 이미지 로드 실패 시 메시지 표시
                   e.target.style.display = 'none';
                   e.target.nextSibling.style.display = 'block';
+                  // 이미지 로드 실패 시 메시지 표시
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'block';
                 }}
               />
               <div
@@ -4234,7 +4729,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
 
       {/* 5페이지 외장재 모달창 */}
       {isPage5ExteriorModalOpen && selectedExteriorType && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
           onClick={(e) => {
             // 배경 클릭 시에만 모달 닫기 (모달 내용 클릭 시에는 닫지 않음)
@@ -4243,13 +4738,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             }
           }}
         >
-          <div 
+          <div
             className="relative w-[90vw] h-[90vh] bg-white rounded-lg shadow-2xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* 3D 모델 컨테이너 - 제목과 하단 컨트롤 영역 제외 */}
             <div className="w-full h-full pb-16 relative">
-              
               {/* 배경 이미지 - 외장재 타입에 따라 표시 */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <img
@@ -4259,10 +4753,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   onError={(e) => {
                     // JPG가 없으면 기본 이미지 사용
                     e.target.src = getPopupPath(currentLanguage, '5-2.jpg');
+                    // JPG가 없으면 기본 이미지 사용
+                    e.target.src = getPopupPath(currentLanguage, '5-2.jpg');
                   }}
                 />
               </div>
-              
+
               {/* 3D 모델 - 배경 이미지 위에 표시 */}
               <div className="absolute inset-0 z-10 w-full h-full">
                 <Frender3DModel language={currentLanguage} 
@@ -4281,10 +4777,11 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 />
               </div>
             </div>
-            
+
             {/* 모달 하단 컨트롤 */}
             <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
               <div className="text-center">
+                <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
                 <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
                 <p className="text-sm text-blue-600 mb-2">외장재 타입: {selectedExteriorType}</p>
                 <div className="flex justify-center space-x-4">
@@ -4303,7 +4800,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
 
       {/* 3D 모델 모달창 */}
       {is3DModalOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
           onClick={(e) => {
             // 배경 클릭 시에만 모달 닫기 (모달 내용 클릭 시에는 닫지 않음)
@@ -4319,11 +4816,11 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 <h3 className="text-lg font-semibold text-gray-800">3D 모델 뷰어</h3>
               </div>
             </div>
-            
+
             {/* 3D 모델 컨테이너 - 제목과 하단 컨트롤 영역 제외 */}
             <div className="w-full h-full pt-16 pb-20">
-              <Frender3DModel 
-                isVisible={true} 
+              <Frender3DModel
+                isVisible={true}
                 opacity={1}
                 scale={0.7}
                 position={{ x: 0, y: 0 }}
@@ -4336,10 +4833,11 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 rotateSpeed={1.0}
               />
             </div>
-            
+
             {/* 모달 하단 컨트롤 */}
             <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm border-t border-gray-200 p-4">
               <div className="text-center">
+                <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
                 <p className="text-sm text-gray-600 mb-2">{t('modelControls')}</p>
                 <div className="flex justify-center space-x-4">
                   <button
@@ -4365,13 +4863,13 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             console.log('🟡 [2페이지] 이벤트 타겟:', e.target);
             console.log('🟡 [2페이지] 이벤트 currentTarget:', e.currentTarget);
             console.log('🟡 [2페이지] 타겟 === currentTarget?', e.target === e.currentTarget);
-            
+
             // 모달이 방금 열린 경우 배경 클릭 무시
             if (isPage2ModalJustOpened) {
               console.log('⏸️ [2페이지] 모달이 방금 열림 - 배경 클릭 무시');
               return;
             }
-            
+
             if (e.target === e.currentTarget) {
               console.log('🟡 [2페이지] 배경 클릭으로 모달 닫기');
               closePage2Modal(e);
@@ -4385,14 +4883,14 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
             console.log('🟠 [2페이지] 이벤트 타겟:', e.target);
             console.log('🟠 [2페이지] 이벤트 currentTarget:', e.currentTarget);
             console.log('🟠 [2페이지] 타겟 === currentTarget?', e.target === e.currentTarget);
-            
+
             // 모달이 방금 열린 경우 배경 터치 무시
             if (isPage2ModalJustOpened) {
               console.log('⏸️ [2페이지] 모달이 방금 열림 - 배경 터치 무시');
               e.stopPropagation();
               return;
             }
-            
+
             if (e.target === e.currentTarget) {
               console.log('🟠 [2페이지] 배경 터치로 모달 닫기');
               e.stopPropagation();
@@ -4404,7 +4902,10 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
           }}
           style={{ touchAction: 'manipulation' }}
         >
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -4414,7 +4915,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                />
               </svg>
             </button>
             <button
@@ -4426,7 +4932,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                />
               </svg>
             </button>
             {isModalZoomed && (
@@ -4439,7 +4950,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -4453,7 +4969,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title="위치 리셋"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -4466,16 +4987,23 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title="닫기"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
           <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+              isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
             style={{
               transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
               transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
+              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
             }}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={handleModalDragStart}
@@ -4530,7 +5058,10 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
           }}
           style={{ touchAction: 'manipulation' }}
         >
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -4540,7 +5071,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                />
               </svg>
             </button>
             <button
@@ -4552,7 +5088,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                />
               </svg>
             </button>
             {isModalZoomed && (
@@ -4565,7 +5106,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -4579,7 +5125,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title="위치 리셋"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -4592,16 +5143,23 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title="닫기"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
           <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+              isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
             style={{
               transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
               transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
+              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
             }}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={handleModalDragStart}
@@ -4663,7 +5221,10 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
           }}
           style={{ touchAction: 'manipulation' }}
         >
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -4673,7 +5234,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                />
               </svg>
             </button>
             <button
@@ -4685,7 +5251,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                />
               </svg>
             </button>
             {isModalZoomed && (
@@ -4698,7 +5269,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -4712,7 +5288,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title="위치 리셋"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -4725,16 +5306,23 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title="닫기"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
           <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+              isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
             style={{
               transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
               transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
+              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
             }}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={handleModalDragStart}
@@ -4845,7 +5433,10 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
           }}
           style={{ touchAction: 'manipulation' }}
         >
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -4855,7 +5446,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                />
               </svg>
             </button>
             <button
@@ -4867,7 +5463,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                />
               </svg>
             </button>
             {isModalZoomed && (
@@ -4880,7 +5481,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -4894,7 +5500,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title="위치 리셋"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -4907,16 +5518,23 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title="닫기"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
           <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+              isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
             style={{
               transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
               transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
+              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
             }}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={handleModalDragStart}
@@ -4979,7 +5597,10 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
           }}
           style={{ touchAction: 'manipulation' }}
         >
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -4989,7 +5610,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                />
               </svg>
             </button>
             <button
@@ -5001,7 +5627,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                />
               </svg>
             </button>
             {isModalZoomed && (
@@ -5014,7 +5645,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -5028,7 +5664,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title="위치 리셋"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -5041,16 +5682,22 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title="닫기"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
           <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+              }`}
             style={{
               transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
               transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
+              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
             }}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={handleModalDragStart}
@@ -5077,13 +5724,13 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 <img
                   src={getPopupPath(currentLanguage,
                     selectedPage7Area === 1 ? '7-1.jpg' :
-                    selectedPage7Area === 2 ? '7-2.jpg' :
-                    selectedPage7Area === 3 ? '7-3.jpg' :
-                    selectedPage7Area === 4 ? '7-4.jpg' :
-                    selectedPage7Area === 5 ? '7-1-img.jpg' :
-                    selectedPage7Area === 6 ? '7-2-img.jpg' :
-                    selectedPage7Area === 7 ? '7-3-img.jpg' :
-                    '7-1.jpg'
+                      selectedPage7Area === 2 ? '7-2.jpg' :
+                        selectedPage7Area === 3 ? '7-3.jpg' :
+                          selectedPage7Area === 4 ? '7-4.jpg' :
+                            selectedPage7Area === 5 ? '7-1-img.jpg' :
+                              selectedPage7Area === 6 ? '7-2-img.jpg' :
+                                selectedPage7Area === 7 ? '7-3-img.jpg' :
+                                  '7-1.jpg'
                   )}
                   alt={t('popupWithNumber').replace('{number}', `7-${selectedPage7Area}`)}
                   className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
@@ -5103,6 +5750,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   {page7MediaOverride
                     ? `${t('path')}: ${page7MediaOverride.src}`
                     : `${t('path')}: /FrienderFile/Popup/7-${selectedPage7Area}.jpg`}
+                  ? `${t('path')}: ${page7MediaOverride.src}`
+                  : `${t('path')}: /FrienderFile/Popup/7-${selectedPage7Area}.jpg`
                 </p>
               </div>
             </div>
@@ -5130,7 +5779,10 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
           }}
           style={{ touchAction: 'manipulation' }}
         >
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -5140,7 +5792,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                />
               </svg>
             </button>
             <button
@@ -5152,7 +5809,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                />
               </svg>
             </button>
             {isModalZoomed && (
@@ -5165,7 +5827,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -5179,7 +5846,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title="위치 리셋"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -5192,16 +5864,23 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title="닫기"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
           <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+              isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
             style={{
               transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
               transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
+              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
             }}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={handleModalDragStart}
@@ -5262,7 +5941,10 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
           }}
           style={{ touchAction: 'manipulation' }}
         >
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -5272,7 +5954,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                />
               </svg>
             </button>
             <button
@@ -5284,7 +5971,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                />
               </svg>
             </button>
             {isModalZoomed && (
@@ -5297,7 +5989,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -5311,7 +6008,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title="위치 리셋"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -5324,16 +6026,23 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title="닫기"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
           <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+              isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
             style={{
               transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
               transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
+              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
             }}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={handleModalDragStart}
@@ -5388,7 +6097,10 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
           }}
           style={{ touchAction: 'manipulation' }}
         >
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -5398,7 +6110,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                />
               </svg>
             </button>
             <button
@@ -5410,7 +6127,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                />
               </svg>
             </button>
             {isModalZoomed && (
@@ -5423,7 +6145,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -5437,7 +6164,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title="위치 리셋"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -5450,16 +6182,23 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title="닫기"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
           <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+              isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
             style={{
               transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
               transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
+              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
             }}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={handleModalDragStart}
@@ -5522,7 +6261,10 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
           }}
           style={{ touchAction: 'manipulation' }}
         >
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -5532,7 +6274,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomIn')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                />
               </svg>
             </button>
             <button
@@ -5544,7 +6291,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title={t('zoomOut')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                />
               </svg>
             </button>
             {isModalZoomed && (
@@ -5557,7 +6309,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title={t('zoomReset')}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -5571,7 +6328,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                 title="위치 리셋"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </button>
             )}
@@ -5584,16 +6346,23 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
               title="닫기"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
           <div
-            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${isModalDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`bg-white rounded-2xl p-6 max-w-6xl max-h-[90vh] overflow-auto relative shadow-2xl ${
+              isModalDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
             style={{
               transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
               transformOrigin: 'center center',
-              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out'
+              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
             }}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={handleModalDragStart}
@@ -5661,7 +6430,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                   <p className="text-base font-semibold text-gray-900">주소</p>
                   <p>{NAVER_MAP_ADDRESS}</p>
                   <p className="text-xs text-gray-500">
-                    위도 {NAVER_MAP_COORDINATES.lat.toFixed(6)} · 경도 {NAVER_MAP_COORDINATES.lng.toFixed(6)}
+                    위도 {NAVER_MAP_COORDINATES.lat.toFixed(6)} · 경도{' '}
+                    {NAVER_MAP_COORDINATES.lng.toFixed(6)}
                   </p>
                   <p className="text-xs text-gray-500">
                     지도가 보이지 않으면 아래 버튼을 눌러 새 창에서 확인해주세요.
@@ -5687,6 +6457,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
       )}
 
       {/* Dialogflow 챗봇 플로팅 버튼 */}
+      <Chatbot language={currentLanguage} />
       <Chatbot language={currentLanguage} />
     </div>
   );

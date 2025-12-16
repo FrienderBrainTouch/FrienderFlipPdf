@@ -2153,16 +2153,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             e.stopPropagation();
                             handlePage2AreaClick(1, e);
                           }}
-                          onClick={(e) => {
-                            // 모달이 방금 닫힌 경우 클릭 무시
-                            if (isPage2ModalJustClosed) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            e.stopPropagation();
-                            handlePage2AreaClick(1, e);
-                          }}
                           title={t('popupWithNumber').replace('{number}', '2-1')}
                         >
                         </div>
@@ -2179,15 +2169,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           data-clickable="true"
                           data-area-id="page2-area2"
                           onTouchStart={(e) => {
-                            if (isPage2ModalJustClosed) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            e.stopPropagation();
-                            handlePage2AreaClick(2, e);
-                          }}
-                          onClick={(e) => {
                             if (isPage2ModalJustClosed) {
                               e.preventDefault();
                               e.stopPropagation();
@@ -2220,15 +2201,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             e.stopPropagation();
                             handlePage2AreaClick(3, e);
                           }}
-                          onClick={(e) => {
-                            if (isPage2ModalJustClosed) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            e.stopPropagation();
-                            handlePage2AreaClick(3, e);
-                          }}
                           title={t('popupWithNumber').replace('{number}', '2-3')}
                         >
                         </div>
@@ -2245,15 +2217,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           data-clickable="true"
                           data-area-id="page2-area4"
                           onTouchStart={(e) => {
-                            if (isPage2ModalJustClosed) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            e.stopPropagation();
-                            handlePage2AreaClick(4, e);
-                          }}
-                          onClick={(e) => {
                             if (isPage2ModalJustClosed) {
                               e.preventDefault();
                               e.stopPropagation();
@@ -2286,15 +2249,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             e.stopPropagation();
                             handlePage2AreaClick(5, e);
                           }}
-                          onClick={(e) => {
-                            if (isPage2ModalJustClosed) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            e.stopPropagation();
-                            handlePage2AreaClick(5, e);
-                          }}
                           title={t('popupWithNumber').replace('{number}', '2-5')}
                         >
                         </div>
@@ -2311,15 +2265,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           data-clickable="true"
                           data-area-id="page2-area6"
                           onTouchStart={(e) => {
-                            if (isPage2ModalJustClosed) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            e.stopPropagation();
-                            handlePage2AreaClick(6, e);
-                          }}
-                          onClick={(e) => {
                             if (isPage2ModalJustClosed) {
                               e.preventDefault();
                               e.stopPropagation();
@@ -2379,14 +2324,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             e.stopPropagation();
                             handlePage3AreaClick(1, e);
                           }}
-                          onClick={(e) => {
-                            if (isPage3ModalJustClosed) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            handlePage3AreaClick(1, e);
-                          }}
                         ></div>
 
                         {/* 3-2.jpg */}
@@ -2430,15 +2367,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             handlePage3AreaClick(2, e);
                           }}
                           data-area-id="page3-area2"
-                          onClick={(e) => {
-                            if (isPage3ModalJustClosed) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            e.stopPropagation();
-                            handlePage3AreaClick(2, e);
-                          }}
                         ></div>
 
                         {/* 3-3.png */}
@@ -2482,15 +2410,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             handlePage3AreaClick(3, e);
                           }}
                           data-area-id="page3-area3"
-                          onClick={(e) => {
-                            if (isPage3ModalJustClosed) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            e.stopPropagation();
-                            handlePage3AreaClick(3, e);
-                          }}
                         ></div>
 
                         {/* 3-4.jpg */}
@@ -2534,15 +2453,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             handlePage3AreaClick(4, e);
                           }}
                           data-area-id="page3-area4"
-                          onClick={(e) => {
-                            if (isPage3ModalJustClosed) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            e.stopPropagation();
-                            handlePage3AreaClick(4, e);
-                          }}
                         ></div>
 
                         {/* 3-5.jpg */}
@@ -2586,15 +2496,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             handlePage3AreaClick(5, e);
                           }}
                           data-area-id="page3-area5"
-                          onClick={(e) => {
-                            if (isPage3ModalJustClosed) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            e.stopPropagation();
-                            handlePage3AreaClick(5, e);
-                          }}
                         ></div>
                       </>
                     )}
@@ -2642,14 +2543,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             e.stopPropagation();
                             handlePage4AreaClick(1, e);
                           }}
-                          onClick={(e) => {
-                            if (isPage4ModalJustClosed) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            handlePage4AreaClick(1, e);
-                          }}
                           title={t('popupWithNumber').replace('{number}', '4-1')}
                         >
                         </div>
@@ -2674,15 +2567,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             e.stopPropagation();
                             handlePage4AreaClick(2, e);
                           }}
-                          onClick={(e) => {
-                            if (isPage4ModalJustClosed) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            e.stopPropagation();
-                            handlePage4AreaClick(2, e);
-                          }}
                           title={t('popupWithNumber').replace('{number}', '4-2')}
                         >
                         </div>
@@ -2699,15 +2583,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           data-clickable="true"
                           data-area-id="page4-area3"
                           onTouchStart={(e) => {
-                            if (isPage4ModalJustClosed) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            e.stopPropagation();
-                            handlePage4AreaClick(3, e);
-                          }}
-                          onClick={(e) => {
                             if (isPage4ModalJustClosed) {
                               e.preventDefault();
                               e.stopPropagation();
@@ -2760,15 +2635,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                             e.stopPropagation();
                             handlePage4AreaClick(4, e);
                           }}
-                          onClick={(e) => {
-                            if (isPage4ModalJustClosed) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            e.stopPropagation();
-                            handlePage4AreaClick(4, e);
-                          }}
                           title={t('popupWithNumber').replace('{number}', '4-2-img')}
                         >
                         </div>
@@ -2805,15 +2671,6 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                           data-clickable="true"
                           data-area-id="page4-area5"
                           onTouchStart={(e) => {
-                            if (isPage4ModalJustClosed) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            e.stopPropagation();
-                            handlePage4AreaClick(5, e);
-                          }}
-                          onClick={(e) => {
                             if (isPage4ModalJustClosed) {
                               e.preventDefault();
                               e.stopPropagation();

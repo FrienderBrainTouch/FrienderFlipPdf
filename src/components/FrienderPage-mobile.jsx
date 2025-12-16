@@ -78,16 +78,13 @@ const getPage7MediaOverrides = (t) => ({
   5: {
     src: '/FrienderFile/VideoFile/AIStory.gif',
     alt: t('aiStoryGifAnimation'),
-    alt: t('aiStoryGifAnimation'),
   },
   6: {
     src: '/FrienderFile/VideoFile/DreampathAI.gif',
     alt: t('dreampathAiGifAnimation'),
-    alt: t('dreampathAiGifAnimation'),
   },
   7: {
     src: '/FrienderFile/VideoFile/InnoWorks.gif',
-    alt: t('innoWorksGifAnimation'),
     alt: t('innoWorksGifAnimation'),
   },
 });

@@ -90,13 +90,52 @@ export const translations = {
     
     // 에러 메시지
     imageLoadFailed: '이미지를 불러올 수 없습니다.',
+    videoLoadFailed: '영상을 불러올 수 없습니다.',
     path: '경로',
     popupFileNotFound: '영역 {area}의 팝업 파일을 찾을 수 없습니다.',
     area2Test: '영역 2 (테스트용)',
+    positionReset: '위치 리셋',
+    page5ModelViewerTitle: '5페이지 3D 모델 뷰어 - 전체 시스템',
     
     // 드론 콘텐츠
     droneLearningContent: '드론 학습 콘텐츠',
     dronePlaylistDescription: '이론부터 실습, 트랙 주행까지 이어지는 7편의 플레이리스트입니다.',
+    
+    // 툴팁 - 팝업 타입
+    tooltipZoomPopupTitle: '확대 팝업',
+    tooltipZoomPopupDesc: '이 영역을 클릭하면 확대/축소 기능이 있는 상세 정보 팝업이 표시됩니다. 팝업 상단의 확대/축소 버튼을 사용하여 이미지를 확대하거나 축소할 수 있으며, 드래그하여 위치를 조정할 수 있습니다.',
+    tooltipImagePopupTitle: '이미지 팝업',
+    tooltipImagePopupDesc: '이 영역을 클릭하면 관련 이미지가 포함된 팝업이 표시됩니다. 팝업 상단의 확대/축소 버튼을 사용하여 이미지를 확대하거나 축소할 수 있으며, 드래그하여 위치를 조정할 수 있습니다.',
+    tooltipVideoListPopupTitle: '영상목록 팝업',
+    tooltipVideoListPopupDesc: '이 영역을 클릭하면 드론 학습 관련 여러 영상이 포함된 목록 팝업이 표시됩니다. 각 영상의 제목과 설명을 확인하고 원하는 영상을 선택하여 시청할 수 있습니다.',
+    tooltipVideoPopupTitle: '영상 팝업',
+    tooltipVideoPopupDesc: '이 영역을 클릭하면 영상이 재생되는 팝업이 표시됩니다. 프로그램에 대한 동영상 콘텐츠를 시청할 수 있습니다.',
+    tooltip3DPopupTitle: '3D 모델링 팝업',
+    tooltip3DPopupDesc: '이 영역을 클릭하면 3D 모델 뷰어 팝업이 표시됩니다. 마우스로 드래그하여 3D 모델을 360도로 회전시켜 다양한 각도에서 확인할 수 있습니다.',
+    tooltipInfoPopupTitle: '정보 팝업',
+    tooltipInfoPopupDesc: '이 영역을 클릭하면 더 자세한 정보를 확인할 수 있습니다.',
+    
+    // 툴팁 - 툴바 버튼
+    tooltipHomeTitle: '홈',
+    tooltipHomeDesc: '메인 페이지로 돌아갑니다.',
+    tooltipZoomInTitle: '확대',
+    tooltipZoomInDesc: '플립북을 확대하여 더 자세히 볼 수 있습니다.',
+    tooltipZoomOutTitle: '축소',
+    tooltipZoomOutDesc: '플립북을 축소하여 전체를 볼 수 있습니다.',
+    tooltipZoomResetTitle: '되돌리기',
+    tooltipZoomResetDesc: '확대/축소 상태를 원래대로 되돌립니다.',
+    tooltipPrintTitle: '인쇄',
+    tooltipPrintDesc: 'PDF 파일을 인쇄합니다.',
+    tooltipDownloadTitle: '다운로드',
+    tooltipDownloadDesc: 'PDF 파일을 다운로드합니다.',
+    tooltipShareTitle: '공유',
+    tooltipShareDesc: 'PDF 파일을 공유합니다.',
+    tooltipTocTitle: '목차',
+    tooltipTocDesc: '첫 페이지(표지)로 이동합니다.',
+    tooltipLanguageTitle: '언어 선택',
+    tooltipLanguageDesc: '카탈로그의 언어를 변경할 수 있습니다.',
+    tooltipButtonDefaultTitle: '버튼',
+    tooltipButtonDefaultDesc: '이 버튼의 기능을 사용할 수 있습니다.',
     
     // 팝업 관련
     popup: '팝업',
@@ -194,9 +233,12 @@ export const translations = {
     
     // 에러 메시지
     imageLoadFailed: 'Failed to load image.',
+    videoLoadFailed: 'Failed to load video.',
     path: 'Path',
     popupFileNotFound: 'Popup file for area {area} not found.',
     area2Test: 'Area 2 (Test)',
+    positionReset: 'Reset Position',
+    page5ModelViewerTitle: 'Page 5 3D Model Viewer - Full System',
     
     // 드론 콘텐츠
     droneLearningContent: 'Drone Learning Content',
@@ -298,13 +340,52 @@ export const translations = {
     
     // 에러 메시지
     imageLoadFailed: '画像を読み込めませんでした。',
+    videoLoadFailed: '動画を読み込めませんでした。',
     path: 'パス',
     popupFileNotFound: 'エリア {area} のポップアップファイルが見つかりません。',
     area2Test: 'エリア 2 (テスト用)',
+    positionReset: '位置リセット',
+    page5ModelViewerTitle: '5ページ 3Dモデルビューア - 全体システム',
     
     // 드론 콘텐츠
     droneLearningContent: 'ドローン学習コンテンツ',
     dronePlaylistDescription: '理論から実習、トラック走行まで続く7本のプレイリストです。',
+    
+    // 툴팁 - 팝업 타입
+    tooltipZoomPopupTitle: '拡大ポップアップ',
+    tooltipZoomPopupDesc: 'この領域をクリックすると、拡大/縮小機能付きの詳細情報ポップアップが表示されます。ポップアップ上部の拡大/縮小ボタンを使用して画像を拡大または縮小でき、ドラッグして位置を調整できます。',
+    tooltipImagePopupTitle: '画像ポップアップ',
+    tooltipImagePopupDesc: 'この領域をクリックすると、関連画像を含むポップアップが表示されます。ポップアップ上部の拡大/縮小ボタンを使用して画像を拡大または縮小でき、ドラッグして位置を調整できます。',
+    tooltipVideoListPopupTitle: '動画リストポップアップ',
+    tooltipVideoListPopupDesc: 'この領域をクリックすると、ドローン学習関連の複数の動画を含むリストポップアップが表示されます。各動画のタイトルと説明を確認し、希望する動画を選択して視聴できます。',
+    tooltipVideoPopupTitle: '動画ポップアップ',
+    tooltipVideoPopupDesc: 'この領域をクリックすると、動画が再生されるポップアップが表示されます。プログラムに関する動画コンテンツを視聴できます。',
+    tooltip3DPopupTitle: '3Dモデリングポップアップ',
+    tooltip3DPopupDesc: 'この領域をクリックすると、3Dモデルビューアポップアップが表示されます。マウスでドラッグして3Dモデルを360度回転させ、さまざまな角度から確認できます。',
+    tooltipInfoPopupTitle: '情報ポップアップ',
+    tooltipInfoPopupDesc: 'この領域をクリックすると、より詳細な情報を確認できます。',
+    
+    // 툴팁 - 툴바 버튼
+    tooltipHomeTitle: 'ホーム',
+    tooltipHomeDesc: 'メインページに戻ります。',
+    tooltipZoomInTitle: '拡大',
+    tooltipZoomInDesc: 'フリップブックを拡大してより詳しく見ることができます。',
+    tooltipZoomOutTitle: '縮小',
+    tooltipZoomOutDesc: 'フリップブックを縮小して全体を見ることができます。',
+    tooltipZoomResetTitle: '元に戻す',
+    tooltipZoomResetDesc: '拡大/縮小状態を元に戻します。',
+    tooltipPrintTitle: '印刷',
+    tooltipPrintDesc: 'PDFファイルを印刷します。',
+    tooltipDownloadTitle: 'ダウンロード',
+    tooltipDownloadDesc: 'PDFファイルをダウンロードします。',
+    tooltipShareTitle: '共有',
+    tooltipShareDesc: 'PDFファイルを共有します。',
+    tooltipTocTitle: '目次',
+    tooltipTocDesc: '最初のページ（表紙）に移動します。',
+    tooltipLanguageTitle: '言語選択',
+    tooltipLanguageDesc: 'カタログの言語を変更できます。',
+    tooltipButtonDefaultTitle: 'ボタン',
+    tooltipButtonDefaultDesc: 'このボタンの機能を使用できます。',
     
     // 팝업 관련
     popup: 'ポップアップ',
@@ -366,6 +447,42 @@ export const translations = {
     droneTrack: '无人机轨道',
     droneTrackDesc: '收录了利用城市背景的实践场景。',
     
+    // 툴팁 - 팝업 타입
+    tooltipZoomPopupTitle: '放大弹出窗口',
+    tooltipZoomPopupDesc: '点击此区域将显示带有缩放功能的详细信息弹出窗口。您可以使用弹出窗口顶部的缩放按钮放大或缩小图像，并拖动以调整位置。',
+    tooltipImagePopupTitle: '图像弹出窗口',
+    tooltipImagePopupDesc: '点击此区域将显示包含相关图像的弹出窗口。您可以使用弹出窗口顶部的缩放按钮放大或缩小图像，并拖动以调整位置。',
+    tooltipVideoListPopupTitle: '视频列表弹出窗口',
+    tooltipVideoListPopupDesc: '点击此区域将显示包含多个无人机学习视频的列表弹出窗口。查看每个视频的标题和说明，然后选择所需的视频进行观看。',
+    tooltipVideoPopupTitle: '视频弹出窗口',
+    tooltipVideoPopupDesc: '点击此区域将显示播放视频的弹出窗口。您可以观看有关程序的视频内容。',
+    tooltip3DPopupTitle: '3D建模弹出窗口',
+    tooltip3DPopupDesc: '点击此区域将显示3D模型查看器弹出窗口。您可以通过鼠标拖动将3D模型旋转360度，从各种角度查看。',
+    tooltipInfoPopupTitle: '信息弹出窗口',
+    tooltipInfoPopupDesc: '点击此区域可以查看更详细的信息。',
+    
+    // 툴팁 - 툴바 버튼
+    tooltipHomeTitle: '首页',
+    tooltipHomeDesc: '返回主页面。',
+    tooltipZoomInTitle: '放大',
+    tooltipZoomInDesc: '放大翻页书以更详细地查看。',
+    tooltipZoomOutTitle: '缩小',
+    tooltipZoomOutDesc: '缩小翻页书以查看整个页面。',
+    tooltipZoomResetTitle: '重置',
+    tooltipZoomResetDesc: '将缩放状态重置为原始状态。',
+    tooltipPrintTitle: '打印',
+    tooltipPrintDesc: '打印PDF文件。',
+    tooltipDownloadTitle: '下载',
+    tooltipDownloadDesc: '下载PDF文件。',
+    tooltipShareTitle: '分享',
+    tooltipShareDesc: '分享PDF文件。',
+    tooltipTocTitle: '目录',
+    tooltipTocDesc: '转到第一页（封面）。',
+    tooltipLanguageTitle: '语言选择',
+    tooltipLanguageDesc: '您可以更改目录的语言。',
+    tooltipButtonDefaultTitle: '按钮',
+    tooltipButtonDefaultDesc: '您可以使用此按钮的功能。',
+    
     // 미디어 alt 텍스트
     worldGifAnimation: 'World GIF动画',
     frienderGifAnimation: 'Friender GIF动画',
@@ -402,13 +519,52 @@ export const translations = {
     
     // 에러 메시지
     imageLoadFailed: '无法加载图像。',
+    videoLoadFailed: '无法加载视频。',
     path: '路径',
     popupFileNotFound: '找不到区域 {area} 的弹出文件。',
     area2Test: '区域 2 (测试)',
+    positionReset: '重置位置',
+    page5ModelViewerTitle: '第5页 3D模型查看器 - 完整系统',
     
     // 드론 콘텐츠
     droneLearningContent: '无人机学习内容',
     dronePlaylistDescription: '包含理论、实践和轨道驾驶的7个视频播放列表。',
+    
+    // 툴팁 - 팝업 타입
+    tooltipZoomPopupTitle: '放大弹出窗口',
+    tooltipZoomPopupDesc: '点击此区域将显示带有缩放功能的详细信息弹出窗口。您可以使用弹出窗口顶部的缩放按钮放大或缩小图像，并拖动以调整位置。',
+    tooltipImagePopupTitle: '图像弹出窗口',
+    tooltipImagePopupDesc: '点击此区域将显示包含相关图像的弹出窗口。您可以使用弹出窗口顶部的缩放按钮放大或缩小图像，并拖动以调整位置。',
+    tooltipVideoListPopupTitle: '视频列表弹出窗口',
+    tooltipVideoListPopupDesc: '点击此区域将显示包含多个无人机学习视频的列表弹出窗口。查看每个视频的标题和说明，然后选择所需的视频进行观看。',
+    tooltipVideoPopupTitle: '视频弹出窗口',
+    tooltipVideoPopupDesc: '点击此区域将显示播放视频的弹出窗口。您可以观看有关程序的视频内容。',
+    tooltip3DPopupTitle: '3D建模弹出窗口',
+    tooltip3DPopupDesc: '点击此区域将显示3D模型查看器弹出窗口。您可以通过鼠标拖动将3D模型旋转360度，从各种角度查看。',
+    tooltipInfoPopupTitle: '信息弹出窗口',
+    tooltipInfoPopupDesc: '点击此区域可以查看更详细的信息。',
+    
+    // 툴팁 - 툴바 버튼
+    tooltipHomeTitle: '首页',
+    tooltipHomeDesc: '返回主页面。',
+    tooltipZoomInTitle: '放大',
+    tooltipZoomInDesc: '放大翻页书以更详细地查看。',
+    tooltipZoomOutTitle: '缩小',
+    tooltipZoomOutDesc: '缩小翻页书以查看整个页面。',
+    tooltipZoomResetTitle: '重置',
+    tooltipZoomResetDesc: '将缩放状态重置为原始状态。',
+    tooltipPrintTitle: '打印',
+    tooltipPrintDesc: '打印PDF文件。',
+    tooltipDownloadTitle: '下载',
+    tooltipDownloadDesc: '下载PDF文件。',
+    tooltipShareTitle: '分享',
+    tooltipShareDesc: '分享PDF文件。',
+    tooltipTocTitle: '目录',
+    tooltipTocDesc: '转到第一页（封面）。',
+    tooltipLanguageTitle: '语言选择',
+    tooltipLanguageDesc: '您可以更改目录的语言。',
+    tooltipButtonDefaultTitle: '按钮',
+    tooltipButtonDefaultDesc: '您可以使用此按钮的功能。',
     
     // 팝업 관련
     popup: '弹出窗口',
@@ -506,13 +662,52 @@ export const translations = {
     
     // 에러 메시지
     imageLoadFailed: 'No se pudo cargar la imagen.',
+    videoLoadFailed: 'No se pudo cargar el video.',
     path: 'Ruta',
     popupFileNotFound: 'No se encontró el archivo emergente para el área {area}.',
     area2Test: 'Área 2 (Prueba)',
+    positionReset: 'Restablecer Posición',
+    page5ModelViewerTitle: 'Visor de Modelo 3D Página 5 - Sistema Completo',
     
     // 드론 콘텐츠
     droneLearningContent: 'Contenido de Aprendizaje de Drones',
     dronePlaylistDescription: 'Una lista de reproducción de 7 videos que cubren teoría, práctica y conducción en pista.',
+    
+    // 툴팁 - 팝업 타입
+    tooltipZoomPopupTitle: 'Ventana Emergente de Zoom',
+    tooltipZoomPopupDesc: 'Al hacer clic en esta área, se muestra una ventana emergente de información detallada con funcionalidad de zoom. Puede usar los botones de zoom en la parte superior de la ventana emergente para ampliar o reducir la imagen, y arrastrar para ajustar la posición.',
+    tooltipImagePopupTitle: 'Ventana Emergente de Imagen',
+    tooltipImagePopupDesc: 'Al hacer clic en esta área, se muestra una ventana emergente que contiene imágenes relacionadas. Puede usar los botones de zoom en la parte superior de la ventana emergente para ampliar o reducir la imagen, y arrastrar para ajustar la posición.',
+    tooltipVideoListPopupTitle: 'Ventana Emergente de Lista de Videos',
+    tooltipVideoListPopupDesc: 'Al hacer clic en esta área, se muestra una ventana emergente de lista que contiene múltiples videos de aprendizaje de drones. Revise el título y la descripción de cada video y seleccione el video deseado para verlo.',
+    tooltipVideoPopupTitle: 'Ventana Emergente de Video',
+    tooltipVideoPopupDesc: 'Al hacer clic en esta área, se muestra una ventana emergente que reproduce un video. Puede ver contenido de video sobre el programa.',
+    tooltip3DPopupTitle: 'Ventana Emergente de Modelado 3D',
+    tooltip3DPopupDesc: 'Al hacer clic en esta área, se muestra una ventana emergente del visor de modelos 3D. Puede rotar el modelo 3D 360 grados arrastrando con el mouse para verlo desde varios ángulos.',
+    tooltipInfoPopupTitle: 'Ventana Emergente de Información',
+    tooltipInfoPopupDesc: 'Al hacer clic en esta área, puede ver información más detallada.',
+    
+    // 툴팁 - 툴바 버튼
+    tooltipHomeTitle: 'Inicio',
+    tooltipHomeDesc: 'Volver a la página principal.',
+    tooltipZoomInTitle: 'Ampliar',
+    tooltipZoomInDesc: 'Ampliar el libro para ver con más detalle.',
+    tooltipZoomOutTitle: 'Reducir',
+    tooltipZoomOutDesc: 'Reducir el libro para ver toda la página.',
+    tooltipZoomResetTitle: 'Restablecer',
+    tooltipZoomResetDesc: 'Restablecer el estado de zoom al original.',
+    tooltipPrintTitle: 'Imprimir',
+    tooltipPrintDesc: 'Imprimir el archivo PDF.',
+    tooltipDownloadTitle: 'Descargar',
+    tooltipDownloadDesc: 'Descargar el archivo PDF.',
+    tooltipShareTitle: 'Compartir',
+    tooltipShareDesc: 'Compartir el archivo PDF.',
+    tooltipTocTitle: 'Índice',
+    tooltipTocDesc: 'Ir a la primera página (portada).',
+    tooltipLanguageTitle: 'Selección de Idioma',
+    tooltipLanguageDesc: 'Puede cambiar el idioma del catálogo.',
+    tooltipButtonDefaultTitle: 'Botón',
+    tooltipButtonDefaultDesc: 'Puede usar la función de este botón.',
     
     // 팝업 관련
     popup: 'Ventana Emergente',

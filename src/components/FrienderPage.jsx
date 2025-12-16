@@ -97,6 +97,229 @@ const NAVER_MAP_COORDINATES = {
 const NAVER_MAP_QUERY = encodeURIComponent(NAVER_MAP_ADDRESS);
 const NAVER_MAP_EMBED_URL = `https://map.naver.com/p/search/${NAVER_MAP_QUERY}?c=${NAVER_MAP_COORDINATES.lng},${NAVER_MAP_COORDINATES.lat},21,0,0,0,dh`;
 const NAVER_MAP_SHARE_URL = `https://map.naver.com/p/search/${NAVER_MAP_QUERY}?c=${NAVER_MAP_COORDINATES.lng},${NAVER_MAP_COORDINATES.lat},21,0,0,0,dh`;
+
+// 튜토리얼 설명 데이터 구조
+const getTutorialInfo = (t) => ({
+  // 2페이지
+  'page2-area1': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page2-area2': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page2-area3': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page2-area4': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page2-area5': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page2-area6': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  // 3페이지
+  'page3-area1': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page3-area2': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page3-area3': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page3-area4': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page3-area5': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  // 4페이지
+  'page4-area1': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page4-area2': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page4-area3': {
+    title: '영상 목록 팝업',
+    description: '클릭 시 관련 영상 목록을 확인할 수 있습니다. 다양한 영상 콘텐츠를 탐색하고 시청하세요.'
+  },
+  'page4-area4': {
+    title: '이미지 팝업',
+    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
+  },
+  'page4-area5': {
+    title: '이미지 팝업',
+    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
+  },
+  'page4-area6': {
+    title: '이미지 팝업',
+    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
+  },
+  // 5페이지
+  'page5-area1': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page5-area2': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page5-area3': {
+    title: '이미지 팝업',
+    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
+  },
+  'page5-area4': {
+    title: '이미지 팝업',
+    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
+  },
+  'page5-area5': {
+    title: '이미지 팝업',
+    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
+  },
+  'page5-area6': {
+    title: '이미지 팝업',
+    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
+  },
+  // 6페이지
+  'page6-area1': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page6-area2': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page6-area3': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page6-area4': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page6-area5': {
+    title: '이미지 팝업',
+    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
+  },
+  'page6-area6': {
+    title: '이미지 팝업',
+    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
+  },
+  'page6-area7': {
+    title: '3D 모델링 팝업',
+    description: '클릭 시 3D 모델을 확인할 수 있습니다. 다양한 각도에서 회전하고 확대하여 상세히 살펴보세요.'
+  },
+  // 7페이지
+  'page7-area1': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page7-area2': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page7-area3': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page7-area4': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page7-area5': {
+    title: '이미지 팝업',
+    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
+  },
+  'page7-area6': {
+    title: '이미지 팝업',
+    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
+  },
+  'page7-area7': {
+    title: '이미지 팝업',
+    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
+  },
+  // 8페이지
+  'page8-area1': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page8-area2': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page8-area3': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page8-area4': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  // 9페이지
+  'page9-area1': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page9-area2': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page9-area3': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page9-area4': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  // 10페이지
+  'page10-area1': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page10-area2': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page10-area3': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  },
+  'page10-area4': {
+    title: '이미지 팝업',
+    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
+  },
+  'page10-area5': {
+    title: '이미지 팝업',
+    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
+  },
+  'page10-area6': {
+    title: '이미지 팝업',
+    description: '클릭 시 해당 이미지를 크게 확인할 수 있습니다. 고해상도 이미지로 자세히 살펴보세요.'
+  },
+  // 11페이지
+  'page11-area1': {
+    title: '상세 정보 팝업',
+    description: '클릭 시 해당 영역의 상세 정보를 확인할 수 있습니다. 제품의 특징과 주요 사양을 자세히 살펴보세요.'
+  }
+});
+
 function FrienderPage({ onBack = null, language: propLanguage }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -280,6 +503,10 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
   const [isNewAreaModalDragging, setIsNewAreaModalDragging] = React.useState(false);
   const newAreaModalDragStartRef = React.useRef({ x: 0, y: 0 });
   
+  // 튜토리얼 모드 상태 관리
+  const [isTutorialMode, setIsTutorialMode] = React.useState(false);
+  const [tutorialTooltip, setTutorialTooltip] = React.useState(null);
+  const [tutorialTooltipPosition, setTutorialTooltipPosition] = React.useState({ x: 0, y: 0 });
 
   // 7페이지 영상 상태 관리
   const [playingVideo, setPlayingVideo] = React.useState(null);
@@ -1450,6 +1677,44 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
   };
 
   /**
+   * 튜토리얼 모드 토글
+   */
+  const toggleTutorialMode = () => {
+    setIsTutorialMode(!isTutorialMode);
+    if (isTutorialMode) {
+      setTutorialTooltip(null);
+    }
+  };
+
+  /**
+   * 튜토리얼 툴팁 표시 핸들러
+   */
+  const handleTutorialHover = (areaKey, event) => {
+    if (!isTutorialMode) return;
+    
+    const tutorialInfo = getTutorialInfo(t);
+    const info = tutorialInfo[areaKey];
+    
+    if (info) {
+      const rect = event.currentTarget.getBoundingClientRect();
+      setTutorialTooltip(info);
+      setTutorialTooltipPosition({
+        x: rect.left + rect.width / 2,
+        y: rect.top - 10
+      });
+    }
+  };
+
+  /**
+   * 튜토리얼 툴팁 숨기기 핸들러
+   */
+  const handleTutorialLeave = () => {
+    if (isTutorialMode) {
+      setTutorialTooltip(null);
+    }
+  };
+
+  /**
    * 페이지 네비게이션 함수들
    */
   const goToFirstPage = () => {
@@ -1762,8 +2027,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   }}
                   data-clickable="true"
                   onClick={() => handlePage2AreaClick(1)}
-                  onMouseEnter={() => setHoveredArea2(1)}
-                  onMouseLeave={() => setHoveredArea2(null)}
+                  onMouseEnter={(e) => {
+                    setHoveredArea2(1);
+                    handleTutorialHover('page2-area1', e);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredArea2(null);
+                    handleTutorialLeave();
+                  }}
                   title={t('popupWithNumber').replace('{number}', '2-1')}
                 >
                 </div>
@@ -1779,8 +2050,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   }}
                   data-clickable="true"
                   onClick={() => handlePage2AreaClick(2)}
-                  onMouseEnter={() => setHoveredArea2(2)}
-                  onMouseLeave={() => setHoveredArea2(null)}
+                  onMouseEnter={(e) => {
+                    setHoveredArea2(2);
+                    handleTutorialHover('page2-area2', e);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredArea2(null);
+                    handleTutorialLeave();
+                  }}
                   title={t('popupWithNumber').replace('{number}', '2-2')}
                 >
                 </div>
@@ -1796,8 +2073,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   }}
                   data-clickable="true"
                   onClick={() => handlePage2AreaClick(3)}
-                  onMouseEnter={() => setHoveredArea2(3)}
-                  onMouseLeave={() => setHoveredArea2(null)}
+                  onMouseEnter={(e) => {
+                    setHoveredArea2(3);
+                    handleTutorialHover('page2-area3', e);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredArea2(null);
+                    handleTutorialLeave();
+                  }}
                   title={t('popupWithNumber').replace('{number}', '2-3')}
                 >
                 </div>
@@ -1813,8 +2096,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   }}
                   data-clickable="true"
                   onClick={() => handlePage2AreaClick(4)}
-                  onMouseEnter={() => setHoveredArea2(4)}
-                  onMouseLeave={() => setHoveredArea2(null)}
+                  onMouseEnter={(e) => {
+                    setHoveredArea2(4);
+                    handleTutorialHover('page2-area4', e);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredArea2(null);
+                    handleTutorialLeave();
+                  }}
                   title={t('popupWithNumber').replace('{number}', '2-4')}
                 >
                 </div>
@@ -1830,8 +2119,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   }}
                   data-clickable="true"
                   onClick={() => handlePage2AreaClick(5)}
-                  onMouseEnter={() => setHoveredArea2(5)}
-                  onMouseLeave={() => setHoveredArea2(null)}
+                  onMouseEnter={(e) => {
+                    setHoveredArea2(5);
+                    handleTutorialHover('page2-area5', e);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredArea2(null);
+                    handleTutorialLeave();
+                  }}
                   title={t('popupWithNumber').replace('{number}', '2-5')}
                 >
                 </div>
@@ -1847,8 +2142,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   }}
                   data-clickable="true"
                   onClick={() => handlePage2AreaClick(6)}
-                  onMouseEnter={() => setHoveredArea2(6)}
-                  onMouseLeave={() => setHoveredArea2(null)}
+                  onMouseEnter={(e) => {
+                    setHoveredArea2(6);
+                    handleTutorialHover('page2-area6', e);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredArea2(null);
+                    handleTutorialLeave();
+                  }}
                   title={t('popupWithNumber').replace('{number}', '2-6')}
                 >
                 </div>
@@ -2024,8 +2325,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   }}
                   data-clickable="true"
                   onClick={() => handlePage4AreaClick(1)}
-                  onMouseEnter={() => setHoveredArea4(1)}
-                  onMouseLeave={() => setHoveredArea4(null)}
+                  onMouseEnter={(e) => {
+                    setHoveredArea4(1);
+                    handleTutorialHover('page4-area1', e);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredArea4(null);
+                    handleTutorialLeave();
+                  }}
                   title={t('popupWithNumber').replace('{number}', '4-1')}
                 >
                 </div>
@@ -2041,8 +2348,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   }}
                   data-clickable="true"
                   onClick={() => handlePage4AreaClick(2)}
-                  onMouseEnter={() => setHoveredArea4(2)}
-                  onMouseLeave={() => setHoveredArea4(null)}
+                  onMouseEnter={(e) => {
+                    setHoveredArea4(2);
+                    handleTutorialHover('page4-area2', e);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredArea4(null);
+                    handleTutorialLeave();
+                  }}
                   title={t('popupWithNumber').replace('{number}', '4-2')}
                 >
                 </div>
@@ -2058,8 +2371,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   }}
                   data-clickable="true"
                   onClick={() => handlePage4AreaClick(3)}
-                  onMouseEnter={() => setHoveredArea4(3)}
-                  onMouseLeave={() => setHoveredArea4(null)}
+                  onMouseEnter={(e) => {
+                    setHoveredArea4(3);
+                    handleTutorialHover('page4-area3', e);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredArea4(null);
+                    handleTutorialLeave();
+                  }}
                   title={t('popupWithNumber').replace('{number}', '4-1-img')}
                 >
                   {/* 영상 목록 아이콘 */}
@@ -2083,8 +2402,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   }}
                   data-clickable="true"
                   onClick={() => handlePage4AreaClick(4)}
-                  onMouseEnter={() => setHoveredArea4(4)}
-                  onMouseLeave={() => setHoveredArea4(null)}
+                  onMouseEnter={(e) => {
+                    setHoveredArea4(4);
+                    handleTutorialHover('page4-area4', e);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredArea4(null);
+                    handleTutorialLeave();
+                  }}
                   title={t('popupWithNumber').replace('{number}', '4-2-img')}
                 >
                   {/* 이미지 아이콘 */}
@@ -2108,8 +2433,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   }}
                   data-clickable="true"
                   onClick={() => handlePage4AreaClick(5)}
-                  onMouseEnter={() => setHoveredArea4(5)}
-                  onMouseLeave={() => setHoveredArea4(null)}
+                  onMouseEnter={(e) => {
+                    setHoveredArea4(5);
+                    handleTutorialHover('page4-area5', e);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredArea4(null);
+                    handleTutorialLeave();
+                  }}
                   title={t('popupWithNumber').replace('{number}', '4-3-img')}
                 >
                   {/* 이미지 아이콘 */}
@@ -2133,8 +2464,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   }}
                   data-clickable="true"
                   onClick={() => handlePage4AreaClick(6)}
-                  onMouseEnter={() => setHoveredArea4(6)}
-                  onMouseLeave={() => setHoveredArea4(null)}
+                  onMouseEnter={(e) => {
+                    setHoveredArea4(6);
+                    handleTutorialHover('page4-area6', e);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredArea4(null);
+                    handleTutorialLeave();
+                  }}
                   title={t('popupWithNumber').replace('{number}', '4-4-img')}
                 >
                   {/* 이미지 아이콘 */}
@@ -3092,6 +3429,22 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
 
            {/* 오른쪽 네비게이션 버튼들 */}
            <div className="flex flex-col items-center gap-2">
+             {/* 튜토리얼 버튼 */}
+             <button
+               onClick={toggleTutorialMode}
+               className={`transition-all duration-200 cursor-pointer hover:scale-110 rounded-full p-2 ${
+                 isTutorialMode 
+                   ? 'bg-blue-500 text-white shadow-lg' 
+                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+               }`}
+               style={{ width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+               title={isTutorialMode ? (t('tutorialModeOff') || '튜토리얼 모드 끄기') : (t('tutorialModeOn') || '튜토리얼 모드 켜기')}
+             >
+               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+               </svg>
+             </button>
+             
              {/* Right 버튼 */}
              <button
                onClick={goToNextPage}
@@ -5584,6 +5937,37 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
             <div className="flex items-center justify-center">
             </div>
           </div>
+        </div>
+      )}
+
+      {/* 튜토리얼 툴팁 */}
+      {isTutorialMode && tutorialTooltip && (
+        <div
+          className="fixed z-[10000] pointer-events-none"
+          style={{
+            left: `${tutorialTooltipPosition.x}px`,
+            top: `${tutorialTooltipPosition.y}px`,
+            transform: 'translate(-50%, -100%)',
+          }}
+        >
+          <div className="bg-blue-600 text-white rounded-lg shadow-2xl p-4 max-w-xs min-w-[280px] mb-2">
+            <div className="flex items-start gap-2">
+              <div className="flex-shrink-0 mt-0.5">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-lg mb-2">{tutorialTooltip.title}</h3>
+                <p className="text-sm leading-relaxed">{tutorialTooltip.description}</p>
+              </div>
+            </div>
+          </div>
+          {/* 화살표 */}
+          <div
+            className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-blue-600 mx-auto"
+            style={{ marginLeft: '50%', transform: 'translateX(-50%)' }}
+          />
         </div>
       )}
 

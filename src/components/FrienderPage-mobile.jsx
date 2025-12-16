@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import Frender3DModel from './Frender3DModel';
 import Chatbot from './Chatbot';
-import { getLanguageList, getLanguageFromPath, getLanguagePath, getPagePath, getPopupPath, getPdfPath } from '../utils/language';
+import { getLanguageList, getLanguageFromPath, getLanguagePath, getPagePath, getPopupPath, getPdfPath, getFrontGifPath } from '../utils/language';
 import { getTranslation } from '../utils/translations';
 
 const getDroneVideoPlaylist = (t) => [

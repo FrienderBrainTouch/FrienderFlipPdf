@@ -1007,12 +1007,36 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
       // 첫 번째 터치: 툴팁 표시
       const rect = areaElement.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
+      const viewportWidth = window.innerWidth;
       
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
       
       const isTopHalf = centerY < viewportHeight / 2;
       const direction = isTopHalf ? 'bottom' : 'top';
+      
+      // 말풍선 크기 고려 (최소 너비 280px, 패딩 16px)
+      const tooltipWidth = 280;
+      const tooltipPadding = 16;
+      const tooltipHeight = 120; // 대략적인 높이
+      
+      // X 위치 조정 (화면 밖으로 나가지 않도록)
+      let tooltipX = centerX;
+      if (centerX - tooltipWidth / 2 < tooltipPadding) {
+        tooltipX = tooltipWidth / 2 + tooltipPadding;
+      } else if (centerX + tooltipWidth / 2 > viewportWidth - tooltipPadding) {
+        tooltipX = viewportWidth - tooltipWidth / 2 - tooltipPadding;
+      }
+      
+      // Y 위치 조정 (화면 밖으로 나가지 않도록)
+      let tooltipY;
+      if (isTopHalf) {
+        // 하단 방향: 영역 아래에 표시
+        tooltipY = Math.min(rect.bottom + 10, viewportHeight - tooltipHeight - tooltipPadding);
+      } else {
+        // 상단 방향: 영역 위에 표시
+        tooltipY = Math.max(rect.top - 10, tooltipHeight + tooltipPadding);
+      }
       
       const popupType = detectPopupType(areaElement);
       const typeInfo = getPopupTypeInfo(popupType);
@@ -1023,8 +1047,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
       });
       
       setTutorialTooltipPosition({
-        x: centerX,
-        y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+        x: tooltipX,
+        y: tooltipY,
       });
       
       setTutorialTooltipDirection(direction);
@@ -1072,11 +1096,35 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         
+        const viewportWidth = window.innerWidth;
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         
         const isTopHalf = centerY < viewportHeight / 2;
         const direction = isTopHalf ? 'bottom' : 'top';
+        
+        // 말풍선 크기 고려 (최소 너비 280px, 패딩 16px)
+        const tooltipWidth = 280;
+        const tooltipPadding = 16;
+        const tooltipHeight = 120; // 대략적인 높이
+        
+        // X 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipX = centerX;
+        if (centerX - tooltipWidth / 2 < tooltipPadding) {
+          tooltipX = tooltipWidth / 2 + tooltipPadding;
+        } else if (centerX + tooltipWidth / 2 > viewportWidth - tooltipPadding) {
+          tooltipX = viewportWidth - tooltipWidth / 2 - tooltipPadding;
+        }
+        
+        // Y 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipY;
+        if (isTopHalf) {
+          // 하단 방향: 영역 아래에 표시
+          tooltipY = Math.min(rect.bottom + 10, viewportHeight - tooltipHeight - tooltipPadding);
+        } else {
+          // 상단 방향: 영역 위에 표시
+          tooltipY = Math.max(rect.top - 10, tooltipHeight + tooltipPadding);
+        }
         
         const popupType = detectPopupType(areaElement);
         const typeInfo = getPopupTypeInfo(popupType);
@@ -1087,8 +1135,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipPosition({
-          x: centerX,
-          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+          x: tooltipX,
+          y: tooltipY,
         });
         
         setTutorialTooltipDirection(direction);
@@ -1231,11 +1279,35 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         
+        const viewportWidth = window.innerWidth;
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         
         const isTopHalf = centerY < viewportHeight / 2;
         const direction = isTopHalf ? 'bottom' : 'top';
+        
+        // 말풍선 크기 고려 (최소 너비 280px, 패딩 16px)
+        const tooltipWidth = 280;
+        const tooltipPadding = 16;
+        const tooltipHeight = 120; // 대략적인 높이
+        
+        // X 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipX = centerX;
+        if (centerX - tooltipWidth / 2 < tooltipPadding) {
+          tooltipX = tooltipWidth / 2 + tooltipPadding;
+        } else if (centerX + tooltipWidth / 2 > viewportWidth - tooltipPadding) {
+          tooltipX = viewportWidth - tooltipWidth / 2 - tooltipPadding;
+        }
+        
+        // Y 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipY;
+        if (isTopHalf) {
+          // 하단 방향: 영역 아래에 표시
+          tooltipY = Math.min(rect.bottom + 10, viewportHeight - tooltipHeight - tooltipPadding);
+        } else {
+          // 상단 방향: 영역 위에 표시
+          tooltipY = Math.max(rect.top - 10, tooltipHeight + tooltipPadding);
+        }
         
         const popupType = detectPopupType(areaElement);
         const typeInfo = getPopupTypeInfo(popupType);
@@ -1246,8 +1318,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipPosition({
-          x: centerX,
-          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+          x: tooltipX,
+          y: tooltipY,
         });
         
         setTutorialTooltipDirection(direction);
@@ -1339,11 +1411,35 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         
+        const viewportWidth = window.innerWidth;
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         
         const isTopHalf = centerY < viewportHeight / 2;
         const direction = isTopHalf ? 'bottom' : 'top';
+        
+        // 말풍선 크기 고려 (최소 너비 280px, 패딩 16px)
+        const tooltipWidth = 280;
+        const tooltipPadding = 16;
+        const tooltipHeight = 120; // 대략적인 높이
+        
+        // X 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipX = centerX;
+        if (centerX - tooltipWidth / 2 < tooltipPadding) {
+          tooltipX = tooltipWidth / 2 + tooltipPadding;
+        } else if (centerX + tooltipWidth / 2 > viewportWidth - tooltipPadding) {
+          tooltipX = viewportWidth - tooltipWidth / 2 - tooltipPadding;
+        }
+        
+        // Y 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipY;
+        if (isTopHalf) {
+          // 하단 방향: 영역 아래에 표시
+          tooltipY = Math.min(rect.bottom + 10, viewportHeight - tooltipHeight - tooltipPadding);
+        } else {
+          // 상단 방향: 영역 위에 표시
+          tooltipY = Math.max(rect.top - 10, tooltipHeight + tooltipPadding);
+        }
         
         const popupType = detectPopupType(areaElement);
         const typeInfo = getPopupTypeInfo(popupType);
@@ -1354,8 +1450,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipPosition({
-          x: centerX,
-          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+          x: tooltipX,
+          y: tooltipY,
         });
         
         setTutorialTooltipDirection(direction);
@@ -1460,11 +1556,35 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         
+        const viewportWidth = window.innerWidth;
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         
         const isTopHalf = centerY < viewportHeight / 2;
         const direction = isTopHalf ? 'bottom' : 'top';
+        
+        // 말풍선 크기 고려 (최소 너비 280px, 패딩 16px)
+        const tooltipWidth = 280;
+        const tooltipPadding = 16;
+        const tooltipHeight = 120; // 대략적인 높이
+        
+        // X 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipX = centerX;
+        if (centerX - tooltipWidth / 2 < tooltipPadding) {
+          tooltipX = tooltipWidth / 2 + tooltipPadding;
+        } else if (centerX + tooltipWidth / 2 > viewportWidth - tooltipPadding) {
+          tooltipX = viewportWidth - tooltipWidth / 2 - tooltipPadding;
+        }
+        
+        // Y 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipY;
+        if (isTopHalf) {
+          // 하단 방향: 영역 아래에 표시
+          tooltipY = Math.min(rect.bottom + 10, viewportHeight - tooltipHeight - tooltipPadding);
+        } else {
+          // 상단 방향: 영역 위에 표시
+          tooltipY = Math.max(rect.top - 10, tooltipHeight + tooltipPadding);
+        }
         
         const popupType = detectPopupType(areaElement);
         const typeInfo = getPopupTypeInfo(popupType);
@@ -1475,8 +1595,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipPosition({
-          x: centerX,
-          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+          x: tooltipX,
+          y: tooltipY,
         });
         
         setTutorialTooltipDirection(direction);
@@ -1566,11 +1686,35 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         
+        const viewportWidth = window.innerWidth;
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         
         const isTopHalf = centerY < viewportHeight / 2;
         const direction = isTopHalf ? 'bottom' : 'top';
+        
+        // 말풍선 크기 고려 (최소 너비 280px, 패딩 16px)
+        const tooltipWidth = 280;
+        const tooltipPadding = 16;
+        const tooltipHeight = 120; // 대략적인 높이
+        
+        // X 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipX = centerX;
+        if (centerX - tooltipWidth / 2 < tooltipPadding) {
+          tooltipX = tooltipWidth / 2 + tooltipPadding;
+        } else if (centerX + tooltipWidth / 2 > viewportWidth - tooltipPadding) {
+          tooltipX = viewportWidth - tooltipWidth / 2 - tooltipPadding;
+        }
+        
+        // Y 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipY;
+        if (isTopHalf) {
+          // 하단 방향: 영역 아래에 표시
+          tooltipY = Math.min(rect.bottom + 10, viewportHeight - tooltipHeight - tooltipPadding);
+        } else {
+          // 상단 방향: 영역 위에 표시
+          tooltipY = Math.max(rect.top - 10, tooltipHeight + tooltipPadding);
+        }
         
         const popupType = detectPopupType(areaElement);
         const typeInfo = getPopupTypeInfo(popupType);
@@ -1581,8 +1725,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipPosition({
-          x: centerX,
-          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+          x: tooltipX,
+          y: tooltipY,
         });
         
         setTutorialTooltipDirection(direction);
@@ -1652,11 +1796,35 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         
+        const viewportWidth = window.innerWidth;
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         
         const isTopHalf = centerY < viewportHeight / 2;
         const direction = isTopHalf ? 'bottom' : 'top';
+        
+        // 말풍선 크기 고려 (최소 너비 280px, 패딩 16px)
+        const tooltipWidth = 280;
+        const tooltipPadding = 16;
+        const tooltipHeight = 120; // 대략적인 높이
+        
+        // X 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipX = centerX;
+        if (centerX - tooltipWidth / 2 < tooltipPadding) {
+          tooltipX = tooltipWidth / 2 + tooltipPadding;
+        } else if (centerX + tooltipWidth / 2 > viewportWidth - tooltipPadding) {
+          tooltipX = viewportWidth - tooltipWidth / 2 - tooltipPadding;
+        }
+        
+        // Y 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipY;
+        if (isTopHalf) {
+          // 하단 방향: 영역 아래에 표시
+          tooltipY = Math.min(rect.bottom + 10, viewportHeight - tooltipHeight - tooltipPadding);
+        } else {
+          // 상단 방향: 영역 위에 표시
+          tooltipY = Math.max(rect.top - 10, tooltipHeight + tooltipPadding);
+        }
         
         const popupType = detectPopupType(areaElement);
         const typeInfo = getPopupTypeInfo(popupType);
@@ -1667,8 +1835,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipPosition({
-          x: centerX,
-          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+          x: tooltipX,
+          y: tooltipY,
         });
         
         setTutorialTooltipDirection(direction);
@@ -1737,11 +1905,35 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         
+        const viewportWidth = window.innerWidth;
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         
         const isTopHalf = centerY < viewportHeight / 2;
         const direction = isTopHalf ? 'bottom' : 'top';
+        
+        // 말풍선 크기 고려 (최소 너비 280px, 패딩 16px)
+        const tooltipWidth = 280;
+        const tooltipPadding = 16;
+        const tooltipHeight = 120; // 대략적인 높이
+        
+        // X 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipX = centerX;
+        if (centerX - tooltipWidth / 2 < tooltipPadding) {
+          tooltipX = tooltipWidth / 2 + tooltipPadding;
+        } else if (centerX + tooltipWidth / 2 > viewportWidth - tooltipPadding) {
+          tooltipX = viewportWidth - tooltipWidth / 2 - tooltipPadding;
+        }
+        
+        // Y 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipY;
+        if (isTopHalf) {
+          // 하단 방향: 영역 아래에 표시
+          tooltipY = Math.min(rect.bottom + 10, viewportHeight - tooltipHeight - tooltipPadding);
+        } else {
+          // 상단 방향: 영역 위에 표시
+          tooltipY = Math.max(rect.top - 10, tooltipHeight + tooltipPadding);
+        }
         
         const popupType = detectPopupType(areaElement);
         const typeInfo = getPopupTypeInfo(popupType);
@@ -1752,8 +1944,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipPosition({
-          x: centerX,
-          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+          x: tooltipX,
+          y: tooltipY,
         });
         
         setTutorialTooltipDirection(direction);
@@ -1822,11 +2014,35 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         
+        const viewportWidth = window.innerWidth;
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         
         const isTopHalf = centerY < viewportHeight / 2;
         const direction = isTopHalf ? 'bottom' : 'top';
+        
+        // 말풍선 크기 고려 (최소 너비 280px, 패딩 16px)
+        const tooltipWidth = 280;
+        const tooltipPadding = 16;
+        const tooltipHeight = 120; // 대략적인 높이
+        
+        // X 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipX = centerX;
+        if (centerX - tooltipWidth / 2 < tooltipPadding) {
+          tooltipX = tooltipWidth / 2 + tooltipPadding;
+        } else if (centerX + tooltipWidth / 2 > viewportWidth - tooltipPadding) {
+          tooltipX = viewportWidth - tooltipWidth / 2 - tooltipPadding;
+        }
+        
+        // Y 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipY;
+        if (isTopHalf) {
+          // 하단 방향: 영역 아래에 표시
+          tooltipY = Math.min(rect.bottom + 10, viewportHeight - tooltipHeight - tooltipPadding);
+        } else {
+          // 상단 방향: 영역 위에 표시
+          tooltipY = Math.max(rect.top - 10, tooltipHeight + tooltipPadding);
+        }
         
         const popupType = detectPopupType(areaElement);
         const typeInfo = getPopupTypeInfo(popupType);
@@ -1837,8 +2053,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipPosition({
-          x: centerX,
-          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+          x: tooltipX,
+          y: tooltipY,
         });
         
         setTutorialTooltipDirection(direction);
@@ -1907,11 +2123,35 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         
+        const viewportWidth = window.innerWidth;
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         
         const isTopHalf = centerY < viewportHeight / 2;
         const direction = isTopHalf ? 'bottom' : 'top';
+        
+        // 말풍선 크기 고려 (최소 너비 280px, 패딩 16px)
+        const tooltipWidth = 280;
+        const tooltipPadding = 16;
+        const tooltipHeight = 120; // 대략적인 높이
+        
+        // X 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipX = centerX;
+        if (centerX - tooltipWidth / 2 < tooltipPadding) {
+          tooltipX = tooltipWidth / 2 + tooltipPadding;
+        } else if (centerX + tooltipWidth / 2 > viewportWidth - tooltipPadding) {
+          tooltipX = viewportWidth - tooltipWidth / 2 - tooltipPadding;
+        }
+        
+        // Y 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipY;
+        if (isTopHalf) {
+          // 하단 방향: 영역 아래에 표시
+          tooltipY = Math.min(rect.bottom + 10, viewportHeight - tooltipHeight - tooltipPadding);
+        } else {
+          // 상단 방향: 영역 위에 표시
+          tooltipY = Math.max(rect.top - 10, tooltipHeight + tooltipPadding);
+        }
         
         const popupType = detectPopupType(areaElement);
         const typeInfo = getPopupTypeInfo(popupType);
@@ -1922,8 +2162,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipPosition({
-          x: centerX,
-          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+          x: tooltipX,
+          y: tooltipY,
         });
         
         setTutorialTooltipDirection(direction);
@@ -1991,11 +2231,35 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         
+        const viewportWidth = window.innerWidth;
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         
         const isTopHalf = centerY < viewportHeight / 2;
         const direction = isTopHalf ? 'bottom' : 'top';
+        
+        // 말풍선 크기 고려 (최소 너비 280px, 패딩 16px)
+        const tooltipWidth = 280;
+        const tooltipPadding = 16;
+        const tooltipHeight = 120; // 대략적인 높이
+        
+        // X 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipX = centerX;
+        if (centerX - tooltipWidth / 2 < tooltipPadding) {
+          tooltipX = tooltipWidth / 2 + tooltipPadding;
+        } else if (centerX + tooltipWidth / 2 > viewportWidth - tooltipPadding) {
+          tooltipX = viewportWidth - tooltipWidth / 2 - tooltipPadding;
+        }
+        
+        // Y 위치 조정 (화면 밖으로 나가지 않도록)
+        let tooltipY;
+        if (isTopHalf) {
+          // 하단 방향: 영역 아래에 표시
+          tooltipY = Math.min(rect.bottom + 10, viewportHeight - tooltipHeight - tooltipPadding);
+        } else {
+          // 상단 방향: 영역 위에 표시
+          tooltipY = Math.max(rect.top - 10, tooltipHeight + tooltipPadding);
+        }
         
         const popupType = detectPopupType(areaElement);
         const typeInfo = getPopupTypeInfo(popupType);
@@ -2006,8 +2270,8 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipPosition({
-          x: centerX,
-          y: isTopHalf ? rect.bottom + 10 : rect.top - 10,
+          x: tooltipX,
+          y: tooltipY,
         });
         
         setTutorialTooltipDirection(direction);
@@ -7183,7 +7447,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     <div className="flex-1">
                       <h3 className="font-bold text-lg mb-2">{tutorialTooltip.title}</h3>
                       <p className="text-sm leading-relaxed">{tutorialTooltip.description}</p>
-                      <p className="text-xs mt-2 opacity-90">한 번 더 터치하면 팝업이 열립니다</p>
+                      <p className="text-xs mt-2 opacity-90">{t('tooltipTutorialTouchAgain')}</p>
                     </div>
                   </div>
                 </div>
@@ -7215,7 +7479,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
                     <div className="flex-1">
                       <h3 className="font-bold text-lg mb-2">{tutorialTooltip.title}</h3>
                       <p className="text-sm leading-relaxed">{tutorialTooltip.description}</p>
-                      <p className="text-xs mt-2 opacity-90">한 번 더 터치하면 팝업이 열립니다</p>
+                      <p className="text-xs mt-2 opacity-90">{t('tooltipTutorialTouchAgain')}</p>
                     </div>
                   </div>
                 </div>

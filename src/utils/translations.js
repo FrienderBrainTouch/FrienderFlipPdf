@@ -136,6 +136,7 @@ export const translations = {
     tooltipLanguageDesc: '카탈로그의 언어를 변경할 수 있습니다.',
     tooltipButtonDefaultTitle: '버튼',
     tooltipButtonDefaultDesc: '이 버튼의 기능을 사용할 수 있습니다.',
+    tooltipTutorialTouchAgain: '한 번 더 터치하면 팝업이 열립니다',
     
     // 팝업 관련
     popup: '팝업',
@@ -279,6 +280,7 @@ export const translations = {
     tooltipLanguageDesc: 'You can change the language of the catalog.',
     tooltipButtonDefaultTitle: 'Button',
     tooltipButtonDefaultDesc: 'You can use the function of this button.',
+    tooltipTutorialTouchAgain: 'Touch again to open the popup',
     
     // 팝업 관련
     popup: 'Popup',
@@ -422,6 +424,7 @@ export const translations = {
     tooltipLanguageDesc: 'カタログの言語を変更できます。',
     tooltipButtonDefaultTitle: 'ボタン',
     tooltipButtonDefaultDesc: 'このボタンの機能を使用できます。',
+    tooltipTutorialTouchAgain: 'もう一度タッチするとポップアップが開きます',
     
     // 팝업 관련
     popup: 'ポップアップ',
@@ -518,6 +521,7 @@ export const translations = {
     tooltipLanguageDesc: '您可以更改目录的语言。',
     tooltipButtonDefaultTitle: '按钮',
     tooltipButtonDefaultDesc: '您可以使用此按钮的功能。',
+    tooltipTutorialTouchAgain: '再次触摸以打开弹出窗口',
     
     // 미디어 alt 텍스트
     worldGifAnimation: 'World GIF动画',
@@ -744,6 +748,7 @@ export const translations = {
     tooltipLanguageDesc: 'Puede cambiar el idioma del catálogo.',
     tooltipButtonDefaultTitle: 'Botón',
     tooltipButtonDefaultDesc: 'Puede usar la función de este botón.',
+    tooltipTutorialTouchAgain: 'Toca de nuevo para abrir la ventana emergente',
     
     // 팝업 관련
     popup: 'Ventana Emergente',

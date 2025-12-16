@@ -72,7 +72,7 @@ const getPage6MediaOverrides = (t) => ({
     src: '/FrienderFile/VideoFile/FrinederGIF1.gif',
     alt: t('frienderGifAnimation'),
   },
-});
+}); 
 
 const getPage7MediaOverrides = (t) => ({
   5: {

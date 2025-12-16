@@ -508,7 +508,7 @@ function DreamPathPage() {
           {/* Friender 로고 */}
           <div className="w-full h-full flex flex-col items-center justify-center">
             <img 
-              src="/FrienderFile/Interactive/Freinder-Logo-L-G.png"
+              src="/FrienderFile/Interactive/Friender-Logo-L.png"
               alt="Friender Logo"
               className="max-w-full max-h-full object-contain"
               style={{ opacity: logoOpacity }}
@@ -524,7 +524,7 @@ function DreamPathPage() {
           <div className="flex-shrink-0 w-[10%] max-w-[200px] pt-6 pl-4">
             <button onClick={handleHomeClick} className="cursor-pointer flex items-start w-full">
               <img
-                src="/FrienderFile/Interactive/Freinder-Logo-L-B.png"
+                src="/FrienderFile/Interactive/Friender-Logo-L.png"
                 alt="Friender Logo"
                 className="w-full h-auto"
               />

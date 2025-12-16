@@ -329,6 +329,14 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
   const [isModalDragging, setIsModalDragging] = React.useState(false);
   const modalDragStartRef = React.useRef({ x: 0, y: 0 });
 
+  // 튜토리얼 모드 상태 관리
+  const [isTutorialMode, setIsTutorialMode] = React.useState(false);
+  const [tutorialTooltip, setTutorialTooltip] = React.useState(null);
+  const [tutorialTooltipPosition, setTutorialTooltipPosition] = React.useState({ x: 0, y: 0 });
+  const [tutorialTooltipDirection, setTutorialTooltipDirection] = React.useState('top'); // 'top', 'bottom', 'left', 'right'
+  const [tutorialTargetArea, setTutorialTargetArea] = React.useState(null); // 확대할 영역 정보
+  const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 }); // 마우스 커서 위치
+
   // SVG 페이지 데이터 (언어별 경로 적용)
   const pageData = React.useMemo(
     () => [
@@ -1022,6 +1030,138 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
   };
 
   /**
+   * 튜토리얼 툴팁 위치 계산 함수
+   * 화면 밖으로 나가면 반대 방향으로 자동 조정
+   */
+  const calculateTooltipPosition = (mouseX, mouseY) => {
+    const tooltipWidth = 320; // max-w-xs + padding
+    const tooltipHeight = 150; // 예상 높이
+    const padding = 20; // 여백
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    let direction = 'top';
+    let x = mouseX;
+    let y = mouseY;
+    let transform = '';
+
+    // 상단에 공간이 충분한지 확인
+    if (mouseY - tooltipHeight - padding > 0) {
+      direction = 'top';
+      y = mouseY;
+      transform = 'translate(-50%, -100%)';
+    }
+    // 하단에 공간이 충분한지 확인
+    else if (mouseY + tooltipHeight + padding < viewportHeight) {
+      direction = 'bottom';
+      y = mouseY;
+      transform = 'translate(-50%, 0)';
+    }
+    // 좌측에 공간이 충분한지 확인
+    else if (mouseX - tooltipWidth - padding > 0) {
+      direction = 'left';
+      x = mouseX;
+      y = mouseY;
+      transform = 'translate(-100%, -50%)';
+    }
+    // 우측에 공간이 충분한지 확인
+    else if (mouseX + tooltipWidth + padding < viewportWidth) {
+      direction = 'right';
+      x = mouseX;
+      y = mouseY;
+      transform = 'translate(0, -50%)';
+    }
+    // 모든 방향이 부족하면 기본적으로 상단
+    else {
+      direction = 'top';
+      y = Math.min(mouseY, viewportHeight - tooltipHeight - padding);
+      transform = 'translate(-50%, -100%)';
+    }
+
+    // X 좌표가 화면 밖으로 나가지 않도록 조정
+    x = Math.max(tooltipWidth / 2 + padding, Math.min(x, viewportWidth - tooltipWidth / 2 - padding));
+
+    return { x, y, direction, transform };
+  };
+
+  // 튜토리얼 모드 관련 ref (무한 루프 방지)
+  const tutorialLastAreaElementRef = React.useRef(null);
+  const tutorialIsZoomedRef = React.useRef(false);
+  const tutorialTooltipRef = React.useRef(tutorialTooltip);
+  const tutorialTargetAreaRef = React.useRef(tutorialTargetArea);
+
+  // ref 동기화
+  React.useEffect(() => {
+    tutorialTooltipRef.current = tutorialTooltip;
+  }, [tutorialTooltip]);
+
+  React.useEffect(() => {
+    tutorialTargetAreaRef.current = tutorialTargetArea;
+  }, [tutorialTargetArea]);
+
+  /**
+   * 튜토리얼 모드 전역 마우스 이벤트 핸들러
+   */
+  React.useEffect(() => {
+    if (!isTutorialMode) {
+      // 튜토리얼 모드가 꺼지면 리셋
+      tutorialLastAreaElementRef.current = null;
+      tutorialIsZoomedRef.current = false;
+      return;
+    }
+
+    const handleTutorialMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+      const position = calculateTooltipPosition(e.clientX, e.clientY);
+      setTutorialTooltipPosition({ x: position.x, y: position.y });
+      setTutorialTooltipDirection(position.direction);
+
+      // 마우스 위치의 요소 찾기
+      const targetElement = document.elementFromPoint(e.clientX, e.clientY);
+      if (targetElement) {
+        // 클릭 가능한 영역 찾기
+        const clickableArea = targetElement.closest('[data-clickable="true"]');
+        
+        if (clickableArea) {
+          // 영역 정보 가져오기
+          const areaTitle = clickableArea.getAttribute('title') || 
+                           clickableArea.getAttribute('data-tutorial-title') || 
+                           '영역 정보';
+          // 영역 설명 가져오기
+          const areaDescription = clickableArea.getAttribute('data-tutorial-description') || 
+                                  clickableArea.getAttribute('data-tutorial-detail') === 'true'
+                                    ? '이 영역을 클릭하면 상세 정보를 확인할 수 있습니다.'
+                                    : '이 영역을 클릭하면 더 자세한 정보를 볼 수 있습니다.';
+          
+          // 툴팁 내용 업데이트 (확대 기능 제거)
+          setTutorialTooltip({
+            title: areaTitle,
+            description: areaDescription,
+            isDetailView: false,
+          });
+          setTutorialTargetArea(clickableArea);
+        } else {
+          // 영역 밖에 있으면 기본 툴팁 표시
+          if (!tutorialTooltipRef.current || tutorialTooltipRef.current.title === '튜토리얼 모드') {
+            setTutorialTooltip({
+              title: '튜토리얼 모드',
+              description: '마우스를 각 영역에 올려보세요.',
+              isDetailView: false,
+            });
+            setTutorialTargetArea(null);
+          }
+        }
+      }
+    };
+
+    document.addEventListener('mousemove', handleTutorialMouseMove);
+
+    return () => {
+      document.removeEventListener('mousemove', handleTutorialMouseMove);
+    };
+  }, [isTutorialMode]);
+
+  /**
    * 추가 영역 이미지 모달 열기 핸들러
    */
   const openAdditionalImageModal = (imageType) => {
@@ -1650,6 +1790,40 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
                   </svg>
                 </button>
               )}
+
+              {/* 튜토리얼 모드 버튼 */}
+              <button
+                onClick={() => {
+                  setIsTutorialMode(!isTutorialMode);
+                  if (!isTutorialMode) {
+                    // 튜토리얼 모드 시작 시 초기 툴팁 설정
+                    setTutorialTooltip({
+                      title: '튜토리얼 모드',
+                      description: '마우스를 이동하여 각 영역에 대한 정보를 확인하세요.',
+                      isDetailView: false,
+                    });
+                  } else {
+                    // 튜토리얼 모드 종료 시 상태 리셋
+                    setTutorialTooltip(null);
+                    setTutorialTargetArea(null);
+                  }
+                }}
+                className={`w-12 h-12 backdrop-blur-sm flex items-center justify-center rounded-full shadow-lg border transition-colors duration-300 cursor-pointer ${
+                  isTutorialMode
+                    ? 'bg-blue-600 text-white border-blue-500 hover:bg-blue-700'
+                    : 'bg-white/90 text-gray-700 border-gray-200 hover:text-gray-900 hover:bg-white'
+                }`}
+                title={isTutorialMode ? '튜토리얼 모드 종료' : '튜토리얼 모드 시작'}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                  />
+                </svg>
+              </button>
             </div>
             <div className="flex items-center xl:gap-4">
               {/* 왼쪽 네비게이션 버튼들 - 항상 표시하되 표지 페이지에서는 비활성화 */}
@@ -6500,39 +6674,161 @@ function FrienderPage({ onBack = null, language: propLanguage }) {
       )}
 
       {/* 튜토리얼 툴팁 */}
-      {isTutorialMode && tutorialTooltip && (
-        <div
-          className="fixed z-[10000] pointer-events-none"
-          style={{
-            left: `${tutorialTooltipPosition.x}px`,
-            top: `${tutorialTooltipPosition.y}px`,
-            transform: 'translate(-50%, -100%)',
-          }}
-        >
-          <div className="bg-blue-600 text-white rounded-lg shadow-2xl p-4 max-w-xs min-w-[280px] mb-2">
-            <div className="flex items-start gap-2">
-              <div className="flex-shrink-0 mt-0.5">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-lg mb-2">{tutorialTooltip.title}</h3>
-                <p className="text-sm leading-relaxed">{tutorialTooltip.description}</p>
-              </div>
-            </div>
-          </div>
-          {/* 화살표 */}
+      {isTutorialMode && tutorialTooltip && (() => {
+        const isDetailView = tutorialTooltip.isDetailView;
+        const targetArea = tutorialTargetArea;
+        
+        // transform 계산
+        let transform = '';
+        if (tutorialTooltipDirection === 'top') {
+          transform = 'translate(-50%, -100%)';
+        } else if (tutorialTooltipDirection === 'bottom') {
+          transform = 'translate(-50%, 0)';
+        } else if (tutorialTooltipDirection === 'left') {
+          transform = 'translate(-100%, -50%)';
+        } else if (tutorialTooltipDirection === 'right') {
+          transform = 'translate(0, -50%)';
+        }
+
+        return (
           <div
-            className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-blue-600 mx-auto"
-            style={{ marginLeft: '50%', transform: 'translateX(-50%)' }}
-          />
-        </div>
-      )}
+            className="fixed z-[10000] pointer-events-none"
+            style={{
+              left: `${tutorialTooltipPosition.x}px`,
+              top: `${tutorialTooltipPosition.y}px`,
+              transform: transform,
+            }}
+          >
+            {/* 상단 방향 */}
+            {tutorialTooltipDirection === 'top' && (
+              <>
+                <div className="bg-blue-600 text-white rounded-lg shadow-2xl p-4 max-w-xs min-w-[280px] mb-2">
+                  <div className="flex items-start gap-2">
+                    <div className="flex-shrink-0 mt-0.5">
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-lg mb-2">{tutorialTooltip.title}</h3>
+                      {isDetailView ? (
+                        <p className="text-sm leading-relaxed">이 영역을 확대하여 상세 정보를 확인하세요.</p>
+                      ) : (
+                        <p className="text-sm leading-relaxed">{tutorialTooltip.description}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                {/* 하단 화살표 */}
+                <div
+                  className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-blue-600 mx-auto"
+                  style={{ marginLeft: '50%', transform: 'translateX(-50%)' }}
+                />
+              </>
+            )}
+
+            {/* 하단 방향 */}
+            {tutorialTooltipDirection === 'bottom' && (
+              <>
+                {/* 상단 화살표 */}
+                <div
+                  className="w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-blue-600 mx-auto mb-2"
+                  style={{ marginLeft: '50%', transform: 'translateX(-50%)' }}
+                />
+                <div className="bg-blue-600 text-white rounded-lg shadow-2xl p-4 max-w-xs min-w-[280px]">
+                  <div className="flex items-start gap-2">
+                    <div className="flex-shrink-0 mt-0.5">
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-lg mb-2">{tutorialTooltip.title}</h3>
+                      {isDetailView ? (
+                        <p className="text-sm leading-relaxed">이 영역을 확대하여 상세 정보를 확인하세요.</p>
+                      ) : (
+                        <p className="text-sm leading-relaxed">{tutorialTooltip.description}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* 좌측 방향 */}
+            {tutorialTooltipDirection === 'left' && (
+              <div className="flex items-center">
+                <div className="bg-blue-600 text-white rounded-lg shadow-2xl p-4 max-w-xs min-w-[280px] mr-2">
+                  <div className="flex items-start gap-2">
+                    <div className="flex-shrink-0 mt-0.5">
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-lg mb-2">{tutorialTooltip.title}</h3>
+                      {isDetailView ? (
+                        <p className="text-sm leading-relaxed">이 영역을 확대하여 상세 정보를 확인하세요.</p>
+                      ) : (
+                        <p className="text-sm leading-relaxed">{tutorialTooltip.description}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                {/* 우측 화살표 */}
+                <div
+                  className="w-0 h-0 border-t-8 border-b-8 border-l-8 border-transparent border-l-blue-600"
+                  style={{ transform: 'translateY(-50%)' }}
+                />
+              </div>
+            )}
+
+            {/* 우측 방향 */}
+            {tutorialTooltipDirection === 'right' && (
+              <div className="flex items-center">
+                {/* 좌측 화살표 */}
+                <div
+                  className="w-0 h-0 border-t-8 border-b-8 border-r-8 border-transparent border-r-blue-600 mr-2"
+                  style={{ transform: 'translateY(-50%)' }}
+                />
+                <div className="bg-blue-600 text-white rounded-lg shadow-2xl p-4 max-w-xs min-w-[280px]">
+                  <div className="flex items-start gap-2">
+                    <div className="flex-shrink-0 mt-0.5">
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-lg mb-2">{tutorialTooltip.title}</h3>
+                      {isDetailView ? (
+                        <p className="text-sm leading-relaxed">이 영역을 확대하여 상세 정보를 확인하세요.</p>
+                      ) : (
+                        <p className="text-sm leading-relaxed">{tutorialTooltip.description}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       {/* Dialogflow 챗봇 플로팅 버튼 */}
       <Chatbot language={currentLanguage} />

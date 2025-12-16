@@ -310,6 +310,21 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
   const [tutorialTooltipDirection, setTutorialTooltipDirection] = useState('top');
   const [tutorialTooltipShown, setTutorialTooltipShown] = useState(new Set()); // 툴팁이 표시된 영역 추적
 
+  // 스크롤 시 튜토리얼 툴팁 리셋
+  useEffect(() => {
+    if (!isTutorialMode) return;
+
+    const handleScroll = () => {
+      setTutorialTooltip(null);
+      setTutorialTooltipShown(new Set());
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isTutorialMode]);
+
   // ref 변수들
   const animationRef = useRef(null);
 
@@ -1014,8 +1029,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
       
       setTutorialTooltipDirection(direction);
       
-      // 툴팁 표시 상태에 추가
-      setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+      // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
+      setTutorialTooltipShown(prev => {
+        const newSet = new Set();
+        newSet.add(areaId);
+        return newSet;
+      });
     }
   }, [isTutorialMode, tutorialTooltipShown, detectPopupType, getPopupTypeInfo]);
 
@@ -1048,6 +1067,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         setIsPage3ModalOpen(true);
       } else {
         // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
         const areaElement = event.currentTarget;
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
@@ -1072,7 +1092,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipDirection(direction);
-        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set();
+          newSet.add(areaId);
+          return newSet;
+        });
       }
       return; // 튜토리얼 모드에서는 여기서 종료
     }
@@ -1201,6 +1226,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         setIsPage4ModalOpen(true);
       } else {
         // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
         const areaElement = event.currentTarget;
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
@@ -1225,7 +1251,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipDirection(direction);
-        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set();
+          newSet.add(areaId);
+          return newSet;
+        });
       }
       return;
     }
@@ -1303,6 +1334,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         setIsPage5ModalOpen(true);
       } else {
         // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
         const areaElement = event.currentTarget;
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
@@ -1327,7 +1359,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipDirection(direction);
-        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set();
+          newSet.add(areaId);
+          return newSet;
+        });
       }
       return;
     }
@@ -1418,6 +1455,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         }
       } else {
         // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
         const areaElement = event.currentTarget;
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
@@ -1442,7 +1480,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipDirection(direction);
-        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set();
+          newSet.add(areaId);
+          return newSet;
+        });
       }
       return;
     }
@@ -1518,6 +1561,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         setIsPage2ModalOpen(true);
       } else {
         // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
         const areaElement = event.currentTarget;
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
@@ -1542,7 +1586,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipDirection(direction);
-        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set();
+          newSet.add(areaId);
+          return newSet;
+        });
       }
       return; // 튜토리얼 모드에서는 여기서 종료
     }
@@ -1598,6 +1647,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         setIsPage7ModalOpen(true);
       } else {
         // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
         const areaElement = event.currentTarget;
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
@@ -1622,7 +1672,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipDirection(direction);
-        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set();
+          newSet.add(areaId);
+          return newSet;
+        });
       }
       return;
     }
@@ -1677,6 +1732,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         setIsPage8ModalOpen(true);
       } else {
         // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
         const areaElement = event.currentTarget;
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
@@ -1701,7 +1757,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipDirection(direction);
-        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set();
+          newSet.add(areaId);
+          return newSet;
+        });
       }
       return;
     }
@@ -1756,6 +1817,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         setIsPage9ModalOpen(true);
       } else {
         // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
         const areaElement = event.currentTarget;
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
@@ -1780,7 +1842,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipDirection(direction);
-        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set();
+          newSet.add(areaId);
+          return newSet;
+        });
       }
       return;
     }
@@ -1835,6 +1902,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         setIsPage10ModalOpen(true);
       } else {
         // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
         const areaElement = event.currentTarget;
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
@@ -1859,7 +1927,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipDirection(direction);
-        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set();
+          newSet.add(areaId);
+          return newSet;
+        });
       }
       return;
     }
@@ -1913,6 +1986,7 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         setIsPage11ModalOpen(true);
       } else {
         // 첫 번째 터치: 툴팁 표시만 (팝업 열지 않음)
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
         const areaElement = event.currentTarget;
         const rect = areaElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
@@ -1937,7 +2011,12 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
         });
         
         setTutorialTooltipDirection(direction);
-        setTutorialTooltipShown(prev => new Set(prev).add(areaId));
+        // 다른 영역의 툴팁이 표시되어 있으면 제거하고 현재 영역만 추가
+        setTutorialTooltipShown(prev => {
+          const newSet = new Set();
+          newSet.add(areaId);
+          return newSet;
+        });
       }
       return;
     }

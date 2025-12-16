@@ -1094,6 +1094,15 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    */
   const closePage3Modal = () => {
     setIsPage3ModalOpen(false);
+    // 튜토리얼 모드에서 해당 영역 ID 제거
+    if (isTutorialMode && selectedPage3Area !== null) {
+      const areaId = `page3-area${selectedPage3Area}`;
+      setTutorialTooltipShown(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(areaId);
+        return newSet;
+      });
+    }
     setSelectedPage3Area(null);
     // 모달창 확대/축소 상태 리셋
     setModalZoomLevel(1);
@@ -1122,6 +1131,15 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    */
   const closeModal = () => {
     setIsModalOpen(false);
+    // 튜토리얼 모드에서 해당 영역 ID 제거
+    if (isTutorialMode && selectedArea !== null) {
+      const areaId = `page1-area${selectedArea}`;
+      setTutorialTooltipShown(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(areaId);
+        return newSet;
+      });
+    }
     setSelectedArea(null);
   };
 
@@ -1221,6 +1239,15 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    */
   const closePage4Modal = () => {
     setIsPage4ModalOpen(false);
+    // 튜토리얼 모드에서 해당 영역 ID 제거
+    if (isTutorialMode && selectedPage4Area !== null) {
+      const areaId = `page4-area${selectedPage4Area}`;
+      setTutorialTooltipShown(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(areaId);
+        return newSet;
+      });
+    }
     setSelectedPage4Area(null);
     setModalZoomLevel(1);
     setIsModalZoomed(false);
@@ -1241,6 +1268,15 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    */
   const closePage4Area2Modal = () => {
     setIsPage4Area2ModalOpen(false);
+    // 튜토리얼 모드에서 해당 영역 ID 제거
+    if (isTutorialMode) {
+      const areaId = `page4-area2`;
+      setTutorialTooltipShown(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(areaId);
+        return newSet;
+      });
+    }
   };
 
   /**
@@ -1319,6 +1355,15 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    */
   const closePage5Modal = () => {
     setIsPage5ModalOpen(false);
+    // 튜토리얼 모드에서 해당 영역 ID 제거
+    if (isTutorialMode && selectedPage5Area !== null) {
+      const areaId = `page5-area${selectedPage5Area}`;
+      setTutorialTooltipShown(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(areaId);
+        return newSet;
+      });
+    }
     setSelectedPage5Area(null);
     setModalZoomLevel(1);
     setIsModalZoomed(false);
@@ -1332,6 +1377,15 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    */
   const closePage5ExteriorModal = () => {
     setIsPage5ExteriorModalOpen(false);
+    // 튜토리얼 모드에서 해당 영역 ID 제거
+    if (isTutorialMode) {
+      const areaId = `page5-exterior`;
+      setTutorialTooltipShown(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(areaId);
+        return newSet;
+      });
+    }
     setSelectedExteriorType(null);
   };
 
@@ -1407,6 +1461,15 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    */
   const closePage6Modal = () => {
     setIsPage6ModalOpen(false);
+    // 튜토리얼 모드에서 해당 영역 ID 제거
+    if (isTutorialMode && selectedPage6Area !== null) {
+      const areaId = `page6-area${selectedPage6Area}`;
+      setTutorialTooltipShown(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(areaId);
+        return newSet;
+      });
+    }
     setSelectedPage6Area(null);
     setModalZoomLevel(1);
     setIsModalZoomed(false);
@@ -1420,6 +1483,15 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    */
   const closePage63DModal = () => {
     setIsPage63DModalOpen(false);
+    // 튜토리얼 모드에서 해당 영역 ID 제거
+    if (isTutorialMode) {
+      const areaId = `page6-3d`;
+      setTutorialTooltipShown(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(areaId);
+        return newSet;
+      });
+    }
   };
 
   /**
@@ -1485,6 +1557,15 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    */
   const closePage2Modal = (event) => {
     setIsPage2ModalOpen(false);
+    // 튜토리얼 모드에서 해당 영역 ID 제거
+    if (isTutorialMode && selectedPage2Area !== null) {
+      const areaId = `page2-area${selectedPage2Area}`;
+      setTutorialTooltipShown(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(areaId);
+        return newSet;
+      });
+    }
     setSelectedPage2Area(null);
     setModalZoomLevel(1);
     setIsModalZoomed(false);
@@ -1555,6 +1636,15 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    */
   const closePage7Modal = () => {
     setIsPage7ModalOpen(false);
+    // 튜토리얼 모드에서 해당 영역 ID 제거
+    if (isTutorialMode && selectedPage7Area !== null) {
+      const areaId = `page7-area${selectedPage7Area}`;
+      setTutorialTooltipShown(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(areaId);
+        return newSet;
+      });
+    }
     setSelectedPage7Area(null);
     setModalZoomLevel(1);
     setIsModalZoomed(false);
@@ -1625,6 +1715,15 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    */
   const closePage8Modal = () => {
     setIsPage8ModalOpen(false);
+    // 튜토리얼 모드에서 해당 영역 ID 제거
+    if (isTutorialMode && selectedPage8Area !== null) {
+      const areaId = `page8-area${selectedPage8Area}`;
+      setTutorialTooltipShown(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(areaId);
+        return newSet;
+      });
+    }
     setSelectedPage8Area(null);
     setModalZoomLevel(1);
     setIsModalZoomed(false);
@@ -1695,6 +1794,15 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    */
   const closePage9Modal = () => {
     setIsPage9ModalOpen(false);
+    // 튜토리얼 모드에서 해당 영역 ID 제거
+    if (isTutorialMode && selectedPage9Area !== null) {
+      const areaId = `page9-area${selectedPage9Area}`;
+      setTutorialTooltipShown(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(areaId);
+        return newSet;
+      });
+    }
     setSelectedPage9Area(null);
     setModalZoomLevel(1);
     setIsModalZoomed(false);
@@ -1765,6 +1873,15 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    */
   const closePage10Modal = () => {
     setIsPage10ModalOpen(false);
+    // 튜토리얼 모드에서 해당 영역 ID 제거
+    if (isTutorialMode && selectedPage10Area !== null) {
+      const areaId = `page10-area${selectedPage10Area}`;
+      setTutorialTooltipShown(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(areaId);
+        return newSet;
+      });
+    }
     setSelectedPage10Area(null);
     setModalZoomLevel(1);
     setIsModalZoomed(false);
@@ -1833,6 +1950,15 @@ function FrienderPageMobile({ onBack = null, language: propLanguage }) {
    */
   const closePage11Modal = () => {
     setIsPage11ModalOpen(false);
+    // 튜토리얼 모드에서 해당 영역 ID 제거
+    if (isTutorialMode) {
+      const areaId = 'page11-area1';
+      setTutorialTooltipShown(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(areaId);
+        return newSet;
+      });
+    }
     setModalZoomLevel(1);
     setIsModalZoomed(false);
     setModalDragOffset({ x: 0, y: 0 });

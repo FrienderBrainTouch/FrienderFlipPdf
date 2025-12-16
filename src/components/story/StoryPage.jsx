@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import HTMLFlipBook from 'react-pageflip';
 import StoryPageMobile from './StoryPage-mobile';
+import { LANGUAGE_FOLDER_MAP } from '../../utils/language';
 import { useValidLanguage } from '../../hooks/useValidLanguage';
 import { useFlipBookSize } from '../../hooks/useFlipBookSize';
 
@@ -49,18 +50,44 @@ function StoryPage() {
   // 플립북 컨테이너 참조
   const flipBookContainerRef = React.useRef(null);
   
-  // DreamPath 페이지 데이터 (6페이지)
-  const pageData = React.useMemo(
-    () => [
-    { id: 1, svg: `/Story/Page/${validLanguage}/1.svg`, isCover: true },
-    { id: 2, svg: `/Story/Page/${validLanguage}/2.svg` },
-    { id: 3, svg: `/Story/Page/${validLanguage}/3.svg` },
-    { id: 4, svg: `/Story/Page/${validLanguage}/4.svg` },
-    { id: 5, svg: `/Story/Page/${validLanguage}/5.svg` },
-      { id: 6, svg: `/Story/Page/${validLanguage}/6.svg` },
-    ],
-    [validLanguage]
-  );
+  // Popup 모달 상태 관리
+  const [isPopupModalOpen, setIsPopupModalOpen] = React.useState(false);
+  const [selectedPopupArea, setSelectedPopupArea] = React.useState(null);
+  const [selectedPopupPage, setSelectedPopupPage] = React.useState(null);
+  
+  // 각 페이지별 호버 상태 관리
+  const [hoveredPopupArea, setHoveredPopupArea] = React.useState(null);
+  
+  // 모달창 확대/축소 상태 관리
+  const [modalZoomLevel, setModalZoomLevel] = React.useState(1);
+  const [isModalZoomed, setIsModalZoomed] = React.useState(false);
+  
+  // 모달창 드래그 상태
+  const [modalDragOffset, setModalDragOffset] = React.useState({ x: 0, y: 0 });
+  const [isModalDragging, setIsModalDragging] = React.useState(false);
+  const modalDragStartRef = React.useRef({ x: 0, y: 0 });
+  
+  // StoryAI 페이지 데이터 (6페이지)
+  // 경로 생성: 한국어는 루트, 다국어는 Multilingual 하위
+  const pageData = React.useMemo(() => {
+    const getPagePath = (pageNum) => {
+      if (validLanguage === 'ko') {
+        return `/StoryAI/Page/${pageNum}.svg`;
+      }
+      // 언어 코드를 폴더명으로 변환 (ja -> Japan, zh -> China 등)
+      const folderName = LANGUAGE_FOLDER_MAP[validLanguage] || validLanguage;
+      return `/StoryAI/Multilingual/${folderName}/Page/${pageNum}.svg`;
+    };
+    
+    return [
+      { id: 1, svg: getPagePath(1), isCover: true },
+      { id: 2, svg: getPagePath(2) },
+      { id: 3, svg: getPagePath(3) },
+      { id: 4, svg: getPagePath(4) },
+      { id: 5, svg: getPagePath(5) },
+      { id: 6, svg: getPagePath(6) },
+    ];
+  }, [validLanguage]);
   
   // 화면 크기 변경 감지
   React.useEffect(() => {
@@ -346,6 +373,105 @@ function StoryPage() {
     }
   };
   
+  /**
+   * Popup 영역 클릭 핸들러
+   * @param {number} pageNumber - 페이지 번호 (1-6)
+   * @param {string} areaId - 영역 ID (예: '1-1', '2-1' 등)
+   */
+  const handlePopupAreaClick = (pageNumber, areaId) => {
+    // 모달 열기 전에 확대/축소 상태 리셋
+    setModalZoomLevel(1);
+    setIsModalZoomed(false);
+    setModalDragOffset({ x: 0, y: 0 });
+    setIsModalDragging(false);
+    modalDragStartRef.current = { x: 0, y: 0 };
+    
+    setSelectedPopupPage(pageNumber);
+    setSelectedPopupArea(areaId);
+    setIsPopupModalOpen(true);
+  };
+  
+  /**
+   * Popup 모달 닫기 핸들러
+   */
+  const closePopupModal = () => {
+    setIsPopupModalOpen(false);
+    setSelectedPopupArea(null);
+    setSelectedPopupPage(null);
+    // 모달창 확대/축소 상태 리셋
+    setModalZoomLevel(1);
+    setIsModalZoomed(false);
+    // 모달창 드래그 상태 리셋
+    setModalDragOffset({ x: 0, y: 0 });
+    setIsModalDragging(false);
+    modalDragStartRef.current = { x: 0, y: 0 };
+  };
+  
+  /**
+   * 모달 확대 버튼 클릭 핸들러
+   */
+  const handleModalZoomIn = () => {
+    const newZoomLevel = Math.min(modalZoomLevel + 0.2, 3);
+    setModalZoomLevel(newZoomLevel);
+    setIsModalZoomed(newZoomLevel !== 1);
+  };
+  
+  /**
+   * 모달 축소 버튼 클릭 핸들러
+   */
+  const handleModalZoomOut = () => {
+    const newZoomLevel = Math.max(modalZoomLevel - 0.2, 0.5);
+    setModalZoomLevel(newZoomLevel);
+    setIsModalZoomed(newZoomLevel !== 1);
+  };
+  
+  /**
+   * 모달 확대/축소 리셋 핸들러
+   */
+  const handleModalZoomReset = () => {
+    setModalZoomLevel(1);
+    setIsModalZoomed(false);
+    setModalDragOffset({ x: 0, y: 0 });
+  };
+  
+  // 모달 드래그 핸들러들
+  const handleModalDragStart = (e) => {
+    setIsModalDragging(true);
+    modalDragStartRef.current = { x: e.clientX, y: e.clientY };
+    e.preventDefault();
+  };
+  
+  const handleModalDragMove = (e) => {
+    if (isModalDragging) {
+      const deltaX = e.clientX - modalDragStartRef.current.x;
+      const deltaY = e.clientY - modalDragStartRef.current.y;
+      
+      setModalDragOffset((prev) => ({
+        x: prev.x + deltaX,
+        y: prev.y + deltaY,
+      }));
+      
+      modalDragStartRef.current = { x: e.clientX, y: e.clientY };
+    }
+  };
+  
+  const handleModalDragEnd = () => {
+    setIsModalDragging(false);
+  };
+  
+  /**
+   * Popup 이미지 경로 생성 함수
+   * @param {string} areaId - 영역 ID (예: '1-1', '2-1' 등)
+   * @returns {string} 이미지 경로
+   */
+  const getPopupImagePath = (areaId) => {
+    if (validLanguage === 'ko') {
+      return `/StoryAI/Popup/${areaId}.png`;
+    }
+    const folderName = LANGUAGE_FOLDER_MAP[validLanguage] || validLanguage;
+    return `/StoryAI/Multilingual/${folderName}/Popup/${areaId}.png`;
+  };
+  
   // 모바일 화면인 경우 모바일 컴포넌트 렌더링
   if (isMobile) {
     return <StoryPageMobile language={validLanguage} />;
@@ -363,7 +489,7 @@ function StoryPage() {
           {/* Friender 로고 */}
           <div className="w-full h-full flex flex-col items-center justify-center">
             <img 
-              src="/FrienderFile/Interactive/Freinder-Logo-L-G.png"
+              src="/FrienderFile/Interactive/Friender-Logo-L.png"
               alt="Friender Logo"
               className="max-w-full max-h-full object-contain"
               style={{ opacity: logoOpacity }}
@@ -379,7 +505,7 @@ function StoryPage() {
           <div className="flex-shrink-0 w-[10%] max-w-[200px] pt-6 pl-4">
             <button onClick={handleHomeClick} className="cursor-pointer flex items-start w-full">
               <img
-                src="/FrienderFile/Interactive/Freinder-Logo-L-B.png"
+                src="/FrienderFile/Interactive/Friender-Logo-L.png"
                 alt="Friender Logo"
                 className="w-full h-auto"
               />
@@ -595,6 +721,79 @@ function StoryPage() {
                           backgroundPosition: 'center',
                         }}
                       >
+                        {/* ========== 1페이지 Popup 클릭 영역 (총 4개) ========== */}
+                        {/* 1페이지 - 박스 1/4 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          } ${hoveredPopupArea === '1-1' ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '14%',
+                            left: '6%',
+                            width: '51%',
+                            height: '5%',
+                          }}
+                          onClick={() => handlePopupAreaClick(1, '1-1')}
+                          onMouseEnter={() => setHoveredPopupArea('1-1')}
+                          onMouseLeave={() => setHoveredPopupArea(null)}
+                          title="1페이지 박스 1/4"
+                        ></div>
+                        
+                        {/* 1페이지 - 박스 2/4 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          } ${hoveredPopupArea === '1-2' ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '19%',
+                            left: '6%',
+                            width: '45%',
+                            height: '9%',
+                          }}
+                          onClick={() => handlePopupAreaClick(1, '1-2')}
+                          onMouseEnter={() => setHoveredPopupArea('1-2')}
+                          onMouseLeave={() => setHoveredPopupArea(null)}
+                          title="1페이지 박스 2/4"
+                        ></div>
+                        
+                        {/* 1페이지 - 박스 3/4 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          } ${hoveredPopupArea === '1-3' ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '29%',
+                            left: '6%',
+                            width: '85%',
+                            height: '8%',
+                          }}
+                          onClick={() => handlePopupAreaClick(1, '1-3')}
+                          onMouseEnter={() => setHoveredPopupArea('1-3')}
+                          onMouseLeave={() => setHoveredPopupArea(null)}
+                          title="1페이지 박스 3/4"
+                        ></div>
+                        
+                        {/* 1페이지 - 박스 4/4 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          } ${hoveredPopupArea === '1-4' ? 'border-2 border-yellow-500' : ''}`}
+                          style={{
+                            position: 'absolute',
+                            top: '39%',
+                            left: '6%',
+                            width: '47%',
+                            height: '3%',
+                          }}
+                          onClick={() => handlePopupAreaClick(1, '1-4')}
+                          onMouseEnter={() => setHoveredPopupArea('1-4')}
+                          onMouseLeave={() => setHoveredPopupArea(null)}
+                          title="1페이지 박스 4/4"
+                        ></div>
+                        
                         {/* 오른쪽 터치 영역 (표지는 오른쪽) */}
                         <div 
                           className="absolute right-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
@@ -622,6 +821,532 @@ function StoryPage() {
                             backgroundPosition: 'center',
                           }}
                         >
+                          {/* ========== 2페이지 Popup 클릭 영역 (총 5개) ========== */}
+                          {page.id === 2 && (
+                            <>
+                              {/* 2페이지 - 박스 1/5 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '2-1' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '23%',
+                                  left: '7%',
+                                  width: '90%',
+                                  height: '12%',
+                                }}
+                                onClick={() => handlePopupAreaClick(2, '2-1')}
+                                onMouseEnter={() => setHoveredPopupArea('2-1')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="2페이지 박스 1/5"
+                              ></div>
+                              
+                              {/* 2페이지 - 박스 2/5 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '2-2' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '53%',
+                                  left: '7%',
+                                  width: '40%',
+                                  height: '7%',
+                                }}
+                                onClick={() => handlePopupAreaClick(2, '2-2')}
+                                onMouseEnter={() => setHoveredPopupArea('2-2')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="2페이지 박스 2/5"
+                              ></div>
+                              
+                              {/* 2페이지 - 박스 3/5 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '2-3' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '53%',
+                                  left: '51%',
+                                  width: '41%',
+                                  height: '7%',
+                                }}
+                                onClick={() => handlePopupAreaClick(2, '2-3')}
+                                onMouseEnter={() => setHoveredPopupArea('2-3')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="2페이지 박스 3/5"
+                              ></div>
+                              
+                              {/* 2페이지 - 박스 4/5 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '2-4' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '80%',
+                                  left: '8%',
+                                  width: '39%',
+                                  height: '7%',
+                                }}
+                                onClick={() => handlePopupAreaClick(2, '2-4')}
+                                onMouseEnter={() => setHoveredPopupArea('2-4')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="2페이지 박스 4/5"
+                              ></div>
+                              
+                              {/* 2페이지 - 박스 5/5 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '2-5' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '80%',
+                                  left: '51%',
+                                  width: '40%',
+                                  height: '7%',
+                                }}
+                                onClick={() => handlePopupAreaClick(2, '2-5')}
+                                onMouseEnter={() => setHoveredPopupArea('2-5')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="2페이지 박스 5/5"
+                              ></div>
+                            </>
+                          )}
+                          
+                          {/* ========== 3페이지 Popup 클릭 영역 (총 5개) ========== */}
+                          {page.id === 3 && (
+                            <>
+                              {/* 3페이지 - 박스 1/5 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '3-1' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '22%',
+                                  left: '9%',
+                                  width: '81%',
+                                  height: '10%',
+                                }}
+                                onClick={() => handlePopupAreaClick(3, '3-1')}
+                                onMouseEnter={() => setHoveredPopupArea('3-1')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="3페이지 박스 1/5"
+                              ></div>
+                              
+                              {/* 3페이지 - 박스 2/5 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '3-2' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '34%',
+                                  left: '12%',
+                                  width: '73%',
+                                  height: '8%',
+                                }}
+                                onClick={() => handlePopupAreaClick(3, '3-2')}
+                                onMouseEnter={() => setHoveredPopupArea('3-2')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="3페이지 박스 2/5"
+                              ></div>
+                              
+                              {/* 3페이지 - 박스 3/5 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '3-3' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '44%',
+                                  left: '12%',
+                                  width: '73%',
+                                  height: '8%',
+                                }}
+                                onClick={() => handlePopupAreaClick(3, '3-3')}
+                                onMouseEnter={() => setHoveredPopupArea('3-3')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="3페이지 박스 3/5"
+                              ></div>
+                              
+                              {/* 3페이지 - 박스 4/5 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '3-4' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '53%',
+                                  left: '12%',
+                                  width: '73%',
+                                  height: '8%',
+                                }}
+                                onClick={() => handlePopupAreaClick(3, '3-4')}
+                                onMouseEnter={() => setHoveredPopupArea('3-4')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="3페이지 박스 4/5"
+                              ></div>
+                              
+                              {/* 3페이지 - 박스 5/5 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '3-5' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '63%',
+                                  left: '12%',
+                                  width: '73%',
+                                  height: '8%',
+                                }}
+                                onClick={() => handlePopupAreaClick(3, '3-5')}
+                                onMouseEnter={() => setHoveredPopupArea('3-5')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="3페이지 박스 5/5"
+                              ></div>
+                            </>
+                          )}
+                          
+                          {/* ========== 4페이지 Popup 클릭 영역 (총 8개) ========== */}
+                          {page.id === 4 && (
+                            <>
+                              {/* 4페이지 - 박스 1/8 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '4-1' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '21%',
+                                  left: '7%',
+                                  width: '63.5%',
+                                  height: '6.5%',
+                                }}
+                                onClick={() => handlePopupAreaClick(4, '4-1')}
+                                onMouseEnter={() => setHoveredPopupArea('4-1')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="4페이지 박스 1/8"
+                              ></div>
+                              
+                              {/* 4페이지 - 박스 2/8 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '4-2' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '39%',
+                                  left: '9.5%',
+                                  width: '34.5%',
+                                  height: '5.5%',
+                                }}
+                                onClick={() => handlePopupAreaClick(4, '4-2')}
+                                onMouseEnter={() => setHoveredPopupArea('4-2')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="4페이지 박스 2/8"
+                              ></div>
+                              
+                              {/* 4페이지 - 박스 3/8 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '4-3' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '39%',
+                                  left: '51%',
+                                  width: '37.5%',
+                                  height: '5.5%',
+                                }}
+                                onClick={() => handlePopupAreaClick(4, '4-3')}
+                                onMouseEnter={() => setHoveredPopupArea('4-3')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="4페이지 박스 3/8"
+                              ></div>
+                              
+                              {/* 4페이지 - 박스 4/8 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '4-4' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '57%',
+                                  left: '9.5%',
+                                  width: '37.5%',
+                                  height: '5.5%',
+                                }}
+                                onClick={() => handlePopupAreaClick(4, '4-4')}
+                                onMouseEnter={() => setHoveredPopupArea('4-4')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="4페이지 박스 4/8"
+                              ></div>
+                              
+                              {/* 4페이지 - 박스 5/8 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '4-5' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '56%',
+                                  left: '50%',
+                                  width: '38.5%',
+                                  height: '6.5%',
+                                }}
+                                onClick={() => handlePopupAreaClick(4, '4-5')}
+                                onMouseEnter={() => setHoveredPopupArea('4-5')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="4페이지 박스 5/8"
+                              ></div>
+                              
+                              {/* 4페이지 - 박스 6/8 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '4-6' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '74%',
+                                  left: '9.5%',
+                                  width: '38.5%',
+                                  height: '5.5%',
+                                }}
+                                onClick={() => handlePopupAreaClick(4, '4-6')}
+                                onMouseEnter={() => setHoveredPopupArea('4-6')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="4페이지 박스 6/8"
+                              ></div>
+                              
+                              {/* 4페이지 - 박스 7/8 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '4-7' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '74%',
+                                  left: '50%',
+                                  width: '38.5%',
+                                  height: '5.5%',
+                                }}
+                                onClick={() => handlePopupAreaClick(4, '4-7')}
+                                onMouseEnter={() => setHoveredPopupArea('4-7')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="4페이지 박스 7/8"
+                              ></div>
+                              
+                              {/* 4페이지 - 박스 8/8 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '4-8' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '88%',
+                                  left: '8.5%',
+                                  width: '80.5%',
+                                  height: '4.5%',
+                                }}
+                                onClick={() => handlePopupAreaClick(4, '4-8')}
+                                onMouseEnter={() => setHoveredPopupArea('4-8')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="4페이지 박스 8/8"
+                              ></div>
+                            </>
+                          )}
+                          
+                          {/* ========== 5페이지 Popup 클릭 영역 (총 6개) ========== */}
+                          {page.id === 5 && (
+                            <>
+                              {/* 5페이지 - 박스 1/6 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '5-1' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '22%',
+                                  left: '7%',
+                                  width: '84.66%',
+                                  height: '8.66%',
+                                }}
+                                onClick={() => handlePopupAreaClick(5, '5-1')}
+                                onMouseEnter={() => setHoveredPopupArea('5-1')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="5페이지 박스 1/6"
+                              ></div>
+                              
+                              {/* 5페이지 - 박스 2/6 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '5-2' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '52%',
+                                  left: '8.66%',
+                                  width: '15.66%',
+                                  height: '9.66%',
+                                }}
+                                onClick={() => handlePopupAreaClick(5, '5-2')}
+                                onMouseEnter={() => setHoveredPopupArea('5-2')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="5페이지 박스 2/6"
+                              ></div>
+                              
+                              {/* 5페이지 - 박스 3/6 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '5-3' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '52%',
+                                  left: '25.32%',
+                                  width: '14.66%',
+                                  height: '9.66%',
+                                }}
+                                onClick={() => handlePopupAreaClick(5, '5-3')}
+                                onMouseEnter={() => setHoveredPopupArea('5-3')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="5페이지 박스 3/6"
+                              ></div>
+                              
+                              {/* 5페이지 - 박스 4/6 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '5-4' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '52%',
+                                  left: '40.98%',
+                                  width: '14.66%',
+                                  height: '9.66%',
+                                }}
+                                onClick={() => handlePopupAreaClick(5, '5-4')}
+                                onMouseEnter={() => setHoveredPopupArea('5-4')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="5페이지 박스 4/6"
+                              ></div>
+                              
+                              {/* 5페이지 - 박스 5/6 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '5-5' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '52%',
+                                  left: '56.64%',
+                                  width: '14.66%',
+                                  height: '9.66%',
+                                }}
+                                onClick={() => handlePopupAreaClick(5, '5-5')}
+                                onMouseEnter={() => setHoveredPopupArea('5-5')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="5페이지 박스 5/6"
+                              ></div>
+                              
+                              {/* 5페이지 - 박스 6/6 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '5-6' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '52%',
+                                  left: '73.3%',
+                                  width: '15.66%',
+                                  height: '9.66%',
+                                }}
+                                onClick={() => handlePopupAreaClick(5, '5-6')}
+                                onMouseEnter={() => setHoveredPopupArea('5-6')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="5페이지 박스 6/6"
+                              ></div>
+                            </>
+                          )}
+                          
+                          {/* ========== 6페이지 Popup 클릭 영역 (총 1개) ========== */}
+                          {page.id === 6 && (
+                            <>
+                              {/* 6페이지 - 박스 1/1 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '6-1' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '93%',
+                                  left: '50%',
+                                  width: '91%',
+                                  height: '13%',
+                                  transform: 'translate(-50%, -50%)',
+                                }}
+                                onClick={() => handlePopupAreaClick(6, '6-1')}
+                                onMouseEnter={() => setHoveredPopupArea('6-1')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="6페이지 박스 1/1"
+                              ></div>
+                            </>
+                          )}
+                          
                           {/* 왼쪽 터치 영역 */}
                           <div 
                             className="absolute left-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
@@ -768,6 +1493,143 @@ function StoryPage() {
                   />
                 </svg>
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Popup 모달 */}
+      {isPopupModalOpen && selectedPopupArea && selectedPopupPage && (
+        <div
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+          onClick={closePopupModal}
+          onMouseMove={isModalDragging ? handleModalDragMove : undefined}
+          onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
+          onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
+        >
+          {/* 고정 버튼들 - 모달 외부에 배치 */}
+          <div
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* 확대 버튼 */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleModalZoomIn();
+              }}
+              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+              title="확대"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                />
+              </svg>
+            </button>
+
+            {/* 축소 버튼 */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleModalZoomOut();
+              }}
+              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+              title="축소"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                />
+              </svg>
+            </button>
+
+            {/* 확대/축소 리셋 버튼 */}
+            {isModalZoomed && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleModalZoomReset();
+                }}
+                className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                title="원본 크기로 복원"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
+                </svg>
+              </button>
+            )}
+
+            {/* 닫기 버튼 */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                closePopupModal();
+              }}
+              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-red-600 flex items-center justify-center hover:text-red-700 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+              title="닫기"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+
+          {/* 모달 내용 */}
+          <div
+            className={`relative max-w-[90vw] max-h-[90vh] ${isModalZoomed ? 'cursor-grab' : ''} ${
+              isModalDragging ? 'cursor-grabbing' : ''
+            }`}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={isModalZoomed ? handleModalDragStart : undefined}
+            style={{
+              transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
+              transformOrigin: 'center center',
+              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
+            }}
+          >
+            <div className="bg-white rounded-lg p-4 shadow-2xl">
+              <img
+                src={getPopupImagePath(selectedPopupArea)}
+                alt={`${selectedPopupPage}페이지 ${selectedPopupArea} 팝업`}
+                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                loading="lazy"
+                onError={(e) => {
+                  // 이미지 로드 실패 시 조용히 처리 (콘솔 에러 방지)
+                  e.target.style.display = 'none';
+                  const errorDiv = e.target.nextSibling;
+                  if (errorDiv) {
+                    errorDiv.style.display = 'block';
+                  }
+                }}
+                onLoad={(e) => {
+                  // 이미지 로드 성공 시 에러 메시지 숨기기
+                  const errorDiv = e.target.nextSibling;
+                  if (errorDiv) {
+                    errorDiv.style.display = 'none';
+                  }
+                }}
+              />
+              <div className="hidden text-gray-500 text-center mt-4" style={{ display: 'none' }}>
+                <p>이미지를 불러올 수 없습니다.</p>
+                <p className="text-sm">경로: {getPopupImagePath(selectedPopupArea)}</p>
+              </div>
             </div>
           </div>
         </div>

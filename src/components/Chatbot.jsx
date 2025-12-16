@@ -266,36 +266,36 @@ const Chatbot = () => {
   const theme = getTheme(activeChatbotType);
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 font-sans">
+    <div className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-50 font-sans">
       {/* 챗봇 버튼 */}
       {!isChatbotOpen && (
         <button
           onClick={handleToggle}
           style={{ backgroundColor: theme.primary }}
-          className="w-14 h-14 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2"
+          className="w-12 h-12 md:w-14 md:h-14 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2"
           onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = theme.primaryHover)}
           onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = theme.primary)}
           aria-label="챗봇 열기"
         >
-          <MessageCircle size={24} />
+          <MessageCircle size={20} className="md:w-6 md:h-6" />
         </button>
       )}
 
       {/* 챗봇 창 */}
       {isChatbotOpen && (
-        <div className="bg-white rounded-lg shadow-2xl w-96 h-[600px] flex flex-col border border-gray-200 animate-in slide-in-from-bottom-10 fade-in duration-300">
+        <div className="bg-white rounded-lg shadow-2xl w-[calc(100vw-2rem)] max-w-[384px] h-[calc(100vh-10rem)] max-h-[600px] md:w-96 md:h-[600px] flex flex-col border border-gray-200 animate-in slide-in-from-bottom-10 fade-in duration-300">
           {/* 헤더 */}
           <div
             style={{ backgroundColor: theme.primary }}
-            className="text-white p-4 rounded-t-lg flex items-center justify-between shadow-md"
+            className="text-white p-3 md:p-4 rounded-t-lg flex items-center justify-between shadow-md"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                <Bot size={20} />
+            <div className="flex items-center gap-2 md:gap-3">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                <Bot size={18} className="md:w-5 md:h-5" />
               </div>
               <div>
-                <h3 className="font-bold text-sm">{getTitle()}</h3>
-                <p className="text-xs text-white/80">{getSubtitle()}</p>
+                <h3 className="font-bold text-xs md:text-sm">{getTitle()}</h3>
+                <p className="text-[10px] md:text-xs text-white/80">{getSubtitle()}</p>
               </div>
             </div>
             <button
@@ -303,25 +303,25 @@ const Chatbot = () => {
               className="text-white hover:bg-white/20 rounded-full p-1 transition-colors"
               aria-label="챗봇 닫기"
             >
-              <X size={20} />
+              <X size={18} className="md:w-5 md:h-5" />
             </button>
           </div>
 
           {/* 메시지 영역 */}
           <div
             ref={messagesContainerRef}
-            className={`flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 ${
+            className={`flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4 bg-gray-50 ${
               messages.length === 0 ? 'flex items-center justify-center' : ''
             }`}
           >
             {messages.length === 0 && (
-              <div className="text-center text-gray-500 px-6">
+              <div className="text-center text-gray-500 px-4 md:px-6">
                 <Bot
-                  size={48}
+                  size={40}
                   style={{ color: theme.primary }}
-                  className="mx-auto mb-3 opacity-50"
+                  className="mx-auto mb-2 md:mb-3 opacity-50 md:w-12 md:h-12"
                 />
-                <p className="text-sm leading-relaxed">{getWelcomeMessage()}</p>
+                <p className="text-xs md:text-sm leading-relaxed">{getWelcomeMessage()}</p>
               </div>
             )}
 
@@ -331,16 +331,16 @@ const Chatbot = () => {
                 className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-2.5 shadow-sm ${
+                  className={`max-w-[85%] md:max-w-[80%] rounded-2xl px-3 py-2 md:px-4 md:py-2.5 shadow-sm ${
                     message.sender === 'user'
                       ? 'text-white rounded-br-none'
                       : 'bg-white text-gray-800 border border-gray-100 rounded-bl-none'
                   }`}
                   style={message.sender === 'user' ? { backgroundColor: theme.primary } : {}}
                 >
-                  <p className="text-sm whitespace-pre-wrap leading-relaxed">{message.text}</p>
+                  <p className="text-xs md:text-sm whitespace-pre-wrap leading-relaxed">{message.text}</p>
                   <p
-                    className={`text-[10px] mt-1 text-right ${
+                    className={`text-[9px] md:text-[10px] mt-1 text-right ${
                     message.sender === 'user' ? 'text-white/70' : 'text-gray-400'
                     }`}
                   >
@@ -352,7 +352,7 @@ const Chatbot = () => {
 
             {isTyping && (
               <div className="flex justify-start">
-                <div className="bg-white border border-gray-100 rounded-2xl rounded-bl-none px-4 py-3 shadow-sm">
+                <div className="bg-white border border-gray-100 rounded-2xl rounded-bl-none px-3 py-2 md:px-4 md:py-3 shadow-sm">
                   <div className="flex gap-1.5">
                     <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
                     <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
@@ -364,14 +364,14 @@ const Chatbot = () => {
           </div>
 
           {/* 입력 영역 */}
-          <div className="p-4 border-t border-gray-100 bg-white rounded-b-lg">
+          <div className="p-3 md:p-4 border-t border-gray-100 bg-white rounded-b-lg">
             <form onSubmit={sendMessage} className="flex gap-2">
               <input
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 type="text"
                 placeholder={t('chatbot_placeholder')}
-                className="flex-1 px-4 py-2.5 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:border-transparent text-sm !bg-white !text-black !placeholder-gray-500 hover:bg-gray-50 transition-colors"
+                className="flex-1 px-3 py-2 md:px-4 md:py-2.5 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:border-transparent text-xs md:text-sm !bg-white !text-black !placeholder-gray-500 hover:bg-gray-50 transition-colors"
                 style={{ '--tw-ring-color': theme.primaryLight }}
                 disabled={isTyping}
               />
@@ -381,7 +381,7 @@ const Chatbot = () => {
                 style={{
                   backgroundColor: !inputMessage.trim() || isTyping ? undefined : theme.primary,
                 }}
-                className="w-10 h-10 flex items-center justify-center text-white rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-400 shadow-sm"
+                className="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center text-white rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-400 shadow-sm flex-shrink-0"
                 onMouseEnter={(e) => {
                   if (!e.currentTarget.disabled)
                     e.currentTarget.style.backgroundColor = theme.primaryHover;
@@ -391,7 +391,7 @@ const Chatbot = () => {
                     e.currentTarget.style.backgroundColor = theme.primary;
                 }}
               >
-                <Send size={18} />
+                <Send size={16} className="md:w-[18px] md:h-[18px]" />
               </button>
             </form>
           </div>

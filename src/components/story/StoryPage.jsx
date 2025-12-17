@@ -2,13 +2,41 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import HTMLFlipBook from 'react-pageflip';
 import StoryPageMobile from './StoryPage-mobile';
-import { LANGUAGE_FOLDER_MAP } from '../../utils/language';
+import { LANGUAGE_FOLDER_MAP, getLanguageList } from '../../utils/language';
 import { useValidLanguage } from '../../hooks/useValidLanguage';
 import { useFlipBookSize } from '../../hooks/useFlipBookSize';
 
 function StoryPage() {
   const navigate = useNavigate();
   const validLanguage = useValidLanguage();
+  const languageList = getLanguageList();
+  
+  // 언어 선택 드롭다운 상태
+  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = React.useState(false);
+  const languageDropdownRef = React.useRef(null);
+  
+  // 언어 변경 핸들러
+  const handleLanguageChange = (langCode) => {
+    navigate(`/story/${langCode}`);
+    setIsLanguageDropdownOpen(false);
+  };
+  
+  // 외부 클릭 시 드롭다운 닫기
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (languageDropdownRef.current && !languageDropdownRef.current.contains(event.target)) {
+        setIsLanguageDropdownOpen(false);
+      }
+    };
+    
+    if (isLanguageDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isLanguageDropdownOpen]);
   
   // 화면 크기 상태 관리
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1025);
@@ -1493,6 +1521,39 @@ function StoryPage() {
                   />
                 </svg>
               </button>
+              
+              {/* 언어 선택 버튼 */}
+              <div className="relative" ref={languageDropdownRef}>
+                <button
+                  onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
+                  className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
+                  title="언어 선택"
+                >
+                  <img 
+                    src="/FrienderFile/Interactive/Language.png" 
+                    alt="언어 선택" 
+                    className="w-6 h-6 object-contain"
+                    style={{ filter: 'brightness(0) invert(1)' }}
+                  />
+                </button>
+                
+                {/* 언어 선택 드롭다운 (위로 열림) */}
+                {isLanguageDropdownOpen && (
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white rounded-lg shadow-lg border border-gray-200 min-w-[150px] z-50">
+                    {languageList.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => handleLanguageChange(lang.code)}
+                        className={`w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors duration-200 first:rounded-t-lg last:rounded-b-lg ${
+                          validLanguage === lang.code ? 'bg-gray-100 font-semibold' : ''
+                        }`}
+                      >
+                        <span className="text-gray-800">{lang.nativeName}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

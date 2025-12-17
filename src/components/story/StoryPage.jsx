@@ -759,7 +759,7 @@ function StoryPage() {
                             position: 'absolute',
                             top: '14%',
                             left: '6%',
-                            width: '51%',
+                            width: '60%',
                             height: '5%',
                           }}
                           onClick={() => handlePopupAreaClick(1, '1-1')}
@@ -777,7 +777,7 @@ function StoryPage() {
                             position: 'absolute',
                             top: '19%',
                             left: '6%',
-                            width: '45%',
+                            width: '76%',
                             height: '9%',
                           }}
                           onClick={() => handlePopupAreaClick(1, '1-2')}
@@ -813,7 +813,7 @@ function StoryPage() {
                             position: 'absolute',
                             top: '39%',
                             left: '6%',
-                            width: '47%',
+                            width: '76%',
                             height: '3%',
                           }}
                           onClick={() => handlePopupAreaClick(1, '1-4')}
@@ -872,10 +872,10 @@ function StoryPage() {
                                 }`}
                                 style={{
                                   position: 'absolute',
-                                  top: '53%',
+                                  top: validLanguage === 'en' ? '55%' : '53%',
                                   left: '7%',
                                   width: '40%',
-                                  height: '7%',
+                                  height: validLanguage === 'en' ? '9%' : '7%',
                                 }}
                                 onClick={() => handlePopupAreaClick(2, '2-2')}
                                 onMouseEnter={() => setHoveredPopupArea('2-2')}
@@ -892,10 +892,10 @@ function StoryPage() {
                                 }`}
                                 style={{
                                   position: 'absolute',
-                                  top: '53%',
+                                  top: validLanguage === 'en' ? '55%' : '53%',
                                   left: '51%',
-                                  width: '41%',
-                                  height: '7%',
+                                  width: '42%',
+                                  height: '9%',
                                 }}
                                 onClick={() => handlePopupAreaClick(2, '2-3')}
                                 onMouseEnter={() => setHoveredPopupArea('2-3')}
@@ -912,10 +912,10 @@ function StoryPage() {
                                 }`}
                                 style={{
                                   position: 'absolute',
-                                  top: '80%',
+                                  top: validLanguage === 'en' ? '83%' : (validLanguage === 'es' ? '82%' : '80%'),
                                   left: '8%',
                                   width: '39%',
-                                  height: '7%',
+                                  height: (validLanguage === 'es' || validLanguage === 'en') ? '9%' : '9%',
                                 }}
                                 onClick={() => handlePopupAreaClick(2, '2-4')}
                                 onMouseEnter={() => setHoveredPopupArea('2-4')}
@@ -932,10 +932,10 @@ function StoryPage() {
                                 }`}
                                 style={{
                                   position: 'absolute',
-                                  top: '80%',
+                                  top: validLanguage === 'en' ? '83%' : (validLanguage === 'es' ? '82%' : '80%'),
                                   left: '51%',
                                   width: '40%',
-                                  height: '7%',
+                                  height: (validLanguage === 'es' || validLanguage === 'en') ? '9%' : '7%',
                                 }}
                                 onClick={() => handlePopupAreaClick(2, '2-5')}
                                 onMouseEnter={() => setHoveredPopupArea('2-5')}
@@ -977,7 +977,7 @@ function StoryPage() {
                                 }`}
                                 style={{
                                   position: 'absolute',
-                                  top: '34%',
+                                  top: validLanguage === 'ja' ? '34%' : '33%',
                                   left: '12%',
                                   width: '73%',
                                   height: '8%',
@@ -997,7 +997,7 @@ function StoryPage() {
                                 }`}
                                 style={{
                                   position: 'absolute',
-                                  top: '44%',
+                                  top: validLanguage === 'ja' ? '44%' : '43%',
                                   left: '12%',
                                   width: '73%',
                                   height: '8%',
@@ -1017,7 +1017,7 @@ function StoryPage() {
                                 }`}
                                 style={{
                                   position: 'absolute',
-                                  top: '53%',
+                                  top: validLanguage === 'ja' ? '53%' : '52%',
                                   left: '12%',
                                   width: '73%',
                                   height: '8%',
@@ -1037,7 +1037,7 @@ function StoryPage() {
                                 }`}
                                 style={{
                                   position: 'absolute',
-                                  top: '63%',
+                                  top: validLanguage === 'ja' ? '63%' : '62%',
                                   left: '12%',
                                   width: '73%',
                                   height: '8%',
@@ -1064,7 +1064,7 @@ function StoryPage() {
                                   position: 'absolute',
                                   top: '21%',
                                   left: '7%',
-                                  width: '63.5%',
+                                  width: '86.5%',
                                   height: '6.5%',
                                 }}
                                 onClick={() => handlePopupAreaClick(4, '4-1')}

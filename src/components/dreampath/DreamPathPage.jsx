@@ -778,7 +778,7 @@ function DreamPathPage() {
                             position: 'absolute',
                             top: '55%',
                             left: '7%',
-                            width: '82%',
+                            width: validLanguage === 'es' ? '87%' : '82%',
                             height: '5%',
                           }}
                           onClick={() => handlePopupAreaClick(1, '1-1')}

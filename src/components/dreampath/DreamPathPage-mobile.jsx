@@ -18,6 +18,20 @@ function DreamPathPageMobile({ language = 'ko' }) {
   const [whiteScreenVisible, setWhiteScreenVisible] = useState(true); // 흰 화면 표시 여부
   const [mainScreenVisible, setMainScreenVisible] = useState(false); // 본 화면 표시 여부
 
+  // Popup 모달 상태 관리
+  const [isPopupModalOpen, setIsPopupModalOpen] = useState(false);
+  const [selectedPopupArea, setSelectedPopupArea] = useState(null);
+  const [selectedPopupPage, setSelectedPopupPage] = useState(null);
+
+  // 모달창 확대/축소 상태 관리
+  const [modalZoomLevel, setModalZoomLevel] = useState(1);
+  const [isModalZoomed, setIsModalZoomed] = useState(false);
+
+  // 모달창 드래그 상태
+  const [modalDragOffset, setModalDragOffset] = useState({ x: 0, y: 0 });
+  const [isModalDragging, setIsModalDragging] = useState(false);
+  const modalDragStartRef = useRef({ x: 0, y: 0 });
+
   // ref 변수들
   const animationRef = useRef(null);
 
@@ -225,6 +239,112 @@ function DreamPathPageMobile({ language = 'ko' }) {
     }
   };
 
+  /**
+   * Popup 영역 클릭 핸들러
+   */
+  const handlePopupAreaClick = (pageNumber, areaId) => {
+    // 모달 열기 전에 확대/축소 상태 리셋
+    setModalZoomLevel(1);
+    setIsModalZoomed(false);
+    setModalDragOffset({ x: 0, y: 0 });
+    setIsModalDragging(false);
+    modalDragStartRef.current = { x: 0, y: 0 };
+    
+    setSelectedPopupPage(pageNumber);
+    setSelectedPopupArea(areaId);
+    setIsPopupModalOpen(true);
+  };
+
+  /**
+   * Popup 모달 닫기 핸들러
+   */
+  const closePopupModal = () => {
+    setIsPopupModalOpen(false);
+    setSelectedPopupArea(null);
+    setSelectedPopupPage(null);
+    // 모달창 확대/축소 상태 리셋
+    setModalZoomLevel(1);
+    setIsModalZoomed(false);
+    setModalDragOffset({ x: 0, y: 0 });
+    setIsModalDragging(false);
+    modalDragStartRef.current = { x: 0, y: 0 };
+  };
+
+  /**
+   * 모달 확대 핸들러
+   */
+  const handleModalZoomIn = () => {
+    setModalZoomLevel((prev) => Math.min(prev + 0.2, 3));
+    setIsModalZoomed(true);
+  };
+
+  /**
+   * 모달 축소 핸들러
+   */
+  const handleModalZoomOut = () => {
+    setModalZoomLevel((prev) => {
+      const newLevel = Math.max(prev - 0.2, 0.5);
+      if (newLevel <= 1) {
+        setIsModalZoomed(false);
+      }
+      return newLevel;
+    });
+  };
+
+  /**
+   * 모달 확대/축소 리셋 핸들러
+   */
+  const handleModalZoomReset = () => {
+    setModalZoomLevel(1);
+    setIsModalZoomed(false);
+  };
+
+  /**
+   * 모달 드래그 시작 핸들러
+   */
+  const handleModalDragStart = (e) => {
+    if (isModalZoomed) {
+      setIsModalDragging(true);
+      modalDragStartRef.current = { x: e.clientX, y: e.clientY };
+      e.preventDefault();
+    }
+  };
+
+  /**
+   * 모달 드래그 이동 핸들러
+   */
+  const handleModalDragMove = (e) => {
+    if (isModalDragging) {
+      const deltaX = e.clientX - modalDragStartRef.current.x;
+      const deltaY = e.clientY - modalDragStartRef.current.y;
+      
+      setModalDragOffset((prev) => ({
+        x: prev.x + deltaX,
+        y: prev.y + deltaY,
+      }));
+      
+      modalDragStartRef.current = { x: e.clientX, y: e.clientY };
+    }
+  };
+
+  /**
+   * 모달 드래그 종료 핸들러
+   */
+  const handleModalDragEnd = () => {
+    setIsModalDragging(false);
+  };
+
+  /**
+   * Popup 이미지 경로 생성 함수
+   */
+  const getPopupImagePath = (areaId) => {
+    if (language === 'ko') {
+      return `/DreamPath/Popup/${areaId}.png`;
+    }
+    const folderName = LANGUAGE_FOLDER_MAP[language] || language;
+    return `/DreamPath/Multilingual/${folderName}/Popup/${areaId}.png`;
+  };
+
   return (
     <div className="w-full h-screen overflow-hidden relative">
       {/* 인트로 화면 (흰 화면 + 로고) */}
@@ -277,6 +397,454 @@ function DreamPathPageMobile({ language = 'ko' }) {
                         objectFit: 'cover',
                       }}
                     />
+                    
+                    {/* Popup 클릭 영역들 */}
+                    {/* 1페이지 (표지) - id: 0 */}
+                    {page.id === 0 && (
+                      <>
+                        {/* 1페이지 - 박스 1/3 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '55%',
+                            left: '7%',
+                            width: '82%',
+                            height: '5%',
+                          }}
+                          onClick={() => handlePopupAreaClick(1, '1-1')}
+                          title="1페이지 박스 1/3 - 표지_03"
+                        ></div>
+                        
+                        {/* 1페이지 - 박스 2/3 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '60%',
+                            left: '7%',
+                            width: '74%',
+                            height: '10%',
+                          }}
+                          onClick={() => handlePopupAreaClick(1, '1-2')}
+                          title="1페이지 박스 2/3 - 표지_05"
+                        ></div>
+                        
+                        {/* 1페이지 - 박스 3/3 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '4%',
+                            right: '16%',
+                            width: '78%',
+                            height: '15%',
+                          }}
+                          onClick={() => handlePopupAreaClick(1, '1-3')}
+                          title="1페이지 박스 3/3 - 표지_08"
+                        ></div>
+                      </>
+                    )}
+                    
+                    {/* 2페이지 - id: 1 */}
+                    {page.id === 1 && (
+                      <>
+                        {/* 2페이지 - 박스 1/6 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '4%',
+                            left: '61%',
+                            width: '34%',
+                            height: '13%',
+                          }}
+                          onClick={() => handlePopupAreaClick(2, '2-1')}
+                          title="2페이지 박스 1/6 - 수업흐름_03"
+                        ></div>
+                        
+                        {/* 2페이지 - 박스 2/6 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '18%',
+                            left: '61%',
+                            width: '34%',
+                            height: '12%',
+                          }}
+                          onClick={() => handlePopupAreaClick(2, '2-2')}
+                          title="2페이지 박스 2/6 - 수업흐름_07"
+                        ></div>
+                        
+                        {/* 2페이지 - 박스 3/6 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '32%',
+                            left: '61%',
+                            width: '35%',
+                            height: '11%',
+                          }}
+                          onClick={() => handlePopupAreaClick(2, '2-3')}
+                          title="2페이지 박스 3/6 - 수업흐름_10"
+                        ></div>
+                        
+                        {/* 2페이지 - 박스 4/6 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '68%',
+                            left: '9%',
+                            width: '25%',
+                            height: '10%',
+                          }}
+                          onClick={() => handlePopupAreaClick(2, '2-4')}
+                          title="2페이지 박스 4/6 - 수업흐름_12"
+                        ></div>
+                        
+                        {/* 2페이지 - 박스 5/6 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '68%',
+                            left: '38%',
+                            width: '24%',
+                            height: '10%',
+                          }}
+                          onClick={() => handlePopupAreaClick(2, '2-5')}
+                          title="2페이지 박스 5/6 - 2-5"
+                        ></div>
+                        
+                        {/* 2페이지 - 박스 6/6 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '68%',
+                            left: '67%',
+                            width: '25%',
+                            height: '10%',
+                          }}
+                          onClick={() => handlePopupAreaClick(2, '2-6')}
+                          title="2페이지 박스 6/6 - 2-6"
+                        ></div>
+                      </>
+                    )}
+                    
+                    {/* 3페이지 - id: 2 */}
+                    {page.id === 2 && (
+                      <>
+                        {/* 3페이지 - 박스 1/4 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '9%',
+                            left: '7%',
+                            width: '91%',
+                            height: '10%',
+                          }}
+                          onClick={() => handlePopupAreaClick(3, '3-1')}
+                          title="3페이지 박스 1/4 - 수업흐름_19"
+                        ></div>
+                        
+                        {/* 3페이지 - 박스 2/4 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '35%',
+                            left: '8%',
+                            width: '26%',
+                            height: '12%',
+                          }}
+                          onClick={() => handlePopupAreaClick(3, '3-2')}
+                          title="3페이지 박스 2/4 - 수업흐름_22"
+                        ></div>
+                        
+                        {/* 3페이지 - 박스 3/4 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '52%',
+                            left: '38%',
+                            width: '24%',
+                            height: '13%',
+                          }}
+                          onClick={() => handlePopupAreaClick(3, '3-3')}
+                          title="3페이지 박스 3/4 - 커리큘럼_03"
+                        ></div>
+                        
+                        {/* 3페이지 - 박스 4/4 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '53%',
+                            left: '66%',
+                            width: '26%',
+                            height: '12%',
+                          }}
+                          onClick={() => handlePopupAreaClick(3, '3-4')}
+                          title="3페이지 박스 4/4 - 커리큘럼_07"
+                        ></div>
+                      </>
+                    )}
+                    
+                    {/* 4페이지 - id: 3 */}
+                    {page.id === 3 && (
+                      <>
+                        {/* 4페이지 - 박스 1/8 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '10%',
+                            left: '7%',
+                            width: '90%',
+                            height: '9%',
+                          }}
+                          onClick={() => handlePopupAreaClick(4, '4-1')}
+                          title="4페이지 박스 1/8 - 커리큘럼_10"
+                        ></div>
+                        
+                        {/* 4페이지 - 박스 2/8 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '29%',
+                            left: '42%',
+                            width: '45%',
+                            height: '5%',
+                          }}
+                          onClick={() => handlePopupAreaClick(4, '4-2')}
+                          title="4페이지 박스 2/8 - 커리큘럼_12"
+                        ></div>
+                        
+                        {/* 4페이지 - 박스 3/8 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '35%',
+                            left: '42%',
+                            width: '45%',
+                            height: '5%',
+                          }}
+                          onClick={() => handlePopupAreaClick(4, '4-3')}
+                          title="4페이지 박스 3/8 - 교육방향_03"
+                        ></div>
+                        
+                        {/* 4페이지 - 박스 4/8 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '41%',
+                            left: '42%',
+                            width: '45%',
+                            height: '5%',
+                          }}
+                          onClick={() => handlePopupAreaClick(4, '4-4')}
+                          title="4페이지 박스 4/8 - 교육방향_07"
+                        ></div>
+                        
+                        {/* 4페이지 - 박스 5/8 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '47%',
+                            left: '42%',
+                            width: '46%',
+                            height: '5%',
+                          }}
+                          onClick={() => handlePopupAreaClick(4, '4-5')}
+                          title="4페이지 박스 5/8 - 교육방향_09"
+                        ></div>
+                        
+                        {/* 4페이지 - 박스 6/8 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '53%',
+                            left: '42%',
+                            width: '45%',
+                            height: '5%',
+                          }}
+                          onClick={() => handlePopupAreaClick(4, '4-6')}
+                          title="4페이지 박스 6/8 - 교육방향_11"
+                        ></div>
+                        
+                        {/* 4페이지 - 박스 7/8 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '20%',
+                            left: '52%',
+                            width: '37%',
+                            height: '15%',
+                          }}
+                          onClick={() => handlePopupAreaClick(4, '4-7')}
+                          title="4페이지 박스 7/8 - 드림패스-소개_03"
+                        ></div>
+                        
+                        {/* 4페이지 - 박스 8/8 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '3%',
+                            left: '52%',
+                            width: '38%',
+                            height: '15%',
+                          }}
+                          onClick={() => handlePopupAreaClick(4, '4-8')}
+                          title="4페이지 박스 8/8 - 드림패스-소개_06"
+                        ></div>
+                      </>
+                    )}
+                    
+                    {/* 5페이지 - id: 4 */}
+                    {page.id === 4 && (
+                      <>
+                        {/* 5페이지 - 박스 1/4 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '10%',
+                            left: '6%',
+                            width: '87%',
+                            height: '9%',
+                          }}
+                          onClick={() => handlePopupAreaClick(5, '5-1')}
+                          title="5페이지 박스 1/4 - 드림패스-소개_08"
+                        ></div>
+                        
+                        {/* 5페이지 - 박스 2/4 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '31%',
+                            left: '8%',
+                            width: '87%',
+                            height: '17%',
+                          }}
+                          onClick={() => handlePopupAreaClick(5, '5-2')}
+                          title="5페이지 박스 2/4 - 드림패스-소개_11"
+                        ></div>
+                        
+                        {/* 5페이지 - 박스 3/4 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '30%',
+                            left: '8%',
+                            width: '87%',
+                            height: '17%',
+                          }}
+                          onClick={() => handlePopupAreaClick(5, '5-3')}
+                          title="5페이지 박스 3/4 - 드림패스-소개_13"
+                        ></div>
+                        
+                        {/* 5페이지 - 박스 4/4 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            bottom: '8%',
+                            left: '8%',
+                            width: '87%',
+                            height: '17%',
+                          }}
+                          onClick={() => handlePopupAreaClick(5, '5-4')}
+                          title="5페이지 박스 4/4 - 드림패스-소개_15"
+                        ></div>
+                      </>
+                    )}
+                    
+                    {/* 6페이지 - id: 5 */}
+                    {page.id === 5 && (
+                      <>
+                        {/* 6페이지 - 박스 1/1 */}
+                        <div 
+                          className={`absolute cursor-pointer rounded-lg ${
+                            isPopupModalOpen ? 'pointer-events-none' : ''
+                          }`}
+                          style={{
+                            position: 'absolute',
+                            top: '90%',
+                            left: '50%',
+                            width: '93%',
+                            height: '19%',
+                            transform: 'translate(-50%, -50%)',
+                          }}
+                          onClick={() => handlePopupAreaClick(6, '6-1')}
+                          title="6페이지 박스 1/1 - 마지막장_03"
+                        ></div>
+                      </>
+                    )}
                   </div>
                 </div>
               ))}
@@ -365,6 +933,135 @@ function DreamPathPageMobile({ language = 'ko' }) {
                   />
                 </svg>
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Popup 모달 */}
+      {isPopupModalOpen && selectedPopupArea && selectedPopupPage && (
+        <div
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+          onClick={closePopupModal}
+          onMouseMove={isModalDragging ? handleModalDragMove : undefined}
+          onMouseUp={isModalDragging ? handleModalDragEnd : undefined}
+          onMouseLeave={isModalDragging ? handleModalDragEnd : undefined}
+        >
+          {/* 고정 버튼들 - 모달 외부에 배치 */}
+          <div
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 z-60 flex gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* 확대 버튼 */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleModalZoomIn();
+              }}
+              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+              title="확대"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                />
+              </svg>
+            </button>
+
+            {/* 축소 버튼 */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleModalZoomOut();
+              }}
+              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+              title="축소"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"
+                />
+              </svg>
+            </button>
+
+            {/* 확대/축소 리셋 버튼 */}
+            {isModalZoomed && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleModalZoomReset();
+                }}
+                className="w-12 h-12 bg-white/95 backdrop-blur-sm text-gray-700 flex items-center justify-center hover:text-gray-900 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+                title="원본 크기로 복원"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
+                </svg>
+              </button>
+            )}
+
+            {/* 닫기 버튼 */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                closePopupModal();
+              }}
+              className="w-12 h-12 bg-white/95 backdrop-blur-sm text-red-600 flex items-center justify-center hover:text-red-700 hover:bg-white rounded-full shadow-lg border border-gray-200 transition-colors duration-300 cursor-pointer"
+              title="닫기"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+
+          {/* 모달 내용 */}
+          <div
+            className={`relative max-w-[90vw] max-h-[90vh] ${isModalZoomed ? 'cursor-grab' : ''} ${
+              isModalDragging ? 'cursor-grabbing' : ''
+            }`}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={isModalZoomed ? handleModalDragStart : undefined}
+            style={{
+              transform: `scale(${modalZoomLevel}) translate(${modalDragOffset.x}px, ${modalDragOffset.y}px)`,
+              transformOrigin: 'center center',
+              transition: isModalDragging ? 'none' : 'transform 0.3s ease-in-out',
+            }}
+          >
+            <div className="bg-white rounded-lg p-4 shadow-2xl">
+              <img
+                src={getPopupImagePath(selectedPopupArea)}
+                alt={`${selectedPopupPage}페이지 ${selectedPopupArea} 팝업`}
+                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                onError={(e) => {
+                  // 이미지 로드 실패 시 메시지 표시
+                  e.target.style.display = 'none';
+                  const errorDiv = e.target.nextSibling;
+                  if (errorDiv) {
+                    errorDiv.style.display = 'block';
+                  }
+                }}
+              />
+              <div className="hidden text-gray-500 text-center mt-4" style={{ display: 'none' }}>
+                <p>이미지를 불러올 수 없습니다.</p>
+                <p className="text-sm">경로: {getPopupImagePath(selectedPopupArea)}</p>
+              </div>
             </div>
           </div>
         </div>

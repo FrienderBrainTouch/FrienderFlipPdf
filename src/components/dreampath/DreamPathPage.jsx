@@ -823,15 +823,6 @@ function DreamPathPage() {
                           title="1페이지 박스 3/3 - 표지_08"
                         ></div>
                         
-                        {/* 오른쪽 터치 영역 (표지는 오른쪽) */}
-                        <div 
-                          className="absolute right-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
-                          onMouseDown={() => handleTouchAreaMouseDown('right')}
-                          onMouseUp={handleTouchAreaMouseUp}
-                          onTouchStart={() => handleTouchAreaTouchStart('right')}
-                          onTouchEnd={handleTouchAreaTouchEnd}
-                          title="다음 페이지로 이동"
-                        />
                       </div>
                     </div>
                     
@@ -1336,25 +1327,7 @@ function DreamPathPage() {
                             </>
                           )}
                           
-                          {/* 왼쪽 터치 영역 */}
-                          <div 
-                            className="absolute left-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
-                            onMouseDown={() => handleTouchAreaMouseDown('left')}
-                            onMouseUp={handleTouchAreaMouseUp}
-                            onTouchStart={() => handleTouchAreaTouchStart('left')}
-                            onTouchEnd={handleTouchAreaTouchEnd}
-                            title="이전 페이지로 이동"
-                          />
                           
-                          {/* 오른쪽 터치 영역 */}
-                          <div 
-                            className="absolute right-0 top-0 w-2.5 h-full cursor-pointer hover:bg-blue-500/20 transition-colors"
-                            onMouseDown={() => handleTouchAreaMouseDown('right')}
-                            onMouseUp={handleTouchAreaMouseUp}
-                            onTouchStart={() => handleTouchAreaTouchStart('right')}
-                            onTouchEnd={handleTouchAreaTouchEnd}
-                            title="다음 페이지로 이동"
-                          />
                         </div>
                       </div>
                     ))}

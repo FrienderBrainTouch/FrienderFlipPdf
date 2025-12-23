@@ -519,6 +519,24 @@ function DreamPathPage() {
     return `/DreamPath/Multilingual/${folderName}/Popup/${areaId}.png`;
   };
   
+  /**
+   * 비디오인지 확인하는 함수
+   * @param {string} areaId - 영역 ID
+   * @returns {boolean} 비디오 여부
+   */
+  const isVideoPopup = (areaId) => {
+    return areaId === '4-9' || areaId === '4-10';
+  };
+  
+  /**
+   * 비디오 경로 반환 함수
+   * @param {string} areaId - 영역 ID
+   * @returns {string} 비디오 경로
+   */
+  const getVideoPath = (areaId) => {
+    return '/video/DreamPath.mp4';
+  };
+  
   // 모바일 화면인 경우 모바일 컴포넌트 렌더링
   if (isMobile) {
     return <DreamPathPageMobile language={validLanguage} />;
@@ -1051,10 +1069,10 @@ function DreamPathPage() {
                             </>
                           )}
                           
-                          {/* ========== 4페이지 Popup 클릭 영역 (총 8개) ========== */}
+                          {/* ========== 4페이지 Popup 클릭 영역 (총 10개) ========== */}
                           {page.id === 4 && (
                             <>
-                              {/* 4페이지 - 박스 1/8 */}
+                              {/* 4페이지 - 박스 1/10 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1071,10 +1089,10 @@ function DreamPathPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-1')}
                                 onMouseEnter={() => setHoveredPopupArea('4-1')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 1/8 - 커리큘럼_10"
+                                title="4페이지 박스 1/10 - 커리큘럼_10"
                               ></div>
                               
-                              {/* 4페이지 - 박스 2/8 */}
+                              {/* 4페이지 - 박스 2/10 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1091,10 +1109,10 @@ function DreamPathPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-2')}
                                 onMouseEnter={() => setHoveredPopupArea('4-2')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 2/8 - 커리큘럼_12"
+                                title="4페이지 박스 2/10 - 커리큘럼_12"
                               ></div>
                               
-                              {/* 4페이지 - 박스 3/8 */}
+                              {/* 4페이지 - 박스 3/10 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1111,10 +1129,10 @@ function DreamPathPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-3')}
                                 onMouseEnter={() => setHoveredPopupArea('4-3')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 3/8 - 교육방향_03"
+                                title="4페이지 박스 3/10 - 교육방향_03"
                               ></div>
                               
-                              {/* 4페이지 - 박스 4/8 */}
+                              {/* 4페이지 - 박스 4/10 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1131,10 +1149,10 @@ function DreamPathPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-4')}
                                 onMouseEnter={() => setHoveredPopupArea('4-4')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 4/8 - 교육방향_07"
+                                title="4페이지 박스 4/10 - 교육방향_07"
                               ></div>
                               
-                              {/* 4페이지 - 박스 5/8 */}
+                              {/* 4페이지 - 박스 5/10 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1151,10 +1169,10 @@ function DreamPathPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-5')}
                                 onMouseEnter={() => setHoveredPopupArea('4-5')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 5/8 - 교육방향_09"
+                                title="4페이지 박스 5/10 - 교육방향_09"
                               ></div>
                               
-                              {/* 4페이지 - 박스 6/8 */}
+                              {/* 4페이지 - 박스 6/10 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1171,10 +1189,10 @@ function DreamPathPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-6')}
                                 onMouseEnter={() => setHoveredPopupArea('4-6')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 6/8 - 교육방향_11"
+                                title="4페이지 박스 6/10 - 교육방향_11"
                               ></div>
                               
-                              {/* 4페이지 - 박스 7/8 */}
+                              {/* 4페이지 - 박스 7/10 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1191,10 +1209,10 @@ function DreamPathPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-7')}
                                 onMouseEnter={() => setHoveredPopupArea('4-7')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 7/8 - 드림패스-소개_03"
+                                title="4페이지 박스 7/10 - 드림패스-소개_03"
                               ></div>
                               
-                              {/* 4페이지 - 박스 8/8 */}
+                              {/* 4페이지 - 박스 8/10 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1211,7 +1229,47 @@ function DreamPathPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-8')}
                                 onMouseEnter={() => setHoveredPopupArea('4-8')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 8/8 - 드림패스-소개_06"
+                                title="4페이지 박스 8/10 - 드림패스-소개_06"
+                              ></div>
+                              
+                              {/* 4페이지 - 박스 9/10 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '4-9' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '66%',
+                                  left: '10%',
+                                  width: '37%',
+                                  height: '14%',
+                                }}
+                                onClick={() => handlePopupAreaClick(4, '4-9')}
+                                onMouseEnter={() => setHoveredPopupArea('4-9')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="4페이지 박스 9/10"
+                              ></div>
+                              
+                              {/* 4페이지 - 박스 10/10 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '4-10' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '82%',
+                                  left: '9%',
+                                  width: '39%',
+                                  height: '15%',
+                                }}
+                                onClick={() => handlePopupAreaClick(4, '4-10')}
+                                onMouseEnter={() => setHoveredPopupArea('4-10')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="4페이지 박스 10/10"
                               ></div>
                             </>
                           )}
@@ -1600,23 +1658,37 @@ function DreamPathPage() {
             }}
           >
             <div className="bg-white rounded-lg p-4 shadow-2xl">
-              <img
-                src={getPopupImagePath(selectedPopupArea)}
-                alt={`${selectedPopupPage}페이지 ${selectedPopupArea} 팝업`}
-                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 메시지 표시
-                  e.target.style.display = 'none';
-                  const errorDiv = e.target.nextSibling;
-                  if (errorDiv) {
-                    errorDiv.style.display = 'block';
-                  }
-                }}
-              />
-              <div className="hidden text-gray-500 text-center mt-4" style={{ display: 'none' }}>
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: {getPopupImagePath(selectedPopupArea)}</p>
-              </div>
+              {isVideoPopup(selectedPopupArea) ? (
+                <video
+                  src={getVideoPath(selectedPopupArea)}
+                  className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                  muted
+                  autoPlay
+                  loop
+                  playsInline
+                  controls
+                />
+              ) : (
+                <>
+                  <img
+                    src={getPopupImagePath(selectedPopupArea)}
+                    alt={`${selectedPopupPage}페이지 ${selectedPopupArea} 팝업`}
+                    className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                    onError={(e) => {
+                      // 이미지 로드 실패 시 메시지 표시
+                      e.target.style.display = 'none';
+                      const errorDiv = e.target.nextSibling;
+                      if (errorDiv) {
+                        errorDiv.style.display = 'block';
+                      }
+                    }}
+                  />
+                  <div className="hidden text-gray-500 text-center mt-4" style={{ display: 'none' }}>
+                    <p>이미지를 불러올 수 없습니다.</p>
+                    <p className="text-sm">경로: {getPopupImagePath(selectedPopupArea)}</p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

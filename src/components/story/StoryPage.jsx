@@ -500,6 +500,24 @@ function StoryPage() {
     return `/StoryAI/Multilingual/${folderName}/Popup/${areaId}.png`;
   };
   
+  /**
+   * 비디오인지 확인하는 함수
+   * @param {string} areaId - 영역 ID
+   * @returns {boolean} 비디오 여부
+   */
+  const isVideoPopup = (areaId) => {
+    return areaId === '4-9';
+  };
+  
+  /**
+   * 비디오 경로 반환 함수
+   * @param {string} areaId - 영역 ID
+   * @returns {string} 비디오 경로
+   */
+  const getVideoPath = (areaId) => {
+    return '/video/Storyai.mp4';
+  };
+  
   // 모바일 화면인 경우 모바일 컴포넌트 렌더링
   if (isMobile) {
     return <StoryPageMobile language={validLanguage} />;
@@ -1050,10 +1068,10 @@ function StoryPage() {
                             </>
                           )}
                           
-                          {/* ========== 4페이지 Popup 클릭 영역 (총 8개) ========== */}
+                          {/* ========== 4페이지 Popup 클릭 영역 (총 9개) ========== */}
                           {page.id === 4 && (
                             <>
-                              {/* 4페이지 - 박스 1/8 */}
+                              {/* 4페이지 - 박스 1/9 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1070,10 +1088,10 @@ function StoryPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-1')}
                                 onMouseEnter={() => setHoveredPopupArea('4-1')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 1/8"
+                                title="4페이지 박스 1/9"
                               ></div>
                               
-                              {/* 4페이지 - 박스 2/8 */}
+                              {/* 4페이지 - 박스 2/9 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1090,10 +1108,10 @@ function StoryPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-2')}
                                 onMouseEnter={() => setHoveredPopupArea('4-2')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 2/8"
+                                title="4페이지 박스 2/9"
                               ></div>
                               
-                              {/* 4페이지 - 박스 3/8 */}
+                              {/* 4페이지 - 박스 3/9 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1110,10 +1128,10 @@ function StoryPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-3')}
                                 onMouseEnter={() => setHoveredPopupArea('4-3')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 3/8"
+                                title="4페이지 박스 3/9"
                               ></div>
                               
-                              {/* 4페이지 - 박스 4/8 */}
+                              {/* 4페이지 - 박스 4/9 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1130,10 +1148,10 @@ function StoryPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-4')}
                                 onMouseEnter={() => setHoveredPopupArea('4-4')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 4/8"
+                                title="4페이지 박스 4/9"
                               ></div>
                               
-                              {/* 4페이지 - 박스 5/8 */}
+                              {/* 4페이지 - 박스 5/9 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1150,10 +1168,10 @@ function StoryPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-5')}
                                 onMouseEnter={() => setHoveredPopupArea('4-5')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 5/8"
+                                title="4페이지 박스 5/9"
                               ></div>
                               
-                              {/* 4페이지 - 박스 6/8 */}
+                              {/* 4페이지 - 박스 6/9 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1170,10 +1188,10 @@ function StoryPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-6')}
                                 onMouseEnter={() => setHoveredPopupArea('4-6')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 6/8"
+                                title="4페이지 박스 6/9"
                               ></div>
                               
-                              {/* 4페이지 - 박스 7/8 */}
+                              {/* 4페이지 - 박스 7/9 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1190,10 +1208,10 @@ function StoryPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-7')}
                                 onMouseEnter={() => setHoveredPopupArea('4-7')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 7/8"
+                                title="4페이지 박스 7/9"
                               ></div>
                               
-                              {/* 4페이지 - 박스 8/8 */}
+                              {/* 4페이지 - 박스 8/9 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1210,7 +1228,27 @@ function StoryPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-8')}
                                 onMouseEnter={() => setHoveredPopupArea('4-8')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 8/8"
+                                title="4페이지 박스 8/9"
+                              ></div>
+                              
+                              {/* 4페이지 - 박스 9/9 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '4-9' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '64%',
+                                  left: '9%',
+                                  width: '36%',
+                                  height: '9%',
+                                }}
+                                onClick={() => handlePopupAreaClick(4, '4-9')}
+                                onMouseEnter={() => setHoveredPopupArea('4-9')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="4페이지 박스 9/9"
                               ></div>
                             </>
                           )}
@@ -1638,31 +1676,45 @@ function StoryPage() {
             }}
           >
             <div className="bg-white rounded-lg p-4 shadow-2xl">
-              <img
-                src={getPopupImagePath(selectedPopupArea)}
-                alt={`${selectedPopupPage}페이지 ${selectedPopupArea} 팝업`}
-                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                loading="lazy"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 조용히 처리 (콘솔 에러 방지)
-                  e.target.style.display = 'none';
-                  const errorDiv = e.target.nextSibling;
-                  if (errorDiv) {
-                    errorDiv.style.display = 'block';
-                  }
-                }}
-                onLoad={(e) => {
-                  // 이미지 로드 성공 시 에러 메시지 숨기기
-                  const errorDiv = e.target.nextSibling;
-                  if (errorDiv) {
-                    errorDiv.style.display = 'none';
-                  }
-                }}
-              />
-              <div className="hidden text-gray-500 text-center mt-4" style={{ display: 'none' }}>
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: {getPopupImagePath(selectedPopupArea)}</p>
-              </div>
+              {isVideoPopup(selectedPopupArea) ? (
+                <video
+                  src={getVideoPath(selectedPopupArea)}
+                  className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                  muted
+                  autoPlay
+                  loop
+                  playsInline
+                  controls
+                />
+              ) : (
+                <>
+                  <img
+                    src={getPopupImagePath(selectedPopupArea)}
+                    alt={`${selectedPopupPage}페이지 ${selectedPopupArea} 팝업`}
+                    className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                    loading="lazy"
+                    onError={(e) => {
+                      // 이미지 로드 실패 시 조용히 처리 (콘솔 에러 방지)
+                      e.target.style.display = 'none';
+                      const errorDiv = e.target.nextSibling;
+                      if (errorDiv) {
+                        errorDiv.style.display = 'block';
+                      }
+                    }}
+                    onLoad={(e) => {
+                      // 이미지 로드 성공 시 에러 메시지 숨기기
+                      const errorDiv = e.target.nextSibling;
+                      if (errorDiv) {
+                        errorDiv.style.display = 'none';
+                      }
+                    }}
+                  />
+                  <div className="hidden text-gray-500 text-center mt-4" style={{ display: 'none' }}>
+                    <p>이미지를 불러올 수 없습니다.</p>
+                    <p className="text-sm">경로: {getPopupImagePath(selectedPopupArea)}</p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

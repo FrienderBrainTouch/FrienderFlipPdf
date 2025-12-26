@@ -500,6 +500,24 @@ function InnoWorksPage() {
     return `/Innoworks/Multilingual/${folderName}/Popup/${areaId}.png`;
   };
   
+  /**
+   * 비디오인지 확인하는 함수
+   * @param {string} areaId - 영역 ID
+   * @returns {boolean} 비디오 여부
+   */
+  const isVideoPopup = (areaId) => {
+    return areaId === '4-5' || areaId === '4-6';
+  };
+  
+  /**
+   * 비디오 경로 반환 함수
+   * @param {string} areaId - 영역 ID
+   * @returns {string} 비디오 경로
+   */
+  const getVideoPath = (areaId) => {
+    return '/video/Innoworks.mp4';
+  };
+  
   // 모바일 화면인 경우 모바일 컴포넌트 렌더링
   if (isMobile) {
     return <InnoWorksPageMobile language={validLanguage} />;
@@ -1034,10 +1052,10 @@ function InnoWorksPage() {
                             </>
                           )}
                           
-                          {/* ========== 4페이지 Popup 클릭 영역 (총 4개) ========== */}
+                          {/* ========== 4페이지 Popup 클릭 영역 (총 6개) ========== */}
                           {page.id === 4 && (
                             <>
-                              {/* 4페이지 - 박스 1/4 */}
+                              {/* 4페이지 - 박스 1/6 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1054,10 +1072,10 @@ function InnoWorksPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-1')}
                                 onMouseEnter={() => setHoveredPopupArea('4-1')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 1/4"
+                                title="4페이지 박스 1/6"
                               ></div>
                               
-                              {/* 4페이지 - 박스 2/4 */}
+                              {/* 4페이지 - 박스 2/6 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1074,10 +1092,10 @@ function InnoWorksPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-2')}
                                 onMouseEnter={() => setHoveredPopupArea('4-2')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 2/4"
+                                title="4페이지 박스 2/6"
                               ></div>
                               
-                              {/* 4페이지 - 박스 3/4 */}
+                              {/* 4페이지 - 박스 3/6 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1094,10 +1112,10 @@ function InnoWorksPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-3')}
                                 onMouseEnter={() => setHoveredPopupArea('4-3')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 3/4"
+                                title="4페이지 박스 3/6"
                               ></div>
                               
-                              {/* 4페이지 - 박스 4/4 */}
+                              {/* 4페이지 - 박스 4/6 */}
                               <div 
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
@@ -1114,7 +1132,47 @@ function InnoWorksPage() {
                                 onClick={() => handlePopupAreaClick(4, '4-4')}
                                 onMouseEnter={() => setHoveredPopupArea('4-4')}
                                 onMouseLeave={() => setHoveredPopupArea(null)}
-                                title="4페이지 박스 4/4"
+                                title="4페이지 박스 4/6"
+                              ></div>
+                              
+                              {/* 4페이지 - 박스 5/6 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '4-5' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '34%',
+                                  left: '10%',
+                                  width: '37%',
+                                  height: '15%',
+                                }}
+                                onClick={() => handlePopupAreaClick(4, '4-5')}
+                                onMouseEnter={() => setHoveredPopupArea('4-5')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="4페이지 박스 5/6"
+                              ></div>
+                              
+                              {/* 4페이지 - 박스 6/6 */}
+                              <div 
+                                className={`absolute cursor-pointer rounded-lg ${
+                                  isPopupModalOpen ? 'pointer-events-none' : ''
+                                } ${
+                                  hoveredPopupArea === '4-6' ? 'border-2 border-yellow-500' : ''
+                                }`}
+                                style={{
+                                  position: 'absolute',
+                                  top: '65%',
+                                  left: '52%',
+                                  width: '39%',
+                                  height: '15%',
+                                }}
+                                onClick={() => handlePopupAreaClick(4, '4-6')}
+                                onMouseEnter={() => setHoveredPopupArea('4-6')}
+                                onMouseLeave={() => setHoveredPopupArea(null)}
+                                title="4페이지 박스 6/6"
                               ></div>
                             </>
                           )}
@@ -1443,31 +1501,45 @@ function InnoWorksPage() {
             }}
           >
             <div className="bg-white rounded-lg p-4 shadow-2xl">
-              <img
-                src={getPopupImagePath(selectedPopupArea)}
-                alt={`${selectedPopupPage}페이지 ${selectedPopupArea} 팝업`}
-                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
-                loading="lazy"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 조용히 처리 (콘솔 에러 방지)
-                  e.target.style.display = 'none';
-                  const errorDiv = e.target.nextSibling;
-                  if (errorDiv) {
-                    errorDiv.style.display = 'block';
-                  }
-                }}
-                onLoad={(e) => {
-                  // 이미지 로드 성공 시 에러 메시지 숨기기
-                  const errorDiv = e.target.nextSibling;
-                  if (errorDiv) {
-                    errorDiv.style.display = 'none';
-                  }
-                }}
-              />
-              <div className="hidden text-gray-500 text-center mt-4" style={{ display: 'none' }}>
-                <p>이미지를 불러올 수 없습니다.</p>
-                <p className="text-sm">경로: {getPopupImagePath(selectedPopupArea)}</p>
-              </div>
+              {isVideoPopup(selectedPopupArea) ? (
+                <video
+                  src={getVideoPath(selectedPopupArea)}
+                  className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                  muted
+                  autoPlay
+                  loop
+                  playsInline
+                  controls
+                />
+              ) : (
+                <>
+                  <img
+                    src={getPopupImagePath(selectedPopupArea)}
+                    alt={`${selectedPopupPage}페이지 ${selectedPopupArea} 팝업`}
+                    className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                    loading="lazy"
+                    onError={(e) => {
+                      // 이미지 로드 실패 시 조용히 처리 (콘솔 에러 방지)
+                      e.target.style.display = 'none';
+                      const errorDiv = e.target.nextSibling;
+                      if (errorDiv) {
+                        errorDiv.style.display = 'block';
+                      }
+                    }}
+                    onLoad={(e) => {
+                      // 이미지 로드 성공 시 에러 메시지 숨기기
+                      const errorDiv = e.target.nextSibling;
+                      if (errorDiv) {
+                        errorDiv.style.display = 'none';
+                      }
+                    }}
+                  />
+                  <div className="hidden text-gray-500 text-center mt-4" style={{ display: 'none' }}>
+                    <p>이미지를 불러올 수 없습니다.</p>
+                    <p className="text-sm">경로: {getPopupImagePath(selectedPopupArea)}</p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

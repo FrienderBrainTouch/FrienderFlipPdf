@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { LANGUAGE_FOLDER_MAP } from '../../utils/language';
+import downloadPdf from '../../utils/downloadPdf';
+import { getInnoworksPdfPath } from '../../utils/pdfPaths';
 
 /**
  * InnoWorksPage-mobile 컴포넌트
@@ -45,36 +47,36 @@ function InnoWorksPageMobile({ language = 'ko' }) {
       const folderName = LANGUAGE_FOLDER_MAP[language] || language;
       return `/Innoworks/Multilingual/${folderName}/Page/${pageNum}.svg`;
     };
-    
+
     return [
       {
         id: 0,
-        name: "표지",
+        name: '표지',
         backgroundImage: getPagePath(1),
       },
       {
         id: 1,
-        name: "페이지 1",
+        name: '페이지 1',
         backgroundImage: getPagePath(2),
       },
       {
         id: 2,
-        name: "페이지 2",
+        name: '페이지 2',
         backgroundImage: getPagePath(3),
       },
       {
         id: 3,
-        name: "페이지 3",
+        name: '페이지 3',
         backgroundImage: getPagePath(4),
       },
       {
         id: 4,
-        name: "페이지 4",
+        name: '페이지 4',
         backgroundImage: getPagePath(5),
       },
       {
         id: 5,
-        name: "페이지 5",
+        name: '페이지 5',
         backgroundImage: getPagePath(6),
       },
     ];
@@ -170,7 +172,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
    */
   const handlePrintClick = () => {
     // InnoWorks PDF가 있다면 사용, 없으면 현재 페이지 인쇄
-    const pdfUrl = `/Innoworks/Innoworks-Pdf/${language === 'ko' ? '한국어.pdf' : `innoworks-${language}.pdf`}`;
+    const pdfUrl = `/Innoworks/Innoworks-Pdf/${
+      language === 'ko' ? '한국어.pdf' : `innoworks-${language}.pdf`
+    }`;
     const pdfWindow = window.open(pdfUrl, '_blank');
     if (pdfWindow) {
       pdfWindow.onload = () => {
@@ -186,13 +190,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
    * PDF 다운로드 버튼 클릭 핸들러
    */
   const handleDownloadClick = () => {
-    const link = document.createElement('a');
-    const pdfUrl = `/Innoworks/Innoworks-Pdf/${language === 'ko' ? '한국어.pdf' : `innoworks-${language}.pdf`}`;
-    link.href = pdfUrl;
-    link.download = `innoworks-${language}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const pdfUrl = getInnoworksPdfPath(language);
+    const suggestedName = language === 'ko' ? 'innoworks-ko.pdf' : `innoworks-${language}.pdf`;
+    downloadPdf(pdfUrl, suggestedName).catch(() => {});
   };
 
   /**
@@ -235,7 +235,7 @@ function InnoWorksPageMobile({ language = 'ko' }) {
     setModalDragOffset({ x: 0, y: 0 });
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
-    
+
     setSelectedPopupPage(pageNumber);
     setSelectedPopupArea(areaId);
     setIsPopupModalOpen(true);
@@ -303,12 +303,12 @@ function InnoWorksPageMobile({ language = 'ko' }) {
     if (isModalDragging) {
       const deltaX = e.clientX - modalDragStartRef.current.x;
       const deltaY = e.clientY - modalDragStartRef.current.y;
-      
+
       setModalDragOffset((prev) => ({
         x: prev.x + deltaX,
         y: prev.y + deltaY,
       }));
-      
+
       modalDragStartRef.current = { x: e.clientX, y: e.clientY };
     }
   };
@@ -330,7 +330,7 @@ function InnoWorksPageMobile({ language = 'ko' }) {
     const folderName = LANGUAGE_FOLDER_MAP[language] || language;
     return `/Innoworks/Multilingual/${folderName}/Popup/${areaId}.png`;
   };
-  
+
   /**
    * 비디오인지 확인하는 함수
    * @param {string} areaId - 영역 ID
@@ -339,7 +339,7 @@ function InnoWorksPageMobile({ language = 'ko' }) {
   const isVideoPopup = (areaId) => {
     return areaId === '4-5' || areaId === '4-6';
   };
-  
+
   /**
    * 비디오 경로 반환 함수
    * @param {string} areaId - 영역 ID
@@ -360,7 +360,7 @@ function InnoWorksPageMobile({ language = 'ko' }) {
         >
           {/* Friender 로고 */}
           <div className="w-full h-full flex flex-col items-center justify-center">
-            <img 
+            <img
               src="/FrienderFile/Interactive/Friender-Logo-L.png"
               alt="Friender Logo"
               className="max-w-full max-h-full object-contain"
@@ -401,13 +401,13 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                         objectFit: 'cover',
                       }}
                     />
-                    
+
                     {/* Popup 클릭 영역들 */}
                     {/* 1페이지 (표지) - id: 0 */}
                     {page.id === 0 && (
                       <>
                         {/* 1페이지 - 박스 1/2 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -421,9 +421,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                           onClick={() => handlePopupAreaClick(1, '1-1')}
                           title="1페이지 박스 1/2"
                         ></div>
-                        
+
                         {/* 1페이지 - 박스 2/2 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -439,12 +439,12 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                         ></div>
                       </>
                     )}
-                    
+
                     {/* 2페이지 - id: 1 */}
                     {page.id === 1 && (
                       <>
                         {/* 2페이지 - 박스 1/5 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -458,9 +458,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                           onClick={() => handlePopupAreaClick(2, '2-1')}
                           title="2페이지 박스 1/5"
                         ></div>
-                        
+
                         {/* 2페이지 - 박스 2/5 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -474,9 +474,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                           onClick={() => handlePopupAreaClick(2, '2-2')}
                           title="2페이지 박스 2/5"
                         ></div>
-                        
+
                         {/* 2페이지 - 박스 3/5 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -490,9 +490,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                           onClick={() => handlePopupAreaClick(2, '2-3')}
                           title="2페이지 박스 3/5"
                         ></div>
-                        
+
                         {/* 2페이지 - 박스 4/5 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -506,9 +506,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                           onClick={() => handlePopupAreaClick(2, '2-4')}
                           title="2페이지 박스 4/5"
                         ></div>
-                        
+
                         {/* 2페이지 - 박스 5/5 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -524,12 +524,12 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                         ></div>
                       </>
                     )}
-                    
+
                     {/* 3페이지 - id: 2 */}
                     {page.id === 2 && (
                       <>
                         {/* 3페이지 - 박스 1/6 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -543,9 +543,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                           onClick={() => handlePopupAreaClick(3, '3-1')}
                           title="3페이지 박스 1/6"
                         ></div>
-                        
+
                         {/* 3페이지 - 박스 2/6 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -559,9 +559,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                           onClick={() => handlePopupAreaClick(3, '3-2')}
                           title="3페이지 박스 2/6"
                         ></div>
-                        
+
                         {/* 3페이지 - 박스 3/6 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -575,9 +575,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                           onClick={() => handlePopupAreaClick(3, '3-3')}
                           title="3페이지 박스 3/6"
                         ></div>
-                        
+
                         {/* 3페이지 - 박스 4/6 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -591,9 +591,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                           onClick={() => handlePopupAreaClick(3, '3-4')}
                           title="3페이지 박스 4/6"
                         ></div>
-                        
+
                         {/* 3페이지 - 박스 5/6 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -607,9 +607,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                           onClick={() => handlePopupAreaClick(3, '3-5')}
                           title="3페이지 박스 5/6"
                         ></div>
-                        
+
                         {/* 3페이지 - 박스 6/6 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -625,12 +625,12 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                         ></div>
                       </>
                     )}
-                    
+
                     {/* 4페이지 - id: 3 */}
                     {page.id === 3 && (
                       <>
                         {/* 4페이지 - 박스 1/6 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -644,9 +644,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                           onClick={() => handlePopupAreaClick(4, '4-1')}
                           title="4페이지 박스 1/6"
                         ></div>
-                        
+
                         {/* 4페이지 - 박스 2/6 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -660,9 +660,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                           onClick={() => handlePopupAreaClick(4, '4-2')}
                           title="4페이지 박스 2/6"
                         ></div>
-                        
+
                         {/* 4페이지 - 박스 3/6 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -676,9 +676,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                           onClick={() => handlePopupAreaClick(4, '4-3')}
                           title="4페이지 박스 3/6"
                         ></div>
-                        
+
                         {/* 4페이지 - 박스 4/6 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -692,9 +692,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                           onClick={() => handlePopupAreaClick(4, '4-4')}
                           title="4페이지 박스 4/6"
                         ></div>
-                        
+
                         {/* 4페이지 - 박스 5/6 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -708,9 +708,9 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                           onClick={() => handlePopupAreaClick(4, '4-5')}
                           title="4페이지 박스 5/6"
                         ></div>
-                        
+
                         {/* 4페이지 - 박스 6/6 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -726,12 +726,12 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                         ></div>
                       </>
                     )}
-                    
+
                     {/* 5페이지 - id: 4 */}
                     {page.id === 4 && (
                       <>
                         {/* 5페이지 - 박스 1/1 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -748,12 +748,12 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                         ></div>
                       </>
                     )}
-                    
+
                     {/* 6페이지 - id: 5 */}
                     {page.id === 5 && (
                       <>
                         {/* 6페이지 - 박스 1/1 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           }`}
@@ -862,7 +862,7 @@ function InnoWorksPageMobile({ language = 'ko' }) {
           </div>
         </div>
       )}
-      
+
       {/* Popup 모달 */}
       {isPopupModalOpen && selectedPopupArea && selectedPopupPage && (
         <div
@@ -995,7 +995,10 @@ function InnoWorksPageMobile({ language = 'ko' }) {
                       }
                     }}
                   />
-                  <div className="hidden text-gray-500 text-center mt-4" style={{ display: 'none' }}>
+                  <div
+                    className="hidden text-gray-500 text-center mt-4"
+                    style={{ display: 'none' }}
+                  >
                     <p>이미지를 불러올 수 없습니다.</p>
                     <p className="text-sm">경로: {getPopupImagePath(selectedPopupArea)}</p>
                   </div>

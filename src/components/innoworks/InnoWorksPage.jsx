@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import HTMLFlipBook from 'react-pageflip';
 import InnoWorksPageMobile from './InnoWorksPage-mobile';
 import { LANGUAGE_FOLDER_MAP, getLanguageList } from '../../utils/language';
+import downloadPdf from '../../utils/downloadPdf';
+import { getInnoworksPdfPath } from '../../utils/pdfPaths';
 import { useValidLanguage } from '../../hooks/useValidLanguage';
 import { useFlipBookSize } from '../../hooks/useFlipBookSize';
 
@@ -10,17 +12,17 @@ function InnoWorksPage() {
   const navigate = useNavigate();
   const validLanguage = useValidLanguage();
   const languageList = getLanguageList();
-  
+
   // 언어 선택 드롭다운 상태
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = React.useState(false);
   const languageDropdownRef = React.useRef(null);
-  
+
   // 언어 변경 핸들러
   const handleLanguageChange = (langCode) => {
     navigate(`/innoworks/${langCode}`);
     setIsLanguageDropdownOpen(false);
   };
-  
+
   // 외부 클릭 시 드롭다운 닫기
   React.useEffect(() => {
     const handleClickOutside = (event) => {
@@ -28,73 +30,73 @@ function InnoWorksPage() {
         setIsLanguageDropdownOpen(false);
       }
     };
-    
+
     if (isLanguageDropdownOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
-    
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isLanguageDropdownOpen]);
-  
+
   // 화면 크기 상태 관리
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1025);
   const [isSmallScreen, setIsSmallScreen] = React.useState(window.innerWidth <= 1450);
-  
+
   // 플립북 크기 계산
   const flipBookSize = useFlipBookSize();
   const flipBookRef = React.useRef(null);
-  
+
   // 현재 페이지 상태 관리
   const [currentPage, setCurrentPage] = React.useState(0);
   const [isCoverPage, setIsCoverPage] = React.useState(true);
   const [isFirstPage, setIsFirstPage] = React.useState(true);
   const [isLastPage, setIsLastPage] = React.useState(false);
-  
+
   // 마우스 이벤트 활성화 상태 관리
   const [mouseEventsEnabled, setMouseEventsEnabled] = React.useState(false);
-  
+
   // 인트로 화면 상태 관리
   const [showIntro, setShowIntro] = React.useState(true);
   const [logoOpacity, setLogoOpacity] = React.useState(0);
   const [whiteScreenVisible, setWhiteScreenVisible] = React.useState(true);
   const [mainScreenVisible, setMainScreenVisible] = React.useState(false);
-  
+
   // 확대/축소 상태 관리
   const [zoomLevel, setZoomLevel] = React.useState(1);
   const [isZoomed, setIsZoomed] = React.useState(false);
-  
+
   // 미니맵 상태 관리
   const [showMinimap, setShowMinimap] = React.useState(false);
-  
+
   // 드래그 상태 관리
   const [isDragging, setIsDragging] = React.useState(false);
   const [dragOffset, setDragOffset] = React.useState({ x: 0, y: 0 });
-  
+
   // 드래그 시작점을 ref로 관리 (무한 루프 방지)
   const dragStartRef = React.useRef({ x: 0, y: 0 });
-  
+
   // 플립북 컨테이너 참조
   const flipBookContainerRef = React.useRef(null);
-  
+
   // Popup 모달 상태 관리
   const [isPopupModalOpen, setIsPopupModalOpen] = React.useState(false);
   const [selectedPopupArea, setSelectedPopupArea] = React.useState(null);
   const [selectedPopupPage, setSelectedPopupPage] = React.useState(null);
-  
+
   // 각 페이지별 호버 상태 관리
   const [hoveredPopupArea, setHoveredPopupArea] = React.useState(null);
-  
+
   // 모달창 확대/축소 상태 관리
   const [modalZoomLevel, setModalZoomLevel] = React.useState(1);
   const [isModalZoomed, setIsModalZoomed] = React.useState(false);
-  
+
   // 모달창 드래그 상태
   const [modalDragOffset, setModalDragOffset] = React.useState({ x: 0, y: 0 });
   const [isModalDragging, setIsModalDragging] = React.useState(false);
   const modalDragStartRef = React.useRef({ x: 0, y: 0 });
-  
+
   // InnoWorks 페이지 데이터 (6페이지)
   // 경로 생성: 한국어는 루트, 다국어는 Multilingual 하위
   const pageData = React.useMemo(() => {
@@ -106,7 +108,7 @@ function InnoWorksPage() {
       const folderName = LANGUAGE_FOLDER_MAP[validLanguage] || validLanguage;
       return `/Innoworks/Multilingual/${folderName}/Page/${pageNum}.svg`;
     };
-    
+
     return [
       { id: 1, svg: getPagePath(1), isCover: true },
       { id: 2, svg: getPagePath(2) },
@@ -116,18 +118,18 @@ function InnoWorksPage() {
       { id: 6, svg: getPagePath(6) },
     ];
   }, [validLanguage]);
-  
+
   // 화면 크기 변경 감지
   React.useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1025);
       setIsSmallScreen(window.innerWidth <= 1450);
     };
-    
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  
+
   // 로고 애니메이션 완료 후 화면 전환
   React.useEffect(() => {
     if (logoOpacity === 1) {
@@ -139,55 +141,55 @@ function InnoWorksPage() {
       }, 500);
     }
   }, [logoOpacity]);
-  
+
   // 로고 애니메이션 함수 (재사용 가능)
   const startLogoAnimation = React.useCallback(() => {
     const logoAnimation = () => {
       const startTime = performance.now();
       const duration = 1000;
-      
+
       const animate = (currentTime) => {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const easeOut = 1 - Math.pow(1 - progress, 3);
         setLogoOpacity(easeOut);
-        
+
         if (progress < 1) {
           requestAnimationFrame(animate);
         }
       };
-      
+
       requestAnimationFrame(animate);
     };
-    
+
     setTimeout(() => {
       logoAnimation();
     }, 500);
   }, []);
-  
+
   // 인트로 화면 애니메이션 시퀀스
   React.useEffect(() => {
     startLogoAnimation();
   }, [startLogoAnimation]);
-  
+
   // 페이지 변경 이벤트 핸들러
   const handlePageFlip = (e) => {
     const newPage = e.data;
     setCurrentPage(newPage);
-    
+
     const firstPage = newPage === 0;
     const lastPage = newPage === pageData.length - 1;
     setIsFirstPage(firstPage);
     setIsLastPage(lastPage);
     setIsCoverPage(firstPage || lastPage);
-    
+
     // 페이지 변경 시 확대/축소 상태 리셋
     setZoomLevel(1);
     setIsZoomed(false);
     setShowMinimap(false);
     setDragOffset({ x: 0, y: 0 });
   };
-  
+
   /**
    * 홈 버튼 클릭 핸들러 - 인트로 화면 재시작 및 1페이지로 이동
    */
@@ -197,34 +199,34 @@ function InnoWorksPage() {
     setLogoOpacity(0);
     setWhiteScreenVisible(true);
     setMainScreenVisible(false);
-    
+
     // 확대/축소 상태 리셋
     setZoomLevel(1);
     setIsZoomed(false);
     setShowMinimap(false);
     setDragOffset({ x: 0, y: 0 });
-    
+
     // 1페이지로 이동
     if (flipBookRef.current) {
       flipBookRef.current.pageFlip().turnToPage(0);
     }
-    
+
     // 페이지 상태 리셋
     setCurrentPage(0);
     setIsFirstPage(true);
     setIsLastPage(false);
     setIsCoverPage(true);
-    
+
     // 로고 애니메이션 재시작
     startLogoAnimation();
   };
-  
+
   /**
    * 프린터 버튼 클릭 핸들러
    */
   const handlePrintClick = () => {
     // InnoWorks PDF가 있다면 사용, 없으면 현재 페이지 인쇄
-    const pdfUrl = `/InnoWorks/pdf/innoworks-${validLanguage}.pdf`;
+    const pdfUrl = getInnoworksPdfPath(validLanguage);
     const pdfWindow = window.open(pdfUrl, '_blank');
     if (pdfWindow) {
       pdfWindow.onload = () => {
@@ -235,19 +237,16 @@ function InnoWorksPage() {
       window.print();
     }
   };
-  
+
   /**
    * PDF 다운로드 버튼 클릭 핸들러
    */
   const handleDownloadClick = () => {
-    const link = document.createElement('a');
-    link.href = `/InnoWorks/pdf/innoworks-${validLanguage}.pdf`;
-    link.download = `innoworks-${validLanguage}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const pdfUrl = getInnoworksPdfPath(validLanguage);
+    const suggestedName = `innoworks-${validLanguage}.pdf`;
+    downloadPdf(pdfUrl, suggestedName).catch(() => {});
   };
-  
+
   /**
    * 공유 버튼 클릭 핸들러
    */
@@ -266,7 +265,7 @@ function InnoWorksPage() {
       navigator.clipboard.writeText(window.location.href);
     }
   };
-  
+
   /**
    * 목차 버튼 클릭 핸들러
    */
@@ -275,7 +274,7 @@ function InnoWorksPage() {
       flipBookRef.current.pageFlip().turnToPage(1); // 2번째 페이지로 이동
     }
   };
-  
+
   /**
    * 확대 버튼 클릭 핸들러
    */
@@ -288,7 +287,7 @@ function InnoWorksPage() {
       setDragOffset({ x: 0, y: 0 });
     }
   };
-  
+
   /**
    * 축소 버튼 클릭 핸들러
    */
@@ -301,7 +300,7 @@ function InnoWorksPage() {
       setDragOffset({ x: 0, y: 0 });
     }
   };
-  
+
   /**
    * 확대/축소 리셋 핸들러
    */
@@ -311,43 +310,43 @@ function InnoWorksPage() {
     setShowMinimap(false);
     setDragOffset({ x: 0, y: 0 });
   };
-  
+
   // 드래그 핸들러들
   const handleMouseDown = (e) => {
     setIsDragging(true);
     dragStartRef.current = { x: e.clientX, y: e.clientY };
     e.preventDefault();
   };
-  
+
   const handleMouseMove = (e) => {
     if (isDragging) {
       const deltaX = e.clientX - dragStartRef.current.x;
       const deltaY = e.clientY - dragStartRef.current.y;
-      
+
       setDragOffset((prev) => ({
         x: prev.x + deltaX,
         y: prev.y + deltaY,
       }));
-      
+
       dragStartRef.current = { x: e.clientX, y: e.clientY };
     }
   };
-  
+
   const handleMouseUp = () => {
     setIsDragging(false);
   };
-  
+
   const handleTouchStart = (e) => {
     if (e.touches.length === 1) {
       setIsDragging(true);
       dragStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     }
   };
-  
+
   const handleTouchEnd = () => {
     setIsDragging(false);
   };
-  
+
   // 터치 영역 핸들러
   const handleTouchAreaMouseDown = (direction) => {
     if (direction === 'left') {
@@ -356,11 +355,11 @@ function InnoWorksPage() {
       goToNextPage();
     }
   };
-  
+
   const handleTouchAreaMouseUp = () => {
     // 필요시 추가 로직
   };
-  
+
   const handleTouchAreaTouchStart = (direction) => {
     if (direction === 'left') {
       goToPreviousPage();
@@ -368,11 +367,11 @@ function InnoWorksPage() {
       goToNextPage();
     }
   };
-  
+
   const handleTouchAreaTouchEnd = () => {
     // 필요시 추가 로직
   };
-  
+
   /**
    * 페이지 네비게이션 함수들
    */
@@ -381,26 +380,26 @@ function InnoWorksPage() {
       flipBookRef.current.pageFlip().turnToPage(0);
     }
   };
-  
+
   const goToPreviousPage = () => {
     if (flipBookRef.current) {
       flipBookRef.current.pageFlip().flipPrev();
     }
   };
-  
+
   const goToNextPage = () => {
     if (flipBookRef.current) {
       flipBookRef.current.pageFlip().flipNext();
     }
   };
-  
+
   const goToLastPage = () => {
     if (flipBookRef.current) {
       const totalPages = flipBookRef.current.pageFlip().getPageCount();
       flipBookRef.current.pageFlip().turnToPage(totalPages - 1);
     }
   };
-  
+
   /**
    * Popup 영역 클릭 핸들러
    * @param {number} pageNumber - 페이지 번호 (1-6)
@@ -413,12 +412,12 @@ function InnoWorksPage() {
     setModalDragOffset({ x: 0, y: 0 });
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
-    
+
     setSelectedPopupPage(pageNumber);
     setSelectedPopupArea(areaId);
     setIsPopupModalOpen(true);
   };
-  
+
   /**
    * Popup 모달 닫기 핸들러
    */
@@ -434,7 +433,7 @@ function InnoWorksPage() {
     setIsModalDragging(false);
     modalDragStartRef.current = { x: 0, y: 0 };
   };
-  
+
   /**
    * 모달 확대 버튼 클릭 핸들러
    */
@@ -443,7 +442,7 @@ function InnoWorksPage() {
     setModalZoomLevel(newZoomLevel);
     setIsModalZoomed(newZoomLevel !== 1);
   };
-  
+
   /**
    * 모달 축소 버튼 클릭 핸들러
    */
@@ -452,7 +451,7 @@ function InnoWorksPage() {
     setModalZoomLevel(newZoomLevel);
     setIsModalZoomed(newZoomLevel !== 1);
   };
-  
+
   /**
    * 모달 확대/축소 리셋 핸들러
    */
@@ -461,32 +460,32 @@ function InnoWorksPage() {
     setIsModalZoomed(false);
     setModalDragOffset({ x: 0, y: 0 });
   };
-  
+
   // 모달 드래그 핸들러들
   const handleModalDragStart = (e) => {
     setIsModalDragging(true);
     modalDragStartRef.current = { x: e.clientX, y: e.clientY };
     e.preventDefault();
   };
-  
+
   const handleModalDragMove = (e) => {
     if (isModalDragging) {
       const deltaX = e.clientX - modalDragStartRef.current.x;
       const deltaY = e.clientY - modalDragStartRef.current.y;
-      
+
       setModalDragOffset((prev) => ({
         x: prev.x + deltaX,
         y: prev.y + deltaY,
       }));
-      
+
       modalDragStartRef.current = { x: e.clientX, y: e.clientY };
     }
   };
-  
+
   const handleModalDragEnd = () => {
     setIsModalDragging(false);
   };
-  
+
   /**
    * Popup 이미지 경로 생성 함수
    * @param {string} areaId - 영역 ID (예: '1-1', '2-1' 등)
@@ -499,7 +498,7 @@ function InnoWorksPage() {
     const folderName = LANGUAGE_FOLDER_MAP[validLanguage] || validLanguage;
     return `/Innoworks/Multilingual/${folderName}/Popup/${areaId}.png`;
   };
-  
+
   /**
    * 비디오인지 확인하는 함수
    * @param {string} areaId - 영역 ID
@@ -508,7 +507,7 @@ function InnoWorksPage() {
   const isVideoPopup = (areaId) => {
     return areaId === '4-5' || areaId === '4-6';
   };
-  
+
   /**
    * 비디오 경로 반환 함수
    * @param {string} areaId - 영역 ID
@@ -517,24 +516,24 @@ function InnoWorksPage() {
   const getVideoPath = (areaId) => {
     return '/video/Innoworks.mp4';
   };
-  
+
   // 모바일 화면인 경우 모바일 컴포넌트 렌더링
   if (isMobile) {
     return <InnoWorksPageMobile language={validLanguage} />;
   }
-  
+
   return (
     <div className="w-full h-screen overflow-hidden relative">
       {/* 인트로 화면 (흰 화면 + 로고) */}
       {showIntro && (
-        <div 
+        <div
           className={`fixed inset-0 bg-white z-50 transition-transform duration-500 ease-out ${
             whiteScreenVisible ? 'translate-y-0' : '-translate-y-full'
           }`}
         >
           {/* Friender 로고 */}
           <div className="w-full h-full flex flex-col items-center justify-center">
-            <img 
+            <img
               src="/FrienderFile/Interactive/Friender-Logo-L.png"
               alt="Friender Logo"
               className="max-w-full max-h-full object-contain"
@@ -543,7 +542,7 @@ function InnoWorksPage() {
           </div>
         </div>
       )}
-      
+
       {/* 본 화면 */}
       {mainScreenVisible && (
         <div className="w-full h-screen overflow-hidden bg-white flex">
@@ -556,7 +555,7 @@ function InnoWorksPage() {
                 className="w-full h-auto"
               />
             </button>
-            
+
             {/* 미니맵 */}
             {showMinimap && (
               <div className="mt-4 w-full relative z-[9999]">
@@ -565,7 +564,7 @@ function InnoWorksPage() {
                   <div className="relative w-full h-24 bg-gray-100 rounded overflow-hidden">
                     {/* 표지 페이지인 경우 단일 페이지 표시 */}
                     {isCoverPage ? (
-                      <div 
+                      <div
                         className="w-full h-full bg-cover bg-center bg-no-repeat opacity-30"
                         style={{
                           backgroundImage: `url(${pageData[0]?.svg})`,
@@ -577,7 +576,7 @@ function InnoWorksPage() {
                       /* 일반 페이지인 경우 양쪽 페이지 표시 */
                       <div className="flex w-full h-full">
                         {/* 왼쪽 페이지 */}
-                        <div 
+                        <div
                           className="w-1/2 h-full bg-cover bg-center bg-no-repeat opacity-30"
                           style={{
                             backgroundImage: `url(${pageData[currentPage]?.svg})`,
@@ -586,7 +585,7 @@ function InnoWorksPage() {
                           }}
                         />
                         {/* 오른쪽 페이지 */}
-                        <div 
+                        <div
                           className="w-1/2 h-full bg-cover bg-center bg-no-repeat opacity-30"
                           style={{
                             backgroundImage: `url(${
@@ -598,9 +597,9 @@ function InnoWorksPage() {
                         />
                       </div>
                     )}
-                    
+
                     {/* 현재 뷰포트 표시 */}
-                    <div 
+                    <div
                       className="absolute border-2 border-red-500 bg-red-500/20 transition-all duration-200"
                       style={{
                         width: `${100 / zoomLevel}%`,
@@ -615,7 +614,7 @@ function InnoWorksPage() {
               </div>
             )}
           </div>
-          
+
           {/* 중앙 플립북 컨테이너 */}
           <div className="w-full h-full flex items-center justify-center p-4 relative">
             {/* 돋보기 버튼들 - 플립북 컨테이너 위에 배치 */}
@@ -635,7 +634,7 @@ function InnoWorksPage() {
                   />
                 </svg>
               </button>
-              
+
               {/* 축소 버튼 */}
               <button
                 onClick={handleZoomOut}
@@ -651,7 +650,7 @@ function InnoWorksPage() {
                   />
                 </svg>
               </button>
-              
+
               {/* 확대/축소 리셋 버튼 */}
               {isZoomed && (
                 <button
@@ -670,7 +669,7 @@ function InnoWorksPage() {
                 </button>
               )}
             </div>
-            
+
             <div className="flex items-center xl:gap-4">
               {/* 왼쪽 네비게이션 버튼들 */}
               <div className="flex flex-col items-center gap-2">
@@ -707,9 +706,9 @@ function InnoWorksPage() {
                   />
                 </button>
               </div>
-              
+
               {/* 플립북 컨테이너 */}
-              <div 
+              <div
                 ref={flipBookContainerRef}
                 className="flex items-center justify-center relative overflow-visible"
                 style={{ width: '100%', height: '100%' }}
@@ -721,7 +720,7 @@ function InnoWorksPage() {
                 onTouchEnd={isZoomed ? handleTouchEnd : undefined}
               >
                 {/* 플립북 */}
-                <div 
+                <div
                   className={`${isZoomed ? 'cursor-grab' : ''} ${
                     isDragging ? 'cursor-grabbing' : ''
                   }`}
@@ -737,9 +736,9 @@ function InnoWorksPage() {
                     `,
                   }}
                 >
-                  <HTMLFlipBook 
+                  <HTMLFlipBook
                     ref={flipBookRef}
-                    width={flipBookSize.width} 
+                    width={flipBookSize.width}
                     height={flipBookSize.height}
                     maxShadowOpacity={0}
                     drawShadow={false}
@@ -754,12 +753,12 @@ function InnoWorksPage() {
                     onFlip={handlePageFlip}
                   >
                     {/* 표지 페이지 (첫 번째 페이지) */}
-                    <div 
-                      className="page shadow-lg overflow-hidden" 
+                    <div
+                      className="page shadow-lg overflow-hidden"
                       key={pageData[0].id}
                       data-density="hard"
                     >
-                      <div 
+                      <div
                         className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
                         style={{
                           backgroundImage: `url(${pageData[0].svg})`,
@@ -769,7 +768,7 @@ function InnoWorksPage() {
                       >
                         {/* ========== 1페이지 Popup 클릭 영역 (총 2개) ========== */}
                         {/* 1페이지 - 박스 1/2 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           } ${hoveredPopupArea === '1-1' ? 'border-2 border-yellow-500' : ''}`}
@@ -785,9 +784,9 @@ function InnoWorksPage() {
                           onMouseLeave={() => setHoveredPopupArea(null)}
                           title="1페이지 박스 1/2"
                         ></div>
-                        
+
                         {/* 1페이지 - 박스 2/2 */}
-                        <div 
+                        <div
                           className={`absolute cursor-pointer rounded-lg ${
                             isPopupModalOpen ? 'pointer-events-none' : ''
                           } ${hoveredPopupArea === '1-2' ? 'border-2 border-yellow-500' : ''}`}
@@ -803,18 +802,17 @@ function InnoWorksPage() {
                           onMouseLeave={() => setHoveredPopupArea(null)}
                           title="1페이지 박스 2/2"
                         ></div>
-                        
                       </div>
                     </div>
-                    
+
                     {/* 나머지 페이지들 */}
                     {pageData.slice(1).map((page, index) => (
-                      <div 
-                        className="page shadow-lg overflow-hidden" 
+                      <div
+                        className="page shadow-lg overflow-hidden"
                         key={page.id}
                         data-density="hard"
                       >
-                        <div 
+                        <div
                           className="page-content w-full h-full bg-cover bg-center bg-no-repeat relative"
                           style={{
                             backgroundImage: `url(${page.svg})`,
@@ -826,7 +824,7 @@ function InnoWorksPage() {
                           {page.id === 2 && (
                             <>
                               {/* 2페이지 - 박스 1/5 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -844,9 +842,9 @@ function InnoWorksPage() {
                                 onMouseLeave={() => setHoveredPopupArea(null)}
                                 title="2페이지 박스 1/5"
                               ></div>
-                              
+
                               {/* 2페이지 - 박스 2/5 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -864,9 +862,9 @@ function InnoWorksPage() {
                                 onMouseLeave={() => setHoveredPopupArea(null)}
                                 title="2페이지 박스 2/5"
                               ></div>
-                              
+
                               {/* 2페이지 - 박스 3/5 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -884,9 +882,9 @@ function InnoWorksPage() {
                                 onMouseLeave={() => setHoveredPopupArea(null)}
                                 title="2페이지 박스 3/5"
                               ></div>
-                              
+
                               {/* 2페이지 - 박스 4/5 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -904,9 +902,9 @@ function InnoWorksPage() {
                                 onMouseLeave={() => setHoveredPopupArea(null)}
                                 title="2페이지 박스 4/5"
                               ></div>
-                              
+
                               {/* 2페이지 - 박스 5/5 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -926,12 +924,12 @@ function InnoWorksPage() {
                               ></div>
                             </>
                           )}
-                          
+
                           {/* ========== 3페이지 Popup 클릭 영역 (총 6개) ========== */}
                           {page.id === 3 && (
                             <>
                               {/* 3페이지 - 박스 1/6 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -949,9 +947,9 @@ function InnoWorksPage() {
                                 onMouseLeave={() => setHoveredPopupArea(null)}
                                 title="3페이지 박스 1/6"
                               ></div>
-                              
+
                               {/* 3페이지 - 박스 2/6 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -969,9 +967,9 @@ function InnoWorksPage() {
                                 onMouseLeave={() => setHoveredPopupArea(null)}
                                 title="3페이지 박스 2/6"
                               ></div>
-                              
+
                               {/* 3페이지 - 박스 3/6 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -989,9 +987,9 @@ function InnoWorksPage() {
                                 onMouseLeave={() => setHoveredPopupArea(null)}
                                 title="3페이지 박스 3/6"
                               ></div>
-                              
+
                               {/* 3페이지 - 박스 4/6 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -1009,9 +1007,9 @@ function InnoWorksPage() {
                                 onMouseLeave={() => setHoveredPopupArea(null)}
                                 title="3페이지 박스 4/6"
                               ></div>
-                              
+
                               {/* 3페이지 - 박스 5/6 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -1029,9 +1027,9 @@ function InnoWorksPage() {
                                 onMouseLeave={() => setHoveredPopupArea(null)}
                                 title="3페이지 박스 5/6"
                               ></div>
-                              
+
                               {/* 3페이지 - 박스 6/6 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -1051,12 +1049,12 @@ function InnoWorksPage() {
                               ></div>
                             </>
                           )}
-                          
+
                           {/* ========== 4페이지 Popup 클릭 영역 (총 6개) ========== */}
                           {page.id === 4 && (
                             <>
                               {/* 4페이지 - 박스 1/6 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -1074,9 +1072,9 @@ function InnoWorksPage() {
                                 onMouseLeave={() => setHoveredPopupArea(null)}
                                 title="4페이지 박스 1/6"
                               ></div>
-                              
+
                               {/* 4페이지 - 박스 2/6 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -1094,9 +1092,9 @@ function InnoWorksPage() {
                                 onMouseLeave={() => setHoveredPopupArea(null)}
                                 title="4페이지 박스 2/6"
                               ></div>
-                              
+
                               {/* 4페이지 - 박스 3/6 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -1114,9 +1112,9 @@ function InnoWorksPage() {
                                 onMouseLeave={() => setHoveredPopupArea(null)}
                                 title="4페이지 박스 3/6"
                               ></div>
-                              
+
                               {/* 4페이지 - 박스 4/6 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -1134,9 +1132,9 @@ function InnoWorksPage() {
                                 onMouseLeave={() => setHoveredPopupArea(null)}
                                 title="4페이지 박스 4/6"
                               ></div>
-                              
+
                               {/* 4페이지 - 박스 5/6 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -1154,9 +1152,9 @@ function InnoWorksPage() {
                                 onMouseLeave={() => setHoveredPopupArea(null)}
                                 title="4페이지 박스 5/6"
                               ></div>
-                              
+
                               {/* 4페이지 - 박스 6/6 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -1176,12 +1174,12 @@ function InnoWorksPage() {
                               ></div>
                             </>
                           )}
-                          
+
                           {/* ========== 5페이지 Popup 클릭 영역 (총 1개) ========== */}
                           {page.id === 5 && (
                             <>
                               {/* 5페이지 - 박스 1/1 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -1202,12 +1200,12 @@ function InnoWorksPage() {
                               ></div>
                             </>
                           )}
-                          
+
                           {/* ========== 6페이지 Popup 클릭 영역 (총 1개) ========== */}
                           {page.id === 6 && (
                             <>
                               {/* 6페이지 - 박스 1/1 */}
-                              <div 
+                              <div
                                 className={`absolute cursor-pointer rounded-lg ${
                                   isPopupModalOpen ? 'pointer-events-none' : ''
                                 } ${
@@ -1228,14 +1226,13 @@ function InnoWorksPage() {
                               ></div>
                             </>
                           )}
-                          
                         </div>
                       </div>
                     ))}
                   </HTMLFlipBook>
                 </div>
               </div>
-              
+
               {/* 오른쪽 네비게이션 버튼들 */}
               <div className="flex flex-col items-center gap-2">
                 {/* Right 버튼 */}
@@ -1273,7 +1270,7 @@ function InnoWorksPage() {
               </div>
             </div>
           </div>
-          
+
           {/* 하단 툴바 - 모든 화면 크기에서 표시 */}
           <div className="fixed bottom-0 left-0 right-0 z-50 bg-gray-800 p-3">
             <div className="flex justify-center items-center gap-4">
@@ -1292,7 +1289,7 @@ function InnoWorksPage() {
                   />
                 </svg>
               </button>
-              
+
               {/* 프린터 버튼 */}
               <button
                 onClick={handlePrintClick}
@@ -1308,7 +1305,7 @@ function InnoWorksPage() {
                   />
                 </svg>
               </button>
-              
+
               {/* PDF 다운로드 버튼 */}
               <button
                 onClick={handleDownloadClick}
@@ -1324,7 +1321,7 @@ function InnoWorksPage() {
                   />
                 </svg>
               </button>
-              
+
               {/* 목차 버튼 */}
               <button
                 onClick={handleTocClick}
@@ -1340,7 +1337,7 @@ function InnoWorksPage() {
                   />
                 </svg>
               </button>
-              
+
               {/* 공유 버튼 */}
               <button
                 onClick={handleShareClick}
@@ -1356,7 +1353,7 @@ function InnoWorksPage() {
                   />
                 </svg>
               </button>
-              
+
               {/* 언어 선택 버튼 */}
               <div className="relative" ref={languageDropdownRef}>
                 <button
@@ -1364,14 +1361,14 @@ function InnoWorksPage() {
                   className="w-10 h-10 text-white flex items-center justify-center hover:text-gray-300 hover:bg-gray-700 rounded transition-colors duration-300 cursor-pointer"
                   title="언어 선택"
                 >
-                  <img 
-                    src="/FrienderFile/Interactive/Language.png" 
-                    alt="언어 선택" 
+                  <img
+                    src="/FrienderFile/Interactive/Language.png"
+                    alt="언어 선택"
                     className="w-6 h-6 object-contain"
                     style={{ filter: 'brightness(0) invert(1)' }}
                   />
                 </button>
-                
+
                 {/* 언어 선택 드롭다운 (위로 열림) */}
                 {isLanguageDropdownOpen && (
                   <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white rounded-lg shadow-lg border border-gray-200 min-w-[150px] z-50">
@@ -1393,7 +1390,7 @@ function InnoWorksPage() {
           </div>
         </div>
       )}
-      
+
       {/* Popup 모달 */}
       {isPopupModalOpen && selectedPopupArea && selectedPopupPage && (
         <div
@@ -1534,7 +1531,10 @@ function InnoWorksPage() {
                       }
                     }}
                   />
-                  <div className="hidden text-gray-500 text-center mt-4" style={{ display: 'none' }}>
+                  <div
+                    className="hidden text-gray-500 text-center mt-4"
+                    style={{ display: 'none' }}
+                  >
                     <p>이미지를 불러올 수 없습니다.</p>
                     <p className="text-sm">경로: {getPopupImagePath(selectedPopupArea)}</p>
                   </div>

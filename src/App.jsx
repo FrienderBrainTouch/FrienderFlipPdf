@@ -1,6 +1,5 @@
 import React, { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { detectBrowserLanguage, getLanguagePath } from './utils/language';
 
 // Lazy loading - 각 페이지를 필요할 때만 불러옴
 const FrienderPageWithLanguage = lazy(() => import('./components/FrienderPageWithLanguage'));
@@ -29,14 +28,8 @@ function LanguageRedirect() {
       return;
     }
 
-    // 브라우저 언어 감지
-    const browserLang = detectBrowserLanguage();
-    const targetPath = getLanguagePath(browserLang);
-
-    // 기본 언어(한국어)가 아니면 리다이렉트
-    if (browserLang !== 'ko') {
-      navigate(targetPath, { replace: true });
-    }
+    // 루트 경로로 접근 시 항상 영어 페이지로 리다이렉트
+    navigate('/en', { replace: true });
   }, [navigate, location]);
 
   return null;
@@ -57,8 +50,8 @@ function App() {
           <Route path="/story/:language" element={<StoryPage />} />
           <Route path="/innoworks/:language" element={<InnoWorksPage />} />
 
-          {/* 기본 경로는 한국어 페이지로 포워딩 */}
-          <Route path="*" element={<Navigate to="/ko" replace />} />
+          {/* 지원하지 않는 경로는 영어 페이지로 포워딩 */}
+          <Route path="*" element={<Navigate to="/en" replace />} />
         </Routes>
         {/* 챗봇 컴포넌트 */}
         <Chatbot />
